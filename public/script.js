@@ -83,7 +83,7 @@ async function getAbiContract() {
     .catch((error) => console.error(error));
   let au = await temp.json();
   console.log(JSON.parse(au.interface))
-  return au;
+  return JSON.parse(au.interface);
 }
 
 
@@ -403,6 +403,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(1, erc20ContractText.innerText, 2, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause") {
         console.log("pausable run")
         await erc20infPauseContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -413,6 +418,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(3, erc20ContractText.innerText, 2, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
         await erc20infPauseBurnContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -423,6 +433,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(4, erc20ContractText.innerText, 2, 4)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
 
     } else if (selectedToken.value == "def") {
@@ -437,6 +452,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractBurnDef
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(5, erc20ContractText.innerText, 2, 5)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "PauseDef") {
         console.log("pause deflation run")
         await erc20DefPauseContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -447,6 +467,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseDef
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(6, erc20ContractText.innerText, 2, 6)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause-BurnDef") {
         console.log("pause-burn deflation run")
         await erc20DefPauseBurnContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -457,6 +482,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnDef
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(7, erc20ContractText.innerText, 2, 7)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
 
 
@@ -478,7 +508,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractInfBurn
           erc20ContractText.style.display = "flex"
         })
-
+        const resp = await postContract(2, erc20ContractText.innerText, 2, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause") {
         console.log("pausable run")
         await erc20InfPauseContract.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -489,6 +523,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(3, erc20ContractText.innerText, 2, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
         await erc20InfPauseBurnContract.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -499,6 +538,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(4, erc20ContractText.innerText, 2, 4)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Mint") {
         console.log("mint run")
         await erc20InfContractMumbai.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -509,6 +553,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(1, erc20ContractText.innerText, 2, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
       else if (selectedToken.value == "def") {
         var selectedVar = document.getElementById('forDeflation').value;
@@ -523,6 +572,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseBurnInf
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(5, erc20ContractText.innerText, 2, 5)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "PauseDef") {
           console.log("pause deflation run")
           await erc20DefPauseContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -533,6 +587,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseDef
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(6, erc20ContractText.innerText, 2, 6)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "Pause-BurnDef") {
           console.log("pause-burn deflation run")
           await erc20DefPauseBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -543,6 +602,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseBurnDef
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(7, erc20ContractText.innerText, 2, 7)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         }
 
 
@@ -562,6 +626,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractInfBurn
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(2, erc20ContractText.innerText, 2, 2)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "Pause") {
           onsole.log("pausable run")
           await erc20infPauseContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -572,6 +641,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseInf
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(3, erc20ContractText.innerText, 2, 3)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "Pause-Burn") {
           console.log("pausable & burnable run")
           await erc20infPauseBurnContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -582,7 +656,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseBurnInf
             erc20ContractText.style.display = "flex"
           })
-
+          const resp = await postContract(4, erc20ContractText.innerText, 2, 4)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "Mint") {
           console.log("mint run")
           await erc20infContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -593,6 +671,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseBurnInf
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(1, erc20ContractText.innerText, 2, 1)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         }
       } else if (selectedToken.value == "def") {
         var selectedVar = document.getElementById('forDeflation').value;
@@ -606,6 +689,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseBurnInf
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(5, erc20ContractText.innerText, 2, 5)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "PauseDef") {
           console.log("pause deflation run")
           await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -616,6 +704,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseDef
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(6, erc20ContractText.innerText, 2, 6)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "Pause-BurnDef") {
           console.log("pause-burn deflation run")
           await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -626,6 +719,11 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractPauseBurnDef
             erc20ContractText.style.display = "flex"
           })
+          const resp = await postContract(7, erc20ContractText.innerText, 2, 7)
+          console.log(resp);
+          const bascetId = sessionStorage.getItem('bascet')
+          const succes = await profile(bascetId, resp);
+          console.log(`Contract create whith succes: ${succes}`);
         }
       }
     } else {
