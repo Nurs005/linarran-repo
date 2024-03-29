@@ -5,7 +5,45 @@ async function postContract(abiId, addresss, typeId, kindId) {
   const formdata = new FormData();
   formdata.append("abiId", `${abiId}`);
   formdata.append("address", `${addresss}`);
-  formdata.append("abi", `${meta}`);
+  formdata.append("typeId", `${typeId}`);
+  formdata.append("kindId", `${kindId}`);
+
+  const requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow"
+  };
+
+  const response = await fetch("http://localhost:5000/api/contract", requestOptions)
+    .catch((error) => console.error(error));
+  const data = await response.json();
+  return data;
+}
+
+async function postContractStaking(abiId, addresss, typeId, kindId) {
+  const formdata = new FormData();
+  formdata.append("abiId", `${abiId}`);
+  formdata.append("address", `${addresss}`);
+  formdata.append("typeId", `${typeId}`);
+  formdata.append("kindId", `${kindId}`);
+
+  const requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow"
+  };
+
+  const response = await fetch("http://localhost:5000/api/contract", requestOptions)
+    .catch((error) => console.error(error));
+  const data = await response.json();
+  return data;
+}
+
+async function postContractNFT(abiId, addresss, metadata, typeId, kindId) {
+  const formdata = new FormData();
+  formdata.append("abiId", `${abiId}`);
+  formdata.append("address", `${addresss}`);
+  formdata.append("metadata", `${metadata}`);
   formdata.append("typeId", `${typeId}`);
   formdata.append("kindId", `${kindId}`);
 
@@ -48,8 +86,8 @@ async function profile(userBascetId, contractId) {
   };
   let temp = await fetch("http://localhost:5000/api/profile", requestOptions)
     .catch((error) => console.error(error));
-  console.log(temp.json());
-  return temp.json();
+
+  return temp;
 }
 
 
@@ -1063,6 +1101,11 @@ async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
+  const resp = await postContractNFT(9, contractAddress721.innerText, 1, 9)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri) {
   await eth721Contract.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
@@ -1073,6 +1116,11 @@ async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
+  const resp = await postContractNFT(9, contractAddress721.innerText, 1, 9)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri) {
@@ -1084,6 +1132,11 @@ async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
+  const resp = await postContractNFT(9, contractAddress721.innerText, 1, 9)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 const deployedContractAddress1155mint = "";
@@ -1097,6 +1150,11 @@ async function deploy1155Mint(uri, accountToM, amountToM, ownerAddress) {
     contractAddress1155.style.display = "flex"
 
   })
+  const resp = await postContractNFT(8, contractAddress1155.innerText, 1, 8)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 async function deploy1155eth(uri, accountToM, amountToM, ownerAddress) {
   await eth1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
@@ -1108,6 +1166,11 @@ async function deploy1155eth(uri, accountToM, amountToM, ownerAddress) {
     contractAddress1155.style.display = "flex"
 
   })
+  const resp = await postContractNFT(8, contractAddress1155.innerText, 1, 8)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 async function deploy1155Mumbai(uri, accountToM, amountToM, ownerAddress) {
@@ -1120,6 +1183,11 @@ async function deploy1155Mumbai(uri, accountToM, amountToM, ownerAddress) {
     contractAddress1155.style.display = "flex"
 
   })
+  const resp = await postContractNFT(8, contractAddress1155.innerText, 1, 8)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 
@@ -1141,7 +1209,11 @@ async function stakingDeploy(abii) {
     contractAddressStaking.innerText = deployedContractStakingAddress
     contractAddressStaking.style.display = "flex"
   })
-
+  const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 
 }
 
@@ -1162,6 +1234,11 @@ async function stakingDeployMumbai() {
     contractAddressStaking.innerText = deployedContractStakingAddress
     contractAddressStaking.style.display = "flex"
   })
+  const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 async function stakingDeployEth() {
@@ -1181,4 +1258,9 @@ async function stakingDeployEth() {
     contractAddressStaking.innerText = deployedContractStakingAddress
     contractAddressStaking.style.display = "flex"
   })
+  const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }

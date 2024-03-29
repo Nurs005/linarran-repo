@@ -43,6 +43,17 @@ class ContractControler {
             next(ApiErorr.badRequest(e.message))
         }
     }
+
+    async createNFT(req, res, next) { 
+        try { 
+            const { address, meta, abiId, typeId, kindId } = req.body 
+            const contract = await Contract.create({ address: address, meta: meta, abiId: abiId, typeId: typeId, kindId: kindId }) 
+            return res.json(contract.id); 
+        } catch (err) { 
+            next(ApiErorr.badRequest(err.message)) 
+        } 
+    }
+
 }
 
 module.exports = new ContractControler()
