@@ -1101,7 +1101,8 @@ async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
-  const resp = await postContractNFT(9, contractAddress721.innerText, 1, 9)
+  const data = await response.json();
+  const resp = await postContractNFT(9, contractAddress721.innerText, data.IpfsHash, 1, 9)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
@@ -1116,7 +1117,8 @@ async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
-  const resp = await postContractNFT(9, contractAddress721.innerText, 1, 9)
+  const data = await response.json();
+  const resp = await postContractNFT(9, contractAddress721.innerText, data.IpfsHash, 1, 9)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
@@ -1132,7 +1134,8 @@ async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
-  const resp = await postContractNFT(9, contractAddress721.innerText, 1, 9)
+  const data = await response.json();
+  const resp = await postContractNFT(9, contractAddress721.innerText, data.IpfsHash, 1, 9)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
@@ -1150,7 +1153,8 @@ async function deploy1155Mint(uri, accountToM, amountToM, ownerAddress) {
     contractAddress1155.style.display = "flex"
 
   })
-  const resp = await postContractNFT(8, contractAddress1155.innerText, 1, 8)
+  const data = await response.json();
+  const resp = await postContractNFT(8, contractAddress1155.innerText, data.IpfsHash, 1, 8)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
@@ -1166,7 +1170,8 @@ async function deploy1155eth(uri, accountToM, amountToM, ownerAddress) {
     contractAddress1155.style.display = "flex"
 
   })
-  const resp = await postContractNFT(8, contractAddress1155.innerText, 1, 8)
+  const data = await response.json();
+  const resp = await postContractNFT(8, contractAddress1155.innerText, data.IpfsHash, 1, 8)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
@@ -1183,7 +1188,8 @@ async function deploy1155Mumbai(uri, accountToM, amountToM, ownerAddress) {
     contractAddress1155.style.display = "flex"
 
   })
-  const resp = await postContractNFT(8, contractAddress1155.innerText, 1, 8)
+  const data = await response.json();
+  const resp = await postContractNFT(8, contractAddress1155.innerText, IpfsHash, 1, 8)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
