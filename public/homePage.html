@@ -119,26 +119,26 @@
           <div class="modalY-bodyRow">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="burn">
-              burn
+              Remove
             </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="mint">
-              mint
+              Issue
             </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="safeTransferFrom">
-              Safe Transfer From
+              Transfer From
             </button>
           </div>
 
           <div class="modalY-bodyRow">
             </button><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="SetApproval">
-              Set approval for ALL
+              Set approval
             </button>
             </button><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="balanceOf">
-              Balance of
+              Balance
             </button>
           </div>
 
@@ -166,21 +166,32 @@
       <div class="modal_container">
         <div class="headerY">
           <span class="closeBtnBurn">&times;</span>
-          <h3 id="burnText">Burn</h3>
-          <h3 id="mintText">Mint</h3>
+          <h3 id="burnText">Remove Tokens</h3>
+          <h3 id="mintText">Issue Tokens</h3>
           <h3 id="sftText">Safe transfer from</h3>
-          <h3 id="approveText">Set approval for ALL</h3>
+          <h3 id="approveText">Set approval for all your tokens</h3>
           <h3 id="balanceText">Balance of</h3>
         </div>
-        <input type="text" class="form-control" placeholder="Amount to burn" class="burnModal" id="burnM">
-        <input type="text" class="form-control" placeholder="Amount to mint" class="burnModal" id="mintM">
+        <input type="text" class="form-control" placeholder="Amount to remove" class="burnModal" id="burnM">
+        <input type="text" class="form-control" placeholder="Amount to issue" class="burnModal" id="mintM">
         <input type="text" class="form-control" placeholder="Address" class="burnModal" id="AccountM">
         <input type="text" class="form-control" placeholder="Address From" class="burnModal" id="AccountFrom">
         <input type="text" class="form-control" placeholder="Amount to transfer" class="burnModal" id="stfM">
-        <input type="text" class="form-control" placeholder="true or false" class="burnModal" id="approveM">
-        <input type="text" class="form-control" placeholder="id of token" class="burnModal" id="balanceM">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="true">
+          <label class="form-check-label" for="flexRadioDefault1">
+            Accept
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="false">
+          <label class="form-check-label" for="flexRadioDefault2">
+            Cancel
+          </label>
+        </div>
+        <input type="text" class="form-control" placeholder="Id of token" class="burnModal" id="balanceM">
         <div class="modal_butons">
-          <button id="modalBtnBurn" class="btn">Click here</button>
+          <button id="modalBtnBurn1155" class="btn">Click here</button>
         </div>
       </div>
     </div>
@@ -197,17 +208,17 @@
 
         <div class="modalY-body">
           <div class="modalY-bodyRow">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="burn721btn">
-              burn
-            </button>
+              Burn
+            </button> -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="mint721btn">
-              mint
+              Issue
             </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="TransferFrom721btn">
-              Transfer From
+              Transfer
             </button>
           </div>
           <div class="modalY-bodyRow">
@@ -217,7 +228,7 @@
             </button>
             </button><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="balanceOf721btn">
-              Balance of
+              Balance
             </button>
           </div>
 
@@ -240,19 +251,20 @@
         <div class="headerY">
           <span class="closeBtnBurn">&times;</span>
           <h3 id="burnText721">Burn</h3>
-          <h3 id="mintText721">Mint</h3>
+          <h3 id="mintText721">Issue</h3>
           <h3 id="sftText721">Transfer from</h3>
-          <h3 id="approveText721">Approve for ALL</h3>
+          <h3 id="approveText721">Approve</h3>
           <h3 id="balanceText721">Balance of</h3>
         </div>
         <input type="text" class="form-control" placeholder="Amount to burn" class="burnModal" id="burn721">
-        <input type="text" class="form-control" placeholder="Address to mint" class="burnModal" id="mint721">
+        <input type="text" class="form-control" placeholder="Address to issue" class="burnModal" id="mint721">
+        <input type="text" class="form-control" placeholder="Token Uri" class="burnModal" id="tokenUri721">
         <input type="text" class="form-control" placeholder="Address From" class="burnModal" id="tf721">
-        <input type="text" class="form-control" placeholder="Address to" class="burnModal" id="addressTo">
-        <input type="text" class="form-control" placeholder="Approve for ALL" class="burnModal" id="approve721">
+        <input type="text" class="form-control" placeholder="Token id" class="burnModal" id="tokenId">
+        <input type="text" class="form-control" placeholder="Address" class="burnModal" id="approve721">
         <input type="text" class="form-control" placeholder="Balance of address" class="burnModal" id="balance721">
         <div class="modal_butons">
-          <button id="modalBtnBurn" class="btn">Click here</button>
+          <button id="modalBtnBurn721" class="btn">Click here</button>
         </div>
       </div>
     </div>
@@ -291,10 +303,6 @@
               id="CalculateBtn">
               Calculate rewards
             </button>
-            </button><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-              id="stakersListBtn">
-              Stakers List
-            </button>
           </div>
 
         </div>
@@ -328,7 +336,7 @@
           id="CalculateInp">
         <input type="text" class="form-control" placeholder="Address" class="burnModal" id="StakersInp">
         <div class="modal_butons">
-          <button id="modalBtnBurn" class="btn">Click here</button>
+          <button id="modalBtnBurnStaking" class="btn">Click here</button>
         </div>
       </div>
     </div>
@@ -349,11 +357,11 @@
           <div class="modalY-bodyRow">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="burnInf">
-              burn
+              Remove
             </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="mintInf">
-              mint
+              Issue
             </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="PauseInf">
@@ -406,22 +414,23 @@
       <div class="modal_container">
         <div class="headerY">
           <span class="closeBtnBurn">&times;</span>
-          <h3 id="burnTextInf">Burn</h3>
-          <h3 id="mintTextInf">Mint</h3>
+          <h3 id="burnTextInf">Remove</h3>
+          <h3 id="mintTextInf">Issue</h3>
           <h3 id="pauseTextInf">Pause</h3>
           <h3 id="approveTextInf">Approve</h3>
           <h3 id="transferTextInf">Transfer</h3>
           <h3 id="transferFromTextInf">Transfer from</h3>
           <h3 id="unpauseTextInf">Unpause</h3>
-          <h3 id="balanceTextInf">Balance of</h3>
+          <h3 id="balanceTextInf">Balance</h3>
         </div>
-        <input type="text" class="form-control" placeholder="Amount to burn" class="burnModal" id="InpBurnInf">
-        <input type="text" class="form-control" placeholder="Account address" class="burnModal" id="InpAccountInf">
-        <input type="text" class="form-control" placeholder="Amount to mint" class="burnModal" id="InpMintInf">
+        <input type="text" class="form-control" placeholder="Amount to remove" class="burnModal" id="InpBurnInf">
+        <input type="text" class="form-control" placeholder="Address" class="burnModal" id="InpAccountInf">
+        <input type="text" class="form-control" placeholder="Amount to issue" class="burnModal" id="InpMintInf">
         <input type="text" class="form-control" placeholder="Pause" class="burnModal" id="InpPauseInf">
-        <input type="text" class="form-control" placeholder="Approve" class="burnModal" id="InApproveInf">
+        <input type="text" class="form-control" placeholder="Amount to approve" class="burnModal" id="InApproveInf">
         <input type="text" class="form-control" placeholder="Transfer" class="burnModal" id="InpTransferInf">
-        <input type="text" class="form-control" placeholder="Transfer From" class="burnModal" id="InpTransferFromInf">
+        <input type="text" class="form-control" placeholder="Transfer ammount" class="burnModal"
+          id="InpTransferFromInf">
         <input type="text" class="form-control" placeholder="Unpause" class="burnModal" id="InpUnpauseInf">
         <input type="text" class="form-control" placeholder="Balance of" class="burnModal" id="InpBalanceInf">
         <div class="modal_butons">
@@ -445,7 +454,7 @@
           <div class="modalY-bodyRow">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="burnDef">
-              burn
+              Remove
             </button>
 
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -473,7 +482,7 @@
             </button>
             </button><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
               id="balanceOfDef">
-              Balance of
+              Balance
             </button>
           </div>
 
@@ -499,7 +508,7 @@
       <div class="modal_container">
         <div class="headerY">
           <span class="closeBtnBurn">&times;</span>
-          <h3 id="burnTextDef">Burn</h3>
+          <h3 id="burnTextDef">Remove</h3>
           <h3 id="pauseTextDef">Pause</h3>
           <h3 id="approveTextDef">Approve</h3>
           <h3 id="transferTextDef">Transfer</h3>
@@ -507,15 +516,17 @@
           <h3 id="unpauseTextDef">Unpause</h3>
           <h3 id="balanceTextDef">Balance of</h3>
         </div>
-        <input type="text" class="form-control" placeholder="Amount to burn" class="burnModal" id="InpBurnDef">
+        <input type="text" class="form-control" placeholder="Amount to remove" class="burnModal" id="InpBurnDef">
+        <input type="text" class="form-control" placeholder="Address" class="burnModal" id="InpaddressDef">
         <input type="text" class="form-control" placeholder="Pause" class="burnModal" id="InpPauseDef">
-        <input type="text" class="form-control" placeholder="Approve" class="burnModal" id="InApproveDef">
-        <input type="text" class="form-control" placeholder="Transfer" class="burnModal" id="InpTransferDef">
-        <input type="text" class="form-control" placeholder="Transfer From" class="burnModal" id="InpTransferFromDef">
+        <input type="text" class="form-control" placeholder="Address" class="burnModal" id="InApproveDef">
+        <input type="text" class="form-control" placeholder="Ammount" class="burnModal" id="InpTransferDef">
+        <input type="text" class="form-control" placeholder="Transfer Ammount" class="burnModal"
+          id="InpTransferFromDef">
         <input type="text" class="form-control" placeholder="Unpause" class="burnModal" id="InpUnpauseDef">
         <input type="text" class="form-control" placeholder="Balance of" class="burnModal" id="InpBalanceDef">
         <div class="modal_butons">
-          <button id="modalBtnBurn" class="btn">Click here</button>
+          <button id="modalBtnBurnDef" class="btn">Click here</button>
         </div>
       </div>
     </div>

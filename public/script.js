@@ -1,13 +1,13 @@
 
 const meta = 'https://ipfs.io/ipfs/QmT21PxS5a4qzSk87V8kfZ7vYJ55KXV4DDrzT9xWmB3ET8';
 
-async function postContract(abiId, addresss, typeId, kindId) {
+async function postContract(abiId, addresss, typeId, kindId, chainId) {
   const formdata = new FormData();
   formdata.append("abiId", `${abiId}`);
   formdata.append("address", `${addresss}`);
-  formdata.append("abi", `${meta}`);
   formdata.append("typeId", `${typeId}`);
   formdata.append("kindId", `${kindId}`);
+  formdata.append("chainId", `${chainId}`)
 
   const requestOptions = {
     method: "POST",
@@ -16,6 +16,47 @@ async function postContract(abiId, addresss, typeId, kindId) {
   };
 
   const response = await fetch("http://localhost:5000/api/contract", requestOptions)
+    .catch((error) => console.error(error));
+  const data = await response.json();
+  return data;
+}
+
+async function postContractStaking(abiId, addresss, typeId, kindId, chainId) {
+  const formdata = new FormData();
+  formdata.append("abiId", `${abiId}`);
+  formdata.append("address", `${addresss}`);
+  formdata.append("typeId", `${typeId}`);
+  formdata.append("kindId", `${kindId}`);
+  formdata.append("chainId", `${chainId}`)
+
+  const requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow"
+  };
+
+  const response = await fetch("http://localhost:5000/api/contract", requestOptions)
+    .catch((error) => console.error(error));
+  const data = await response.json();
+  return data;
+}
+
+async function postContractNFT(abiId, addresss, metadata, typeId, kindId) {
+  const formdata = new FormData();
+  formdata.append("abiId", `${abiId}`);
+  formdata.append("address", `${addresss}`);
+  formdata.append("meta", `${metadata}`);
+  formdata.append("typeId", `${typeId}`);
+  formdata.append("kindId", `${kindId}`);
+  formdata.append("chainId", `${chainId}`)
+
+  const requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow"
+  };
+
+  const response = await fetch("http://localhost:5000/api/contract/nft", requestOptions)
     .catch((error) => console.error(error));
   const data = await response.json();
   return data;
@@ -48,8 +89,8 @@ async function profile(userBascetId, contractId) {
   };
   let temp = await fetch("http://localhost:5000/api/profile", requestOptions)
     .catch((error) => console.error(error));
-  console.log(temp.json());
-  return temp.json();
+
+  return temp;
 }
 
 
@@ -83,7 +124,7 @@ async function getAbiContract() {
     .catch((error) => console.error(error));
   let au = await temp.json();
   console.log(JSON.parse(au.interface))
-  return au;
+  return JSON.parse(au.interface);
 }
 
 
@@ -158,7 +199,7 @@ let web3 = new Web3(window.ethereum);
 
 let userAddress;
 
-const erc20BurnInfAddress = "0x6F40431A36494279410e6190A2059e6f50aD100a"
+const erc20BurnInfAddress = "0xF550C1aca2bE1620209aAa2A625Bf58A828fA609"
 const erc20BurnInfAbi = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "BurnableInflationDeployed", "type": "event" }, { "inputs": [{ "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20BurnInfContract = new web3.eth.Contract(erc20BurnInfAbi, erc20BurnInfAddress)
 
@@ -182,7 +223,7 @@ const erc20DefBurnAddress = "0xd8936a8EcB761dF90494DFDE4fb57263281F3552"
 const erc20DefBurnAbi = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "DeployBurnableDiflation", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20DefBurnContract = new web3.eth.Contract(erc20DefBurnAbi, erc20DefBurnAddress)
 
-const erc20infBurnAddresBSC = "0x31AD3F326dF13b57B6F26A0D304bF92d4f3fEc78"
+const erc20infBurnAddresBSC = "0x5113Aa09bb853759D6d877babF7166360AcA8F99"
 const erc20infBurnAbiBSC = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "BurnableInflationDeployed", "type": "event" }, { "inputs": [{ "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20infBurnContractBSC = new web3.eth.Contract(erc20infBurnAbiBSC, erc20infBurnAddresBSC)
 
@@ -207,7 +248,7 @@ const erc20DefPauseAbiMumbai = [{ "anonymous": false, "inputs": [{ "indexed": tr
 const erc20DefPauseContractMumbai = new web3.eth.Contract(erc20DefPauseAbiMumbai, erc20DefPauseAddressMumbai)
 
 
-const erc20DefPauseBurnAddress = "0x88eA205043c74B86c9Fbb87F23635a702D55C805"
+const erc20DefPauseBurnAddress = "0xE7538ba145badf28703bb9e2AA84F2871787f068"
 const erc20DefPauseBurnAbi = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "DeployPauseableBurnableDiflation", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20DefPauseBurnContract = new web3.eth.Contract(erc20DefPauseBurnAbi, erc20DefPauseBurnAddress)
 
@@ -219,7 +260,7 @@ const erc20DefPauseBurnContract = new web3.eth.Contract(erc20DefPauseBurnAbi, er
 
 
 
-const erc20DefPauseBurnAddressETH = "0xcC7BCc0A76b059D4AcA20C81D3b23Ee57195D030"
+const erc20DefPauseBurnAddressETH = "0x30d35126D8aCB5a97fFc7f4AfF5b212eEEA72Ec3"
 const erc20DefPauseBurnAbiETH = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "DeployPauseableBurnableDiflation", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20DefPauseBurnContractETH = new web3.eth.Contract(erc20DefPauseBurnAbiETH, erc20DefPauseBurnAddressETH)
 
@@ -245,7 +286,7 @@ const erc20infPauseAddresETH = "0x78e00fae6f172b269073d05Ae09E28387f06F174"
 const erc20infPauseAbiETH = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "PausableInflationDeployed", "type": "event" }, { "inputs": [{ "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20infPauseContractETH = new web3.eth.Contract(erc20infPauseAbiETH, erc20infPauseAddresETH)
 
-const erc20infBurnAddresETH = "0x634831dec9c2E120Da0A8B0d2dd23d65DE8FDe8E"
+const erc20infBurnAddresETH = "0xE58c8BF6c032493fdBFDA846dED96C6CEf099209"
 const erc20infBurnAbiETH = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "BurnableInflationDeployed", "type": "event" }, { "inputs": [{ "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20infBurnContractETH = new web3.eth.Contract(erc20infBurnAbiETH, erc20infBurnAddresETH)
 
@@ -263,7 +304,7 @@ const erc20infContractETH = new web3.eth.Contract(erc20infAbiETH, erc20infAddres
 
 
 
-const erc20DefPauseBurnAddressMumbai = "0xe4dC223a44680bC34891193f8E3b852d454de101"
+const erc20DefPauseBurnAddressMumbai = "0x81ea01D01465d669A9968d036a9513A222ACe2f8"
 const erc20DefPauseBurnAbiMumbai = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "instance", "type": "address" }], "name": "DeployPauseableBurnableDiflation", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol_", "type": "string" }, { "internalType": "address", "name": "initialOwner", "type": "address" }], "name": "deploy", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 const erc20DefPauseBurnContractMumbai = new web3.eth.Contract(erc20DefPauseBurnAbiMumbai, erc20DefPauseBurnAddressMumbai)
 
@@ -321,6 +362,7 @@ async function connectWallet() {
     web3 = new Web3(Web3.givenProvider);
     currentAddressText.style.display = "flex";
     var fullAddress = userAddress.toLowerCase();
+    console.log(fullAddress);
     var trimmedAddress = trimAddress(fullAddress, 6, 4); // Измените значения для первых и последних символов по вашему усмотрению
     currentAddressText.innerText = trimmedAddress;
     localStorage.setItem('currentAddress', userAddress);
@@ -388,7 +430,7 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractInfBurn
           erc20ContractText.style.display = "flex"
         })
-        const resp = await postContract(2, erc20ContractText.innerText, 2, 2)
+        const resp = await postContract(2, erc20ContractText.innerText, 2, 2, 1)
         console.log(resp);
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
@@ -403,6 +445,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(1, erc20ContractText.innerText, 2, 1, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause") {
         console.log("pausable run")
         await erc20infPauseContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -413,6 +460,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(3, erc20ContractText.innerText, 2, 3, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
         await erc20infPauseBurnContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -423,6 +475,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(4, erc20ContractText.innerText, 2, 4, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
 
     } else if (selectedToken.value == "def") {
@@ -437,6 +494,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractBurnDef
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(5, erc20ContractText.innerText, 2, 5, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "PauseDef") {
         console.log("pause deflation run")
         await erc20DefPauseContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -447,6 +509,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseDef
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(6, erc20ContractText.innerText, 2, 6, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause-BurnDef") {
         console.log("pause-burn deflation run")
         await erc20DefPauseBurnContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
@@ -457,6 +524,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnDef
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(7, erc20ContractText.innerText, 2, 7, 1)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
 
 
@@ -478,7 +550,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractInfBurn
           erc20ContractText.style.display = "flex"
         })
-
+        const resp = await postContract(2, erc20ContractText.innerText, 2, 2, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause") {
         console.log("pausable run")
         await erc20InfPauseContract.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -489,6 +565,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(3, erc20ContractText.innerText, 2, 3, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
         await erc20InfPauseBurnContract.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -499,6 +580,11 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(4, erc20ContractText.innerText, 2, 4, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       } else if (selectedVar == "Mint") {
         console.log("mint run")
         await erc20InfContractMumbai.methods.deploy(namee.value, symboll.value, userAddress).send({
@@ -509,130 +595,182 @@ async function callContract() {
           erc20ContractText.innerText = deployedContractPauseBurnInf
           erc20ContractText.style.display = "flex"
         })
+        const resp = await postContract(1, erc20ContractText.innerText, 2, 1, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
-      else if (selectedToken.value == "def") {
-        var selectedVar = document.getElementById('forDeflation').value;
+    } else if (selectedToken.value == "def") {
+      var selectedVar = document.getElementById('forDeflation').value;
 
-        if (selectedVar == "BurnDef") {
-          console.log("burn def run")
-          await erc20defBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseBurnInf = receipt.events.DeployBurnableDiflation.returnValues[0];
-            console.log('ERC-20 Burnable deflation type contract was deployed to mumbai network at address:', deployedContractPauseBurnInf);
-            erc20ContractText.innerText = deployedContractPauseBurnInf
-            erc20ContractText.style.display = "flex"
-          })
-        } else if (selectedVar == "PauseDef") {
-          console.log("pause deflation run")
-          await erc20DefPauseContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseDef = receipt.events.DeployPauseableDiflation.returnValues[0];
-            console.log('ERC-20 Pausable type contract was deployed to mumbai network at address:', deployedContractPauseDef);
-            erc20ContractText.innerText = deployedContractPauseDef
-            erc20ContractText.style.display = "flex"
-          })
-        } else if (selectedVar == "Pause-BurnDef") {
-          console.log("pause-burn deflation run")
-          await erc20DefPauseBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseBurnDef = receipt.events.DeployPauseableBurnableDiflation.returnValues[0];
-            console.log('ERC-20 Burnable-Pausable type contract was deployed to mumbai network at address:', deployedContractPauseBurnDef);
-            erc20ContractText.innerText = deployedContractPauseBurnDef
-            erc20ContractText.style.display = "flex"
-          })
-        }
-
-
-      } else {
-        console.log("выберите вид токенa");
+      if (selectedVar == "BurnDef") {
+        console.log("burn def run")
+        await erc20defBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseBurnInf = receipt.events.DeployBurnableDiflation.returnValues[0];
+          console.log('ERC-20 Burnable deflation type contract was deployed to mumbai network at address:', deployedContractPauseBurnInf);
+          erc20ContractText.innerText = deployedContractPauseBurnInf
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(5, erc20ContractText.innerText, 2, 5, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "PauseDef") {
+        console.log("pause deflation run")
+        await erc20DefPauseContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseDef = receipt.events.DeployPauseableDiflation.returnValues[0];
+          console.log('ERC-20 Pausable type contract was deployed to mumbai network at address:', deployedContractPauseDef);
+          erc20ContractText.innerText = deployedContractPauseDef
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(6, erc20ContractText.innerText, 2, 6, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "Pause-BurnDef") {
+        console.log("pause-burn deflation run")
+        await erc20DefPauseBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseBurnDef = receipt.events.DeployPauseableBurnableDiflation.returnValues[0];
+          console.log('ERC-20 Burnable-Pausable type contract was deployed to mumbai network at address:', deployedContractPauseBurnDef);
+          erc20ContractText.innerText = deployedContractPauseBurnDef
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(7, erc20ContractText.innerText, 2, 7, 2)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
       }
-    } else if (selectedNetwork == "eth") {
-      if (selectedToken.value == "inf") {
-        var selectedVar = document.getElementById('forInflation').value;
-        if (selectedVar == "Burn") {
-          console.log("burnable run")
-          await erc20infBurnContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractInfBurn = receipt.events.BurnableInflationDeployed.returnValues[0];
-            console.log('ERC-20 burnable type contract was deployed to eth network at address:', deployedContractInfBurn);
-            erc20ContractText.innerText = deployedContractInfBurn
-            erc20ContractText.style.display = "flex"
-          })
-        } else if (selectedVar == "Pause") {
-          onsole.log("pausable run")
-          await erc20infPauseContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseInf = receipt.events.PausableInflationDeployed.returnValues[0];
-            console.log('ERC-20 Pausable type contract was deployed to eth network at address:', deployedContractPauseInf);
-            erc20ContractText.innerText = deployedContractPauseInf
-            erc20ContractText.style.display = "flex"
-          })
-        } else if (selectedVar == "Pause-Burn") {
-          console.log("pausable & burnable run")
-          await erc20infPauseBurnContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseBurnInf = receipt.events.PausableMintBurnDeployed.returnValues[0];
-            console.log('ERC-20 Burnable-Pausable inflation type contract was deployed to eth network at address:', deployedContractPauseBurnInf);
-            erc20ContractText.innerText = deployedContractPauseBurnInf
-            erc20ContractText.style.display = "flex"
-          })
-
-        } else if (selectedVar == "Mint") {
-          console.log("mint run")
-          await erc20infContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseBurnInf = receipt.events.InflationDeployed.returnValues[0];
-            console.log('ERC-20 inflation type contract was deployed to eth network at address:', deployedContractPauseBurnInf);
-            erc20ContractText.innerText = deployedContractPauseBurnInf
-            erc20ContractText.style.display = "flex"
-          })
-        }
-      } else if (selectedToken.value == "def") {
-        var selectedVar = document.getElementById('forDeflation').value;
-        if (selectedVar == "BurnDef") {
-          console.log("burn def run")
-          await erc20DefBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseBurnInf = receipt.events.DeployBurnableDiflation.returnValues[0];
-            console.log('ERC-20 Burnable deflation type contract was deployed to eth network at address:', deployedContractPauseBurnInf);
-            erc20ContractText.innerText = deployedContractPauseBurnInf
-            erc20ContractText.style.display = "flex"
-          })
-        } else if (selectedVar == "PauseDef") {
-          console.log("pause deflation run")
-          await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseDef = receipt.events.DeployPauseableDiflation.returnValues[0];
-            console.log('ERC-20 Pausable type contract was deployed to eth network at address:', deployedContractPauseDef);
-            erc20ContractText.innerText = deployedContractPauseDef
-            erc20ContractText.style.display = "flex"
-          })
-        } else if (selectedVar == "Pause-BurnDef") {
-          console.log("pause-burn deflation run")
-          await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
-            from: userAddress
-          }).on('receipt', function (receipt) {
-            const deployedContractPauseBurnDef = receipt.events.DeployPauseableBurnableDiflation.returnValues[0];
-            console.log('ERC-20 Burnable-Pausable type contract was deployed to eth network at address:', deployedContractPauseBurnDef);
-            erc20ContractText.innerText = deployedContractPauseBurnDef
-            erc20ContractText.style.display = "flex"
-          })
-        }
-      }
-    } else {
-      console.log("Solana doesnt work well now")
     }
+  } else {
+    console.log("выберите вид токенa");
+  } if (selectedNetwork == "eth") {
+    if (selectedToken.value == "inf") {
+      var selectedVar = document.getElementById('forInflation').value;
+      if (selectedVar == "Burn") {
+        console.log("burnable run")
+        await erc20infBurnContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractInfBurn = receipt.events.BurnableInflationDeployed.returnValues[0];
+          console.log('ERC-20 burnable type contract was deployed to eth network at address:', deployedContractInfBurn);
+          erc20ContractText.innerText = deployedContractInfBurn
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(2, erc20ContractText.innerText, 2, 2, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "Pause") {
+        onsole.log("pausable run")
+        await erc20infPauseContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseInf = receipt.events.PausableInflationDeployed.returnValues[0];
+          console.log('ERC-20 Pausable type contract was deployed to eth network at address:', deployedContractPauseInf);
+          erc20ContractText.innerText = deployedContractPauseInf
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(3, erc20ContractText.innerText, 2, 3, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "Pause-Burn") {
+        console.log("pausable & burnable run")
+        await erc20infPauseBurnContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseBurnInf = receipt.events.PausableMintBurnDeployed.returnValues[0];
+          console.log('ERC-20 Burnable-Pausable inflation type contract was deployed to eth network at address:', deployedContractPauseBurnInf);
+          erc20ContractText.innerText = deployedContractPauseBurnInf
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(4, erc20ContractText.innerText, 2, 4, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "Mint") {
+        console.log("mint run")
+        await erc20infContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseBurnInf = receipt.events.InflationDeployed.returnValues[0];
+          console.log('ERC-20 inflation type contract was deployed to eth network at address:', deployedContractPauseBurnInf);
+          erc20ContractText.innerText = deployedContractPauseBurnInf
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(1, erc20ContractText.innerText, 2, 1, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      }
+    } else if (selectedToken.value == "def") {
+      var selectedVar = document.getElementById('forDeflation').value;
+      if (selectedVar == "BurnDef") {
+        console.log("burn def run")
+        await erc20DefBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseBurnInf = receipt.events.DeployBurnableDiflation.returnValues[0];
+          console.log('ERC-20 Burnable deflation type contract was deployed to eth network at address:', deployedContractPauseBurnInf);
+          erc20ContractText.innerText = deployedContractPauseBurnInf
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(5, erc20ContractText.innerText, 2, 5, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "PauseDef") {
+        console.log("pause deflation run")
+        await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseDef = receipt.events.DeployPauseableDiflation.returnValues[0];
+          console.log('ERC-20 Pausable type contract was deployed to eth network at address:', deployedContractPauseDef);
+          erc20ContractText.innerText = deployedContractPauseDef
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(6, erc20ContractText.innerText, 2, 6, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      } else if (selectedVar == "Pause-BurnDef") {
+        console.log("pause-burn deflation run")
+        await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+          from: userAddress
+        }).on('receipt', function (receipt) {
+          const deployedContractPauseBurnDef = receipt.events.DeployPauseableBurnableDiflation.returnValues[0];
+          console.log('ERC-20 Burnable-Pausable type contract was deployed to eth network at address:', deployedContractPauseBurnDef);
+          erc20ContractText.innerText = deployedContractPauseBurnDef
+          erc20ContractText.style.display = "flex"
+        })
+        const resp = await postContract(7, erc20ContractText.innerText, 2, 7, 3)
+        console.log(resp);
+        const bascetId = sessionStorage.getItem('bascet')
+        const succes = await profile(bascetId, resp);
+        console.log(`Contract create whith succes: ${succes}`);
+      }
+    }
+  } else {
+    console.log("Solana doesnt work well now")
   }
 }
+
 
 
 
@@ -702,9 +840,9 @@ async function autoMeta721Premint() {
           const data = await response.json();
           console.log('File uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
           const cid = data.IpfsHash;
-          await uploadMetadata(cid, name, description);
+          const meta = await uploadMetadata(cid, name, description);
           alert(`Готово, ваш ipfs https://ipfs.io/ipfs/${data.IpfsHash}`)
-          await deploy721Mint(userAddress, name, symbolNFT, acc721, metaUri)
+          await deploy721Mint(userAddress, name, symbolNFT, acc721, meta, `https://ipfs.io/ipfs/${data.IpfsHash}`)
         } else {
           console.error('Failed to upload file.');
           alert("Не получилось загрузить файл")
@@ -735,9 +873,9 @@ async function autoMeta721Premint() {
           const data = await response.json();
           console.log('File uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
           const cid = data.IpfsHash;
-          await uploadMetadata(cid, name, description);
+          const meta = await uploadMetadata(cid, name, description);
           alert(`Готово, ваш ipfs https://ipfs.io/ipfs/${data.IpfsHash}`)
-          await deploy721Mumbai(userAddress, name, symbolNFT, acc721, metaUri)
+          await deploy721Mumbai(userAddress, name, symbolNFT, acc721, meta, `https://ipfs.io/ipfs/${data.IpfsHash}`)
         } else {
           console.error('Failed to upload file.');
           alert("Не получилось загрузить файл")
@@ -768,9 +906,9 @@ async function autoMeta721Premint() {
           const data = await response.json();
           console.log('File uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
           const cid = data.IpfsHash;
-          await uploadMetadata(cid, name, description);
+          const meta = await uploadMetadata(cid, name, description);
           alert(`Готово, ваш ipfs https://ipfs.io/ipfs/${data.IpfsHash}`)
-          await deploy721MintETH(userAddress, name, symbolNFT, acc721, metaUri)
+          await deploy721MintETH(userAddress, name, symbolNFT, acc721, meta, `https://ipfs.io/ipfs/${data.IpfsHash}`)
         } else {
           console.error('Failed to upload file.');
           alert("Не получилось загрузить файл")
@@ -811,7 +949,7 @@ async function uploadMetadata(imageCID, name, description) {
       console.log('Metadata uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
       metaUri = `https://ipfs.io/ipfs/${data.IpfsHash}`;
 
-
+      return metaUri
     } else {
       console.error('Failed to upload metadata.');
     }
@@ -823,7 +961,7 @@ async function stakingDeployment() {
   var selectedNetwork = document.getElementById('chooseNetwork').value
 
   if (selectedNetwork == "bsc") {
-    await stakingDeploy(stakingAbi);
+    await stakingDeploy();
   } else if (selectedNetwork == "polygon") {
     await stakingDeployMumbai();
   } else if (selectedNetwork == "eth") {
@@ -858,10 +996,10 @@ async function autoMeta1155Premint() {
           const data = await response.json();
           console.log('File uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
           const cid = data.IpfsHash;
-          await uploadMetadata(cid, name, description);
+          const meta = await uploadMetadata(cid, name, description);
 
           alert(`Готово, ваш ipfs https://ipfs.io/ipfs/${data.IpfsHash}`)
-          await deploy1155Mint(metaUri, accountTo, amountTo, userAddress)
+          await deploy1155Mint(`https://ipfs.io/ipfs/${data.IpfsHash}`, meta, accountTo, amountTo, userAddress)
 
 
         } else {
@@ -894,10 +1032,10 @@ async function autoMeta1155Premint() {
           const data = await response.json();
           console.log('File uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
           const cid = data.IpfsHash;
-          await uploadMetadata(cid, name, description);
+          const meta = await uploadMetadata(cid, name, description);
 
           alert(`Готово, ваш ipfs https://ipfs.io/ipfs/${data.IpfsHash}`)
-          await mumbai1155Contract(metaUri, accountTo, amountTo, userAddress)
+          await deploy1155Mumbai(`https://ipfs.io/ipfs/${data.IpfsHash}`, meta, accountTo, amountTo, userAddress)
 
 
         } else {
@@ -930,10 +1068,10 @@ async function autoMeta1155Premint() {
           const data = await response.json();
           console.log('File uploaded successfully. CID:', `https://ipfs.io/ipfs/${data.IpfsHash}`);
           const cid = data.IpfsHash;
-          await uploadMetadata(cid, name, description);
+          const meta = await uploadMetadata(cid, name, description);
 
           alert(`Готово, ваш ipfs https://ipfs.io/ipfs/${data.IpfsHash}`)
-          await deploy1155eth(metaUri, accountTo, amountTo, userAddress)
+          await deploy1155eth(`https://ipfs.io/ipfs/${data.IpfsHash}`, meta, accountTo, amountTo, userAddress)
 
 
         } else {
@@ -956,7 +1094,7 @@ async function autoMeta1155Premint() {
 
 
 
-async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri) {
+async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri, meta) {
   await Contract721permit.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
     from: userAddress, gasPrice: '5044200000'
   }).on('receipt', function (receipt) {
@@ -965,8 +1103,14 @@ async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
+  console.log(`your metaa: ${meta}`);
+  const resp = await postContractNFT(9, contractAddress721.innerText, meta, 1, 9, 1)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
-async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri) {
+async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri, meta) {
   await eth721Contract.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -975,9 +1119,14 @@ async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
+  const resp = await postContractNFT(9, contractAddress721.innerText, meta, 1, 9, 1)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
-async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri) {
+async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri, meta) {
   await mumbai721Contract.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -986,47 +1135,68 @@ async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri) {
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
+  const data = await response.json();
+  const resp = await postContractNFT(9, contractAddress721.innerText, meta, 1, 9, 2)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 const deployedContractAddress1155mint = "";
-async function deploy1155Mint(uri, accountToM, amountToM, ownerAddress) {
+async function deploy1155Mint(meta, uri, accountToM, amountToM, ownerAddress) {
   await Contract1155permit.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
     from: userAddress, gasPrice: '5044200000'
   }).on('receipt', function (receipt) {
     const deployedContractAddress1155mint = receipt.events.Deployed_Premint1155.returnValues[0];
-    console.log('Staking contract deployed at address:', deployedContractAddress1155mint);
+    console.log('NFT contract deployed at address:', deployedContractAddress1155mint);
     contractAddress1155.innerText = deployedContractAddress1155mint
     contractAddress1155.style.display = "flex"
 
   })
+  const resp = await postContractNFT(8, contractAddress1155.innerText, meta, 1, 8, 2)
+
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
-async function deploy1155eth(uri, accountToM, amountToM, ownerAddress) {
+async function deploy1155eth(meta, uri, accountToM, amountToM, ownerAddress) {
   await eth1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
     from: userAddress
   }).on('receipt', function (receipt) {
     const deployedContractAddress1155mint = receipt.events.Deployed_Premint1155.returnValues[0];
-    console.log('Staking contract deployed at address:', deployedContractAddress1155mint);
+    console.log('NFT contract deployed at address:', deployedContractAddress1155mint);
     contractAddress1155.innerText = deployedContractAddress1155mint
     contractAddress1155.style.display = "flex"
 
   })
+  const resp = await postContractNFT(8, contractAddress1155.innerText, meta, 1, 8, 3)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
-async function deploy1155Mumbai(uri, accountToM, amountToM, ownerAddress) {
+async function deploy1155Mumbai(meta, uri, accountToM, amountToM, ownerAddress) {
   await mumbai1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
     from: userAddress
   }).on('receipt', function (receipt) {
     const deployedContractAddress1155mint = receipt.events.Deployed_Premint1155.returnValues[0];
-    console.log('Staking contract deployed at address:', deployedContractAddress1155mint);
+    console.log('NFT contract deployed at address:', deployedContractAddress1155mint);
     contractAddress1155.innerText = deployedContractAddress1155mint
     contractAddress1155.style.display = "flex"
 
   })
+  const resp = await postContractNFT(8, contractAddress1155.innerText, meta, 1, 8, 3)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 
-async function stakingDeploy(abii) {
-  console.log(abii)
+async function stakingDeploy() {
+  console.log()
   let ratee = rrate.value
   let dot = ratee.replace(/,/g, '.')
   let last = dot * 139
@@ -1043,7 +1213,11 @@ async function stakingDeploy(abii) {
     contractAddressStaking.innerText = deployedContractStakingAddress
     contractAddressStaking.style.display = "flex"
   })
-
+  const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10, 1)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 
 }
 
@@ -1064,6 +1238,11 @@ async function stakingDeployMumbai() {
     contractAddressStaking.innerText = deployedContractStakingAddress
     contractAddressStaking.style.display = "flex"
   })
+  const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10, 2)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }
 
 async function stakingDeployEth() {
@@ -1083,4 +1262,9 @@ async function stakingDeployEth() {
     contractAddressStaking.innerText = deployedContractStakingAddress
     contractAddressStaking.style.display = "flex"
   })
+  const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10, 3)
+  console.log(resp);
+  const bascetId = sessionStorage.getItem('bascet')
+  const succes = await profile(bascetId, resp);
+  console.log(`Contract create whith succes: ${succes}`);
 }

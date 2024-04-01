@@ -1,14 +1,19 @@
 a {
-    color: inherit; /* Удаляет пользовательский цвет текста и использует цвет из родительского элемента */
-    text-decoration: inherit; /* Удаляет пользовательское подчеркивание */
+    color: inherit;
+    /* Удаляет пользовательский цвет текста и использует цвет из родительского элемента */
+    text-decoration: inherit;
+    /* Удаляет пользовательское подчеркивание */
 }
-button{
+
+button {
     border: none;
     background-color: none;
 }
+
 .card {
     margin: 10px auto;
 }
+
 #cardsRow {
     width: 100%;
     display: flex;
@@ -19,9 +24,15 @@ button{
     flex-wrap: wrap;
     padding: 10px;
 }
-#modalForBurn, #modalForBurn721, #modalForStaking, #modalForERC20inflation, #modalForERC20deflation {
+
+#modalForBurn,
+#modalForBurn721,
+#modalForStaking,
+#modalForERC20inflation,
+#modalForERC20deflation {
     display: none;
 }
+
 .modalY {
     display: block;
     position: fixed;
@@ -33,6 +44,7 @@ button{
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
 .modalY-content {
     background-color: #f4f4f4;
     margin: 5% auto;
@@ -41,12 +53,15 @@ button{
     animation-name: modalOpen;
     animation-duration: 2s;
 }
-.modal_butons, #modalBtnBurn {
+
+.modal_butons,
+#modalBtnBurn {
     display: block;
     justify-content: center;
     text-align: center;
     margin: 9%;
 }
+
 .burnModal {
     width: 100%;
     display: block;
@@ -55,12 +70,46 @@ button{
     text-align: center;
     margin-top: 10px;
 }
+
 #modals_inputs {
     display: none;
 }
-#burnM, #mintM, #stfM, #approveM, #balanceM, #burn721, #mint721, #tf721, #approve721, #balance721, #StakeInp, #CalculateInp, #StakersInp,
-#InpBurnInf, #addressTo, #InpAccountInf, #AccountM, #AccountFrom, #InpMintInf, #InpPauseInf, #InApproveInf, #InpTransferInf, #InpTransferFromInf, #InpUnpauseInf, #InpBalanceInf, 
-#InpBurnDef, #InpMintDef, #InpPauseDef, #InApproveDef, #InpTransferDef, #InpTransferFromDef, #InpUnpauseDef, #InpBalanceDef{
+
+#burnM,
+#mintM,
+#InpaddressDef,
+#stfM,
+#approveM,
+#balanceM,
+#burn721,
+#mint721,
+#tf721,
+#approve721,
+#balance721,
+#StakeInp,
+#tokenUri721,
+#CalculateInp,
+#StakersInp,
+#InpBurnInf,
+#tokenId,
+#InpAccountInf,
+#AccountM,
+#AccountFrom,
+#InpMintInf,
+#InpPauseInf,
+#InApproveInf,
+#InpTransferInf,
+#InpTransferFromInf,
+#InpUnpauseInf,
+#InpBalanceInf,
+#InpBurnDef,
+#InpMintDef,
+#InpPauseDef,
+#InApproveDef,
+#InpTransferDef,
+#InpTransferFromDef,
+#InpUnpauseDef,
+#InpBalanceDef {
     display: none;
     width: 100%;
     justify-content: center;
@@ -68,6 +117,7 @@ button{
     text-align: center;
     margin-top: 10px;
 }
+
 .modalBurn {
     display: flex;
     position: fixed;
@@ -81,6 +131,7 @@ button{
     justify-content: center;
     text-align: center;
 }
+
 .modal_container {
     background-color: #f4f4f4;
     margin: 10% auto;
@@ -93,13 +144,19 @@ button{
     text-align: center;
 
 }
-.closeBtnY, .closeBtnBurn {
+
+.closeBtnY,
+.closeBtnBurn {
     color: #ccc;
     float: right;
     font-size: 30px;
     color: white;
 }
-.closeBtnY:hover, .closeBtnY:focus, .closeBtnBurn:hover, .closeBtnBurn:focus {
+
+.closeBtnY:hover,
+.closeBtnY:focus,
+.closeBtnBurn:hover,
+.closeBtnBurn:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -112,6 +169,7 @@ button{
     color: white;
     background-color: gray;
 }
+
 .btn {
     width: 12rem;
     height: 3rem;
@@ -123,7 +181,10 @@ button{
     justify-content: center;
     transition: all 0.5s;
 }
-#modalBtnY, #modalBtn721, #modalBtnStake {
+
+#modalBtnY,
+#modalBtn721,
+#modalBtnStake {
     width: 9rem;
     height: 3rem;
 }
@@ -131,9 +192,15 @@ button{
 body {
     transition: all 0.5s;
 }
+
 @keyframes modalOpen {
-    from {opacity: 0}
-    to {opacity: 1}
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
 }
 
 .modal-footerY {
@@ -144,19 +211,23 @@ body {
     text-align: center;
     justify-content: center;
 }
+
 #confirmBtn {
     display: flex;
-    
+
     color: white;
 }
+
 .headerY {
     background: gray;
     padding: 15px;
     color: white;
 }
+
 .headerY h3 {
     display: none;
 }
+
 .modalY-body {
     padding: 20px;
     display: flex;
@@ -165,6 +236,7 @@ body {
     flex-direction: column;
 
 }
+
 .modalY-bodyRow {
     margin: 10px;
     display: flex;
@@ -172,10 +244,25 @@ body {
     justify-content: space-evenly;
     flex-direction: row;
 }
+
 .modalY-bodyRow button {
     background-color: white;
     margin: 1%;
 }
-#contentModals, #contentModals721, #contentModalsStaking, #contentModalsERC20inf, #contentModalsERC20def {
+
+#contentModals,
+#contentModals721,
+#contentModalsStaking,
+#contentModalsERC20inf,
+#contentModalsERC20def {
     display: none;
+}
+
+.form-check {
+    margin: 10px;
+    display: none;
+}
+
+.form-check-label {
+    margin-left: 10px;
 }
