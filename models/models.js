@@ -36,6 +36,11 @@ const Kind = sequelize.define('kind', {
     name: { type: DataTypes.STRING, allowNull: false }
 })
 
+const Chains = sequelize.define('chains', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    chainId: { type: DataTypes.STRING }
+})
+
 
 User.hasOne(UserBascet)
 UserBascet.belongsTo(User);
@@ -45,6 +50,9 @@ ContractBascet.belongsTo(UserBascet);
 
 Contract.hasMany(ContractBascet);
 ContractBascet.belongsTo(Contract);
+
+Chains.hasMany(Contract);
+Contract.belongsTo(Chains);
 
 Abi.hasMany(Contract);
 Contract.belongsTo(Abi);
@@ -67,5 +75,6 @@ module.exports = {
     ContractBascet,
     Type,
     Kind,
-    Abi
+    Abi,
+    Chains
 }

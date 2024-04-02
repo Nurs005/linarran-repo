@@ -2,18 +2,29 @@ const { Contract, Nft } = require('../models/models');
 const ApiErorr = require('../errors/ApiErorrs');
 const uuid = require('uuid');
 const path = require('path');
+const { type } = require('os');
 
 class ContractControler {
     async create(req, res, next) {
 
         try {
-            const { address, abiId, typeId, kindId } = req.body
-            const contract = await Contract.create({ address: address, abiId: abiId, typeId: typeId, kindId: kindId })
+            const { address, abiId, typeId, kindId, chainId } = req.body
+            const contract = await Contract.create({ address: address, abiId: abiId, typeId: typeId, kindId: kindId, chainId: chainId })
             return res.json(contract.id);
         } catch (e) {
             next(ApiErorr.badRequest(e.message))
         }
 
+    }
+
+    async createNFT(req, res, next) {
+        try {
+            const { address, meta, abiId, typeId, kindId, chainId } = req.body
+            const contract = await Contract.create({ address: address, meta: meta, abiId: abiId, typeId: typeId, kindId: kindId, chainId: chainId })
+            return res.json(contract.id);
+        } catch (err) {
+            next(ApiErorr.badRequest(err.message))
+        }
     }
 
     async getAll(req, res, next) {

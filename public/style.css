@@ -1,63 +1,79 @@
-button{
+button {
     border: none;
     background-color: none;
 }
+
 #currentAddressText {
     display: none;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 a {
-    color: inherit; /* Удаляет пользовательский цвет текста и использует цвет из родительского элемента */
-    text-decoration: inherit; /* Удаляет пользовательское подчеркивание */
+    color: inherit;
+    /* Удаляет пользовательский цвет текста и использует цвет из родительского элемента */
+    text-decoration: inherit;
+    /* Удаляет пользовательское подчеркивание */
 }
 
 #chooseNetwork {
-    color: inherit; /* Удаляет пользовательский цвет текста и использует цвет из родительского элемента */
-    text-decoration: inherit; /* Удаляет пользовательское подчеркивание */
+    color: inherit;
+    /* Удаляет пользовательский цвет текста и использует цвет из родительского элемента */
+    text-decoration: inherit;
+    /* Удаляет пользовательское подчеркивание */
     background-color: transparent;
 }
+
 #contractAddress721 {
     display: none;
     font-size: small;
     margin-top: 10px;
 }
- #contractAddress1155 {
+
+#contractAddress1155 {
     display: none;
     font-size: small;
     margin-top: 10px;
 }
+
 #contractAddressStaking {
     display: none;
     font-size: small;
     margin-top: 10px;
 }
+
 #erc20ContractText {
     display: none;
     font-size: small;
     margin-top: 15px;
 }
+
 #buttonsConnectMain {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-#Staking, #NFTs {
+
+#Staking,
+#NFTs {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
-#NFTs, #nftMain{
+
+#NFTs,
+#nftMain {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
+
 #erc20 {
     display: flex;
     flex-direction: row;
@@ -65,7 +81,9 @@ a {
     justify-content: center;
     width: 100%;
 }
-#erc20Main, #stakingMain {
+
+#erc20Main,
+#stakingMain {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -73,9 +91,11 @@ a {
     width: 100%;
     margin-top: 10px;
 }
+
 #nftMain {
     margin-top: 10px;
 }
+
 #StakingContent {
     width: 50%;
     display: flex;
@@ -85,7 +105,9 @@ a {
     border: 1px solid black;
     height: 250px;
 }
-#erc20Content, #erc20mint {
+
+#erc20Content,
+#erc20mint {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -94,7 +116,9 @@ a {
     border: 1px solid black;
     height: 400px;
 }
-#nftContent, #nftContent721 {
+
+#nftContent,
+#nftContent721 {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -103,6 +127,7 @@ a {
     border: 1px solid black;
     height: 500px;
 }
+
 #StakingInputs {
     width: 50%;
     display: flex;
@@ -110,9 +135,12 @@ a {
     align-items: center;
     justify-content: center;
 }
-#StakingButtons, #nftButtons {
+
+#StakingButtons,
+#nftButtons {
     margin-top: 10px;
 }
+
 #forInflation {
     display: none;
 }

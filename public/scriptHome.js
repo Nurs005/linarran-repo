@@ -1,343 +1,682 @@
-async function getAllContracts() { 
-    const formData = new FormData(); 
-    const requestOptions = { 
-        method: "GET", 
-        redirect: "follow" 
-    }; 
-    try { 
-        const response = await fetch(`http://localhost:5000/api/user/auth?address=${userAddress}`, requestOptions); 
-        if (!response.ok) { 
-            throw new Error('responce is not ok') 
-        } 
-        const result = await response.json(); 
-        return result; 
-    } catch (error) { 
-        console.error(error) 
-    } 
- 
+async function getAllContracts() {
+    const formData = new FormData();
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const response = await fetch(`http://localhost:5000/api/user/auth?address=${userAddress}`, requestOptions);
+        if (!response.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error)
+    }
+
 }
 
-async function authAddress(address) { 
-    const formData = new FormData(); 
-    const requestOptions = { 
-        method: "GET", 
-        redirect: "follow" 
-    }; 
-    try { 
-        const response = await fetch(`http://localhost:5000/api/user/auth?address=${address}`, requestOptions); 
-        if (!response.ok) { 
-            throw new Error('responce is not ok') 
-        } 
-        const result = await response.json(); 
-        return result; 
-    } catch (error) { 
-        console.error(error) 
+async function authAddress(address) {
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const response = await fetch(`http://localhost:5000/api/user/auth?address=${address}`, requestOptions);
+        if (!response.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error)
     }
 }
 
 
 
 
-async function typeId(typeId) { 
-    const formData = new FormData(); 
-    const requestOptions = { 
-        method: "GET", 
-        redirect: "follow" 
-    }; 
-    try { 
-        const response = await fetch(`http://localhost:5000/api/user/type?id=${typeId}`, requestOptions); 
-        if (!response.ok) { 
-            throw new Error('responce is not ok') 
-        } 
-        const result = await response.json(); 
-        return result; 
-    } catch (error) { 
-        console.error(error) 
-    } 
- 
+async function typeId(typeId) {
+    const formData = new FormData();
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const response = await fetch(`http://localhost:5000/api/user/type?id=${typeId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error)
+    }
+
 }
 
-async function kindId(kindId) { 
-    const formData = new FormData(); 
-    const requestOptions = { 
-        method: "GET", 
-        redirect: "follow" 
-    }; 
-    try { 
-        const response = await fetch(`http://localhost:5000/api/user/kind?id=${kindId}`, requestOptions); 
-        if (!response.ok) { 
-            throw new Error('responce is not ok') 
-        } 
-        const result = await response.json(); 
-        return result; 
-    } catch (error) { 
-        console.error(error) 
-    } 
- 
+async function kindId(kindId) {
+    const formData = new FormData();
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const response = await fetch(`http://localhost:5000/api/user/kind?id=${kindId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error)
+    }
+
 }
 
-async function contractId(contractId) { 
-    const formData = new FormData(); 
-    const requestOptions = { 
-        method: "GET", 
-        redirect: "follow" 
-    }; 
-    try { 
-        const response = await fetch(`http://localhost:5000/api/user/contract?id=${contractId}`, requestOptions); 
-        if (!response.ok) { 
-            throw new Error('responce is not ok') 
-        } 
-        const result = await response.json(); 
-        return result; 
-    } catch (error) { 
-        console.error(error) 
-    } 
- 
+async function contractId(contractId) {
+    const formData = new FormData();
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const response = await fetch(`http://localhost:5000/api/user/contract?id=${contractId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error)
+    }
+
 }
 
-async function contractNFTId(contractNFTId) { 
-    const formData = new FormData(); 
-    const requestOptions = { 
-        method: "GET", 
-        redirect: "follow" 
-    }; 
-    try { 
-        const response = await fetch(`http://localhost:5000/api/user/contract?nftId=${contractNFTId}`, requestOptions); 
-        if (!response.ok) { 
-            throw new Error('responce is not ok') 
-        } 
-        const result = await response.json(); 
-        return result; 
-    } catch (error) { 
-        console.error(error) 
-    } 
- 
+async function contractNFTId(contractNFTId) {
+    const formData = new FormData();
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const response = await fetch(`http://localhost:5000/api/user/contract?nftId=${contractNFTId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error)
+    }
+
 }
-async function btns(abis, address) {
+async function btns(abis, address, chainId) {
     // начало inflation erc20
-    if(mintTextInf.style.display == "flex") {
-        document.getElementById('modalBtnBurn20').addEventListener('click', async()=>{
+    if (mintTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const erc20Mint = new web3.eth.Contract(abis, address);
-            await  erc20Mint.methods.mint(InpAccountInf.value, InpMintInf.value).send({from: userAddress});
+            await erc20Mint.methods.mint(InpAccountInf.value, InpMintInf.value).send({ from: userAddress });
             alert("Successfully minted!");
-
+            location.reload();
         })
         console.log('Inflation erc-20 mint')
-    } else if(burnTextInf.style.display == "flex"){
-        document.getElementById('modalBtnBurn20').addEventListener('click', async()=>{
+    } else if (burnTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
             const erc20burn = new web3.eth.Contract(abis, address);
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             // await  erc20burn.methods.mint(InpAccountInf.value, InpBurnInf.value).send({from: userAddress});
-            await  erc20burn.methods.burn(InpAccountInf.value, InpBurnInf.value).send({from: userAddress});
+            await erc20burn.methods.burn(InpAccountInf.value, InpBurnInf.value).send({ from: userAddress });
             alert("Successfully burned!");
             console.log('Inflation erc-20 burn')
+            location.reload();
         })
-    } else if(pauseTextInf.style.display == "flex") {
-        document.getElementById('modalBtnBurn20').addEventListener( 'click' , async () => {
-        const erc20pause = new web3.eth.Contract(abis, address);
-        if(confirm('Are you sure to pause the token?')){
-        await  erc20pause.methods.pause().send({from: userAddress});
-        alert("Successfully paused!");
-        console.log('Inflation erc-20 pause')
-        }   
-    })
-    } else if(approveTextInf.style.display == "flex") {
-        document.getElementById('modalBtnBurn20').addEventListener('click', async ()=>{
-            const  erc20Approve = new web3.eth.Contract(abis, address);
-            await erc20Approve.methods.approve(InpAccountInf.value, InApproveInf.value).send({from: userAddress});
+    } else if (pauseTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const erc20pause = new web3.eth.Contract(abis, address);
+            if (confirm('Are you sure to pause the token?')) {
+                await erc20pause.methods.pause().send({ from: userAddress });
+                alert("Successfully paused!");
+                console.log('Inflation erc-20 pause')
+                location.reload();
+            }
+        })
+    } else if (approveTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const erc20Approve = new web3.eth.Contract(abis, address);
+            await erc20Approve.methods.approve(InpAccountInf.value, InApproveInf.value).send({ from: userAddress });
             console.log('You approved')
+            location.reload();
         })
         console.log('Inflation erc-20 approve')
-    }else if(transferTextInf.style.display == "flex") {
-        document.getElementById('modalBtnBurn20').addEventListener('click', async()=>{
-            const  erc20Trensfer = new web3.eth.Contract(abis, address);
-            await erc20Trensfer.methods.transfer(InpAccountInf.value, InpTransferInf.value).send({from: userAddress});
+    } else if (transferTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const erc20Trensfer = new web3.eth.Contract(abis, address);
+            await erc20Trensfer.methods.transfer(InpAccountInf.value, InpTransferInf.value).send({ from: userAddress });
             console.log('transfered with succses')
+            location.reload();
         })
-    }else if(transferFromTextInf.style.display == "flex") {
-        document.getElementById('modalBtnBurn20').addEventListener('click', async()=> {
-        const erc20TrensferFrom = new web3.eth.Contract(abis,address);
-        await erc20TrensferFrom.methods.transfer(InpAccountInf.value, InpTransferFromInf.value).send({from: userAddress});
-        console.log('You transferd from')
-    })
+    } else if (transferFromTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const erc20TrensferFrom = new web3.eth.Contract(abis, address);
+            await erc20TrensferFrom.methods.transferFrom(InpAccountInf.value, userAddress, InpTransferFromInf.value).send({ from: userAddress });
+            console.log('You transferd from')
+            location.reload();
+        })
         console.log('Inflation erc-20 transfer from')
-    }else if(unpauseTextInf.style.display == "flex") {
-        document.getElementById( 'modalBtnBurn20' ).addEventListener('click', async()=>{
-        const erc20Unpause = new web3.eth.Contract(abis, address);
-        await erc20Unpause.methods.unpause().send({from: userAddress})
-        console.log('Inflation erc-20 unpause')
+    } else if (unpauseTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const erc20Unpause = new web3.eth.Contract(abis, address);
+            await erc20Unpause.methods.unpause().send({ from: userAddress })
+            console.log('Inflation erc-20 unpause')
+            location.reload();
         })
-    }else if(balanceTextInf.style.display == "flex") {
-        document.getElementById( 'modalBtnBurn20' ).addEventListener('click', async()=>{
-        const erc20GetBalance = new web3.eth.Contract(abis, address);
-        const balance  = await erc20GetBalance.methods.balanceOf(InpBalanceInf.value).call();
-        alert(`User balance: ${balance}`);
-        console.log('Inflation erc-20 balance') // Конец erc 20 innflation И начало erc 20 deflation
+    } else if (balanceTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const erc20GetBalance = new web3.eth.Contract(abis, address);
+            const balance = await erc20GetBalance.methods.balanceOf(InpBalanceInf.value).call();
+            alert(`User balance: ${balance}`);
+            console.log('Inflation erc-20 balance') // Конец erc 20 innflation И начало erc 20 deflation
+            location.reload();
         })
-    }else if(burnTextDef.style.display == "flex") {
-        document.getElementById('modalBtnBurn').addEventListener('click', async()=>{
-            const erc20Burndef = new web3.eth.Contract(abis,address);
-            await erc20Burndef.methods.burn(InpBurnDef.value ,InpBurnDef.value).send({
-                from :userAddress
+    } else if (burnTextDef.style.display == "flex") {
+        console.log(chainId);
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            const account = document.getElementById('InpaddressDef').value;
+            const erc20Burndef = new web3.eth.Contract(abis, address);
+            await erc20Burndef.methods.burn(account, InpBurnDef.value).send({
+                from: userAddress
             });
             alert("Token burned");
+            location.reload();
         })
-    } else if(pauseTextDef.style.display == "flex") {
-        document.getElementById('modalBtnBurn').addEventListener('click', async() => {
+    } else if (pauseTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const pauseDef = new web3.eth.Contract(abis, address);
-            await pauseDef.methods.pause().send({from: userAddress});
-        console.log('Deflation erc-20 pause')
+            if (confirm('Are you sure pause tokens?')) {
+                await pauseDef.methods.pause().send({ from: userAddress });
+                console.log('Deflation erc-20 pause')
+                location.reload();
+            }
         })
-    } else if(approveTextDef.style.display == "flex") {
-        document.getElementById('modalBtnBurn').addEventListener('click', async()=>{
+    } else if (approveTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const aproveDef = new web3.eth.Contract(abis, address);
-            await aproveDef.methods.pause().send({from: userAddress});
+            await aproveDef.methods.approve(InApproveDef.value, InpTransferDef.value).send({ from: userAddress });
             console.log('Deflation aproved');
+            location.reload();
         })
         console.log('Deflation erc-20 approve')
-    } else if(transferTextDef.style.display == "flex") {
-        document.getElementById('modalBtnBurn').addEventListener('click', async()=>{
+    } else if (transferTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const transferDef = new web3.eth.Contract(abis, address);
-            const account = document.getElementById('InpaddressDef').value;
-            await transferDef.methods.transfer(account, InpTransferDef.value);
+            await transferDef.methods.transfer(InApproveDef.value, InpTransferDef.value).send({ from: userAddress });
             console.log('Deflation erc-20 transfer')
+            location.reload();
         })
-    } else if(transferFromTextDef.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async()=>{
+    } else if (transferFromTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const transferFromDef = new web3.eth.Contract(abis, address);
-            await  transferFromDef.methods.transferFrom(document.getElementById('InpaddressDef').value, InpTransferFromDef).send({from: userAddress});
+            await transferFromDef.methods.transferFrom(InApproveDef.value, userAddress, InpTransferFromDef.value).send({ from: userAddress });
             console.log('transfer from');
+            location.reload();
         })
         console.log('Deflation erc-20 transfer from')
-    } else if(unpauseTextDef.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click' ,async ()=>{
+    } else if (unpauseTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const unpauseDef = new web3.eth.Contract(abis, address)
-            await unpauseDef.methods.unpause( ).send ({from: userAddress})
-        console.log('Deflation erc-20 unpause')
+            await unpauseDef.methods.unpause().send({ from: userAddress })
+            console.log('Deflation erc-20 unpause')
+            location.reload();
         })
-    } else if(balanceTextDef.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+    } else if (balanceTextDef.style.display == "flex") {
+        console.log(address);
+        document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const getBalanse = new web3.eth.Contract(abis, address);
-            const answer = await getBalanse.methods.balanceOf(InpBalanceDef).call();
+            const answer = await getBalanse.methods.balanceOf(InpBalanceDef.value).call();
             alert(`Address balance: ${answer}`);
-        console.log('Deflation erc-20 balance') 
+            console.log('Deflation erc-20 balance')
+            location.reload();
         })// конец erc20 deflation и начало nft 1155
-    } else if(burnText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+    } else if (burnText.style.display == "flex") {
+        document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const burn = new web3.eth.Contract(abis, address);
-            await burn.methods.burn(burnM.value).send({from:userAddress});
-            alert(`Succesfully burnt`);
-            console.log('erc1155 burn') 
+            await burn.methods.burn(balanceM.value, burnM.value).send({ from: userAddress });
+            alert(`Succesfully burned`);
+            console.log('erc1155 burn')
+            location.reload();
         })
-        
-    } else if(mintText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (mintText.style.display == "flex") {
+        document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const mint = new web3.eth.Contract(abis, address);
-            await mint.methods.mint(AccountM.value, mintM.value).send({from:userAddress});
+            await mint.methods.mint(approveM.value, balanceM.value, mintM.value, '0x0').send({ from: userAddress });
             alert(`Succesfully minted`);
             console.log('erc1155 mint')
+            location.reload();
         })
-        
-    } else if(sftText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (sftText.style.display == "flex") {
+        document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const sft = new web3.eth.Contract(abis, address);
-            await sft.methods.safeTransferFrom(AccountFrom.value, stfM.value).send({from:userAddress});
+            await sft.methods.safeTransferFrom(AccountFrom.value, userAddress, balanceM.value, stfM.value, '0x0').send({ from: userAddress });
             alert(`Succesfully transfered`);
             console.log('erc1155 transfer from')
+            location.reload();
         })
-        
-    } else if(approveText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (approveText.style.display == "flex") {
+        document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const approve = new web3.eth.Contract(abis, address);
-            await approve.methods.setApproveForAll(AccountM.value, approveM.value).send({from:userAddress});
-            alert(`Succesfully approved for all`);
-            console.log('erc1155 approve for all')
+            const eArray = Array.from(radioS);
+            for (const e of eArray) {
+                if (e.checked) {
+                    await approve.methods.setApprovalForAll(approveM.value, e.value).send({ from: userAddress });
+                    alert(`Succesfully approved for all`);
+                    console.log('erc1155 approve for all')
+                    location.reload();
+                }
+            }
         })
-        
-    } else if(balanceText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (balanceText.style.display == "flex") {
+        console.log(abis, chainId);
+        document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const balance = new web3.eth.Contract(abis, address);
-            const answer = await balance.methods.balanceOf(AccountM.value, balanceM.value).call();
+            const answer = await balance.methods.balanceOf(approveM.value, balanceM.value).call();
             alert(`Balance: ${answer}`);
             console.log('erc1155 balance')
+            location.reload();
         })
-         // конец 1155 и начало 721
-    } else if(burnText721.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
-            const burn = new web3.eth.Contract(abis, address);
-            await burn.methods.burn(burn721.value).send({from:userAddress});
-            alert(`Succesfully burnt`);
-            console.log('erc721 burn') 
-        })
-        
-    } else if(mint721.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+        // конец 1155 и начало 721
+    } else if (mintText721.style.display == "flex") {
+        document.getElementById('modalBtnBurn721').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const mint = new web3.eth.Contract(abis, address);
-            await mint.methods.mint(addressTo.value, mint721.value).send({from:userAddress});
+            await mint.methods.mint(mint721.value, tokenUri.value).send({ from: userAddress });
             alert(`Succesfully minted`);
-            console.log('erc721 mint')
+            console.log('erc721 mint');
+            location.reload();
         })
-        
-    } else if(sftText721.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (sftText721.style.display == "flex") {
+        document.getElementById('modalBtnBurn721').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const sft = new web3.eth.Contract(abis, address);
-            await sft.methods.safeTransferFrom(tf721.value).send({from:userAddress});
+            await sft.methods.safeTransferFrom(tf721.value, userAddress, tokenId.value).send({ from: userAddress });
             alert(`Succesfully transfered`);
             console.log('erc721 transfer from')
+            location.reload();
         })
-        
-    } else if(approveText721.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (approveText721.style.display == "flex") {
+        document.getElementById('modalBtnBurn721').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const approve = new web3.eth.Contract(abis, address);
-            await approve.methods.approve(addressTo.value, approve721.value).send({from:userAddress});
+            await approve.methods.approve(approve721.value, tokenId.value).send({ from: userAddress });
             alert(`Succesfully approved`);
             console.log('erc721 approve')
+            location.reload();
         })
-        
-    } else if(balanceText721.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (balanceText721.style.display == "flex") {
+        console.log(abis);
+        document.getElementById('modalBtnBurn721').addEventListener('click', async () => {
             const balance = new web3.eth.Contract(abis, address);
             const answer = await balance.methods.balanceOf(balance721.value).call();
             alert(`Balance: ${answer}`);
             console.log('erc721 balance')
+            location.reload();
         }) // конец 721 и начало стейкинга
-    } else if(ClaimRtext.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+    } else if (ClaimRtext.style.display == "flex") {
+        document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const claimR = new web3.eth.Contract(abis, address);
-            await claimR.methods.claimRewards().send({from:userAddress});
+            await claimR.methods.claimRewards().send({ from: userAddress });
             alert(`Succesfully claimed reward`);
             console.log('Claim rewards')
+            location.reload();
         })
-        
-    } else if(StakeText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (StakeText.style.display == "flex") {
+        console.log(abis);
+        document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const Stake = new web3.eth.Contract(abis, address);
-            await Stake.methods.stake(StakeInp.value).send({from:userAddress});
+            await Stake.methods.stake(StakeInp.value).send({ from: userAddress });
             alert(`Succesfully staked`);
             console.log('Stake')
+            location.reload();
         })
-    } else if(UnstakeText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+    } else if (UnstakeText.style.display == "flex") {
+        document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const Unstake = new web3.eth.Contract(abis, address);
-            await Unstake.methods.unstake().send({from:userAddress});
+            await Unstake.methods.unstake().send({ from: userAddress });
             alert(`Succesfully unstaked`);
             console.log('Unstake')
+            location.reload();
         })
-    } else if(CalculateRtext.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+    } else if (CalculateRtext.style.display == "flex") {
+        document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const CalculateR = new web3.eth.Contract(abis, address);
             const answer = await CalculateR.methods.calculateRewards(CalculateInp.value).call();
             alert(`Succesfully calculated: ${answer}`);
             console.log('Calculate rewards')
+            location.reload();
         })
-        
-    } else if(StakersText.style.display == "flex") {
-        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+
+    } else if (StakersText.style.display == "flex") {
+        document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             const StakersList = new web3.eth.Contract(abis, address);
             const answer = await StakersList.methods.stakersList(StakersInp.value).call();
-            alert(`Stakers List: ${answer}`);
+            alert(`Stakers List: ${await answer}`);
             console.log('Stakers list')
+            location.reload();
         })
-        
+
     } else {
         console.log("something went wrong")
     }
@@ -347,16 +686,7 @@ async function btns(abis, address) {
 }
 
 
-async function card20(a, text, interfaces) {
-    // let s = localStorage.getItem('currentAddress')
-
-    // let info = await authAddress(s)
-    // info.kindId.length
-    // info.typeId.length
-    // info.contractId.length
-    // info.contractNFTId.length;
-    // const abis = []
-    // abis.push(interfaces);
+async function card20(a, text, interfaces, chainId) {
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -374,20 +704,20 @@ async function card20(a, text, interfaces) {
 
     let title5 = document.createElement('h5')
     title5.classList.add('card-title')
-    title5.innerText = "ERC20"
+    title5.innerText = "Token"
 
     let desc = document.createElement('p')
     desc.id = `erc${a}`
     desc.innerHTML = text
     sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
-    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces[0]));
+    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces));
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
     btn.id = a
     btn.innerText = "click here"
-    
-    
+
+
 
     parentDiv.appendChild(child1);
     child1.appendChild(img)
@@ -408,7 +738,7 @@ async function card20(a, text, interfaces) {
     let tfInf = document.getElementById('tfInf')
     let UnpauseInf = document.getElementById('UnpauseInf')
     let balanceOfInf = document.getElementById('balanceOfInf')
-    
+
     burnInf.addEventListener('click', burn20)
     mintInf.addEventListener('click', mint20)
     PauseInf.addEventListener('click', pause20)
@@ -417,90 +747,90 @@ async function card20(a, text, interfaces) {
     tfInf.addEventListener('click', tf20)
     balanceOfInf.addEventListener('click', balance20)
     UnpauseInf.addEventListener('click', unpause20)
-console.log('before')
-    if(a == 1) {
-console.log('after')
+    console.log('before')
+    if (a == 1) {
+        console.log('after')
 
         // openModalERC20inf()
-        btn.addEventListener('click',openModalERC20inf)
+        btn.addEventListener('click', openModalERC20inf)
         let c = document.getElementById(1)
-        c.addEventListener('click', ()=> {
+        c.addEventListener('click', () => {
             openModalERC20inf;
             sessionStorage.setItem('resent', `${c.id}`);
+            sessionStorage.setItem(`chainId${c.id}`, `${chainId}`);
             burnInf.style.display = "none"
             PauseInf.style.display = "none"
             UnpauseInf.style.display = "none"
             console.log('1 inf')
         })
-    } else if(a == 2) {
-        btn.addEventListener('click',openModalERC20inf)
-        // openModalERC20inf()
-        // card20(i)
+    } else if (a == 2) {
+        btn.addEventListener('click', openModalERC20inf)
         let a = document.getElementById(2)
-        a.addEventListener('click', ()=> {
+        a.addEventListener('click', () => {
             sessionStorage.setItem('resent', `${a.id}`);
+            sessionStorage.setItem(`chainId${a.id}`, `${chainId}`);
             openModalERC20inf
             PauseInf.style.display = "none"
             UnpauseInf.style.display = "none"
             burnInf.style.display = "flex"
             console.log('2 inf')
         })
-    } else if(a == 3) {
-        btn.addEventListener('click',openModalERC20inf);
-        // openModalERC20inf()
-        // card20(i)
-        
+    } else if (a == 3) {
+        btn.addEventListener('click', openModalERC20inf);
         let b = document.getElementById(3)
         b.addEventListener('click', () => {
             openModalERC20inf
             sessionStorage.setItem('resent', `${b.id}`);
+            sessionStorage.setItem(`chainId${b.id}`, `${chainId}`);
             PauseInf.style.display = "flex"
             UnpauseInf.style.display = "flex"
             burnInf.style.display = "none"
             console.log('3 inf')
         })
-    } else if(a == 4) {
-        btn.addEventListener('click',openModalERC20inf)
-        // openModalERC20inf()
-        // card20(i)
+    } else if (a == 4) {
+        btn.addEventListener('click', openModalERC20inf)
         let d = document.getElementById(4)
         d.addEventListener('click', () => {
             openModalERC20inf
-            sessionStorage.setItem('resent', `${d.id}`);
+            sessionStorage.setItem('resent', `${d.id}`)
+            sessionStorage.setItem(`chainId${d.id}`, `${chainId}`);;
             burnInf.style.display = "flex"
             PauseInf.style.display = "flex"
             UnpauseInf.style.display = "flex"
             console.log("all inflation")
             console.log('4 inf')
         })
-    } else if(a == 5) {
-        btn.addEventListener('click',openModalERC20inf)
+    } else if (a == 5) {
+        btn.addEventListener('click', openModalERC20inf)
         let e = document.getElementById(5)
         e.addEventListener('click', () => {
             openModalERC20def()
             sessionStorage.setItem('resent', `${e.id}`);
+            sessionStorage.setItem(`chainId${e.id}`, `${chainId}`);
             PauseDef.style.display = "none"
             UnpauseDef.style.display = "none"
             burnDef.style.display = "flex"
             console.log('5 deflation')
         })
-    } else if(a == 6) {
-        btn.addEventListener('click',openModalERC20inf)
+    } else if (a == 6) {
+        btn.addEventListener('click', openModalERC20inf)
         let h = document.getElementById(6)
         h.addEventListener('click', () => {
             openModalERC20def()
             sessionStorage.setItem('resent', `${h.id}`);
+            sessionStorage.setItem(`chainId${h.id}`, `${chainId}`);
             burnDef.style.display = "none"
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
             console.log('6 deflation')
         })
-    } else if(a == 7) {
-        btn.addEventListener('click',openModalERC20inf)
-        
+    } else if (a == 7) {
+        btn.addEventListener('click', openModalERC20inf)
+
         let h = document.getElementById(7)
         h.addEventListener('click', () => {
             sessionStorage.setItem('resent', `${h.id}`);
+            sessionStorage.setItem(`chainId${h.id}`, `${chainId}`);
             openModalERC20def()
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
@@ -516,15 +846,7 @@ console.log('after')
 
 }
 
-async function cardNft(a, text, interfaces, metadata) {
-    // let s = localStorage.getItem('currentAddress')
-
-    // let info = await authAddress(s)
-    // info.kindId.length
-    // info.typeId.length
-    // info.contractId.length
-    // info.contractNFTId.length;
-
+async function cardNft(a, text, interfaces, metadata, chainId) {
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -548,66 +870,60 @@ async function cardNft(a, text, interfaces, metadata) {
     btn.classList.add('btn')
     btn.id = a
     btn.innerText = "click here"
-    
+
     let desc = document.createElement('p')
     desc.id = `nft${a}`
     desc.innerHTML = text
+    console.log(text)
     sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
-    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces[0]));
+    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces));
 
     parentDiv.appendChild(child1);
     child1.appendChild(img)
     child1.appendChild(child2)
     child2.appendChild(title5)
+    child2.appendChild(desc)
     child2.appendChild(btn)
 
     let section = document.getElementById('cardsRow')
     section.appendChild(parentDiv)
 
     //Обьявление кнопок и присваивание им функционала (Кнопки первого модального окна)
-    let burn721btn = document.getElementById('burn721btn')
+    // let burn721btn = document.getElementById('burn721btn')
     let mint721btn = document.getElementById('mint721btn')
     let TransferFrom721btn = document.getElementById('TransferFrom721btn')
     let Approve721Btn = document.getElementById('Approve721Btn')
     let balanceOf721btn = document.getElementById('balanceOf721btn')
-    
-    burn721btn.addEventListener('click', openBurnNFT721)
-    mint721btn.addEventListener('click', openMintNFT721)
-    TransferFrom721btn.addEventListener('click', openTfNFT721) 
-    Approve721Btn.addEventListener('click', approveNFT721)
-    balanceOf721btn.addEventListener('click', balanceNFT721) 
 
-    if(a == 8) {
-                // openModalERC20inf()
-                btn.addEventListener('click',openModal)
-                let ab = document.getElementById(8)
-                ab.addEventListener('click', ()=> {
-                    openModal();
-                    console.log('1155')
-                    sessionStorage.setItem(`resent`,`${ab.id}`)
-                })
-    } else if(a == 9) {
-        btn.addEventListener('click',openModal721)
+    // burn721btn.addEventListener('click', openBurnNFT721)
+    mint721btn.addEventListener('click', openMintNFT721)
+    TransferFrom721btn.addEventListener('click', openTfNFT721)
+    Approve721Btn.addEventListener('click', approveNFT721)
+    balanceOf721btn.addEventListener('click', balanceNFT721)
+
+    if (a == 8) {
+        btn.addEventListener('click', openModal)
+        let ab = document.getElementById(8)
+        ab.addEventListener('click', () => {
+            openModal();
+            console.log('1155')
+            sessionStorage.setItem(`resent`, `${ab.id}`)
+            sessionStorage.setItem(`chainId${ab.id}`, `${chainId}`);
+        })
+    } else if (a == 9) {
+        btn.addEventListener('click', openModal721)
         let ab = document.getElementById(9)
-        ab.addEventListener('click', ()=> {
-            openModal721;
+        ab.addEventListener('click', () => {
+            openModal721();
             console.log('721')
-            sessionStorage.setItem(`resent`,`${ab.id}`)
+            sessionStorage.setItem(`resent`, `${ab.id}`)
+            sessionStorage.setItem(`chainId${ab.id}`, `${chainId}`);
         })
     } else {
         console.log("not an nft")
     }
 }
-async function cardStaking(a, text, interfaces) {
-
-    // let s = localStorage.getItem('currentAddress')
-
-    // let info = await authAddress(s)
-    // info.kindId.length
-    // info.typeId.length
-    // info.contractId.length
-    // info.contractNFTId.length;
-
+async function cardStaking(a, text, interfaces, chainId) {
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -629,20 +945,21 @@ async function cardStaking(a, text, interfaces) {
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = `staking${a}`
+    btn.id = `stake${a}`
     btn.innerText = "click here"
     btn.addEventListener('click', openModalStaking)
-    
+
     let desc = document.createElement('p')
     desc.id = `staking${a}`
     desc.innerHTML = text
     sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
-    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces[0]));
+    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces));
 
     parentDiv.appendChild(child1);
     child1.appendChild(img)
     child1.appendChild(child2)
     child2.appendChild(title5)
+    child2.appendChild(desc)
     child2.appendChild(btn)
 
     let section = document.getElementById('cardsRow')
@@ -654,133 +971,100 @@ async function cardStaking(a, text, interfaces) {
     let UnstakeBtn = document.getElementById('UnstakeBtn')
     let CalculateBtn = document.getElementById('CalculateBtn')
     let stakersListBtn = document.getElementById('stakersListBtn')
-    
+
     StakeBtn.addEventListener('click', StakeInput)
     CalculateBtn.addEventListener('click', calculateInput)
-    stakersListBtn.addEventListener('click', stakersInput)
+    // stakersListBtn.addEventListener('click', stakersInput)
     claimRewardsBtn.addEventListener('click', claim)
     UnstakeBtn.addEventListener('click', unstake)
 
-    if(a == 10) {
-        btn.addEventListener('click',openModalStaking)
-        
-        let bc = document.getElementById(10)
+    if (a == 10) {
+        btn.addEventListener('click', openModalStaking)
+
+        let bc = document.getElementById('stake10')
         bc.addEventListener('click', () => {
             openModalStaking()
             console.log('staking')
-            sessionStorage.setItem(`resent`, `${bc.id}`)
+            sessionStorage.setItem(`resent`, `${a}`)
+            sessionStorage.setItem(`chainId${a}`, `${chainId}`);
         })
     } else {
         console.log('not staking')
     }
 }
 
-    // закрытие первого модального окна
-    let closeBtns = document.querySelectorAll('.closeBtnY')
-    closeBtns.forEach(function(closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
-    });
+// закрытие первого модального окна
+let closeBtns = document.querySelectorAll('.closeBtnY')
+closeBtns.forEach(function (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+});
 
-    // закрытие второго модального окна
-    let closeBtnBurns = document.querySelectorAll('.closeBtnBurn')
-    closeBtnBurns.forEach(function(closeBtnBurn) {
-        closeBtnBurn.addEventListener('click', closeModal2)        
-    })
-    let web3 = new Web3(window.ethereum);
+// закрытие второго модального окна
+let closeBtnBurns = document.querySelectorAll('.closeBtnBurn')
+closeBtnBurns.forEach(function (closeBtnBurn) {
+    closeBtnBurn.addEventListener('click', closeModal2)
+})
+let web3 = new Web3(window.ethereum);
 
-    let userAddress;
+let userAddress;
 
-    async function connectWallet() {
-        console.log("test");    
-        if(window.ethereum){
-            const accounts = await window.ethereum.request({method: "eth_requestAccounts"});
-            userAddress = accounts[0];
-            console.log(accounts[0]);
-            web3 = new Web3(Web3.givenProvider);
-            currentAddressText.style.display = "flex";
-            var fullAddress = userAddress.toString();
+async function connectWallet() {
+    console.log("test");
+    if (window.ethereum) {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        userAddress = accounts[0];
+        console.log(accounts[0]);
+        web3 = new Web3(Web3.givenProvider);
+        currentAddressText.style.display = "flex";
+        var fullAddress = userAddress.toString();
 
-            var trimmedAddress = trimAddress(fullAddress, 6, 4); // Измените значения для первых и последних символов по вашему усмотрению
-            currentAddressText.innerText = trimmedAddress;
-            const data = await authAddress(fullAddress);
-            connectButton.innerText = ""
-            return data
-        }else{
-            console.log("Please install Metamask");
-        }
+        var trimmedAddress = trimAddress(fullAddress, 6, 4); // Измените значения для первых и последних символов по вашему усмотрению
+        currentAddressText.innerText = trimmedAddress;
+        const data = await authAddress(fullAddress);
+        connectButton.innerText = ""
+        return data
+    } else {
+        console.log("Please install Metamask");
     }
-    function trimAddress(address, startChars, endChars) {
-        if (address.length <= startChars + endChars + 3) return address;
-        console.log(address)
+}
+function trimAddress(address, startChars, endChars) {
+    if (address.length <= startChars + endChars + 3) return address;
+    console.log(address)
 
-        var start = address.substring(0, startChars);
-        var end = address.substring(address.length - endChars);
-        return start + '...' + end;
-    }
+    var start = address.substring(0, startChars);
+    var end = address.substring(address.length - endChars);
+    return start + '...' + end;
+}
 let temp;
 let temp2;
 
 
-document.addEventListener('DOMContentLoaded', async ()=>{
-const connectButton = document.getElementById("connectButton");
-const currentAddressText = document.getElementById("currentAddressText");
-
-    // let s = localStorage.getItem('currentAddress')
+document.addEventListener('DOMContentLoaded', async () => {
     const data = await connectWallet()
-    
-    // temp2 = {typeIdCheck: [
-    //     2,
-    //     2,
-    //     2,
-    //     2,
-    //     2,
-    //     2,
-    //     2,
-    //     1,
-    //     1,
-    //     3
-        
-    // ]}
-    // temp = {userKindId: [ 
-    //     1, 
-    //     3, 
-    //     2,
-    //     4,
-    //     5,
-    //     6,
-    //     7,
-    //     8,
-    //     9,
-    //     10
-    // ]}
-    // console.log(temp2.typeIdCheck)
-    // console.log(temp2.typeIdCheck[0])
-
-    // card20()
-    // erc20KindIdCheck(temp.userKindId)
-
     const userDataType = await data.resObj.userTypeId;
     const userDataKind = await data.resObj.userKindId;
     const userDataAbi = await data.resObj.userAbi;
     const userAddresses = await data.resObj.userContractAddress;
     const userMetadata = await data.resObj.userMetadata;
+    const userChainId = await data.resObj.userChains;
 
     const temp2 = userDataType.map(id => id);
     const temp = userDataKind.map(id => id);
     const abiTemp = userDataAbi.map(c => JSON.parse(c));
-    const contractAddresses = userAddresses.map(c=> c);
+    const contractAddresses = userAddresses.map(c => c);
     const metadata = userMetadata.map(m => m);
-    console.log(temp2, temp, abiTemp, metadata, contractAddresses);
+    const chainId = userChainId.map(c => c);
+    console.log(temp2, temp, abiTemp, metadata, contractAddresses, chainId);
 
-    if(temp2.length == temp.length) {
-        for(let i = 0; i < temp2.length; i++) {
-            if(temp2[i] == 1) {
-                cardNft(temp[i], `${contractAddresses[i]}`, abiTemp[i], metadata[i]);
+    if (temp2.length == temp.length) {
+        for (let i = 0; i < temp2.length; i++) {
+            if (temp2[i] == 1) {
+                cardNft(temp[i], contractAddresses[i], abiTemp[i].map(e => e), metadata[i], chainId[i]);
                 console.log((temp[i]))
-            } else if(temp2[i] == 2) {
-                card20(temp[i], `${contractAddresses[i]}`, abiTemp[i])
-            } else if(temp2[i] == 3) {
-                cardStaking(temp[i], `${contractAddresses[i]}`, abiTemp[i]);
+            } else if (temp2[i] == 2) {
+                card20(temp[i], `${contractAddresses[i]}`, abiTemp[i].map(e => e), chainId[i]);
+            } else if (temp2[i] == 3) {
+                cardStaking(temp[i], `${contractAddresses[i]}`, abiTemp[i].map(e => e), chainId[i]);
             }
         }
     }
@@ -806,34 +1090,11 @@ let AccountFrom = document.getElementById('AccountFrom')
 let modal_container = document.querySelectorAll('.modal_container')
 
 
-
-
-
-// let closeBtnBurn = document.getElementsByClassName('closeBtnBurn')[0]
-// let closeBtnBurn2 = document.getElementsByClassName('closeBtnBurn')[1]
-// let closeBtnBurn3 = document.getElementsByClassName('closeBtnBurn')[2]
-// let closeBtnBurn4 = document.getElementsByClassName('closeBtnBurn')[3]
-// let closeBtnBurn5 = document.getElementsByClassName('closeBtnBurn')[4]
-
-
-
-
 let modalForBurn = document.getElementById('modalForBurn')
 let modalForBurn721 = document.getElementById('modalForBurn721')
 let modalForStaking = document.getElementById('modalForStaking')
 let modalForERC20inflation = document.getElementById('modalForERC20inflation')
 let modalForERC20deflation = document.getElementById('modalForERC20deflation')
-
-
-// let closeBtn2 = document.getElementsByClassName('closeBtnY')[1]
-// let closeBtn3 = document.getElementsByClassName('closeBtnY')[2]
-// let closeBtn4 = document.getElementsByClassName('closeBtnY')[3]
-// let closeBtn5 = document.getElementsByClassName('closeBtnY')[4]
-
-
-
-
-
 
 // кнопки
 let burnModal = document.getElementById('burn')
@@ -843,27 +1104,6 @@ let BBModal = document.getElementById('burnBatch')
 let mbModal = document.getElementById('mintBatch')
 let approveModal = document.getElementById('SetApproval')
 let balanceModal = document.getElementById('balanceOf')
-
-// let burn721btn = document.getElementById('burn721btn')
-// let mint721btn = document.getElementById('mint721btn')
-// let TransferFrom721btn = document.getElementById('TransferFrom721btn')
-// let Approve721Btn = document.getElementById('Approve721Btn')
-// let balanceOf721btn = document.getElementById('balanceOf721btn')
-
-// let claimRewardsBtn = document.getElementById('claimRewardsBtn')
-// let StakeBtn = document.getElementById('StakeBtn')
-// let UnstakeBtn = document.getElementById('UnstakeBtn')
-// let CalculateBtn = document.getElementById('CalculateBtn')
-// let stakersListBtn = document.getElementById('stakersListBtn')
-
-// let burnInf = document.getElementById('burnInf')
-// let mintInf = document.getElementById('mintInf')
-// let PauseInf = document.getElementById('PauseInf')
-// let approveInf = document.getElementById('approveInf')
-// let transferInf = document.getElementById('transferInf')
-// let tfInf = document.getElementById('tfInf')
-// let UnpauseInf = document.getElementById('UnpauseInf')
-// let balanceOfInf = document.getElementById('balanceOfInf')
 
 
 let burnDef = document.getElementById('burnDef')
@@ -881,12 +1121,16 @@ let balanceOfDef = document.getElementById('balanceOfDef')
 let burnM = document.getElementById('burnM');
 let mintM = document.getElementById('mintM');
 let stfM = document.getElementById('stfM');
-let approveM = document.getElementById('approveM');
+let approveM = document.getElementById('AccountM');
 let balanceM = document.getElementById('balanceM');
+
+let radioS = document.getElementsByClassName('form-check-input');
+
 
 let burn721 = document.getElementById('burn721')
 let mint721 = document.getElementById('mint721')
-let addressTo = document.getElementById('addressTo')
+let tokenUri = document.getElementById('tokenUri721');
+let tokenId = document.getElementById('tokenId')
 let tf721 = document.getElementById('tf721')
 let id721 = document.getElementById('id721')
 let approve721 = document.getElementById('approve721')
@@ -954,59 +1198,11 @@ let transferFromTextDef = document.getElementById('transferFromTextDef')
 let unpauseTextDef = document.getElementById('unpauseTextDef')
 let balanceTextDef = document.getElementById('balanceTextDef')
 
-
-//------------------------------------------------------------------------------------------------------
-
-// modalBtn.addEventListener('click', openModal);
-// modalBtn721.addEventListener('click', openModal721);
-// modalBtnStake.addEventListener('click', openModalStaking);
-
-// modalBtnErc20Inf.addEventListener('click', openModalERC20inf)
-
-// modalBtnErc20Def.addEventListener('click', openModalERC20def)
-
-
-// closeBtn2.addEventListener('click', closeModalfor721)
-// closeBtn3.addEventListener('click', closeModalforStaking)
-// closeBtn4.addEventListener('click', closeModalforERC20inf)
-// closeBtn5.addEventListener("click", closeModalforERC20def)
-
-
-
-
-// closeBtnBurn.addEventListener('click', closeModal2)
-// closeBtnBurn2.addEventListener('click', closeModal721)
-// closeBtnBurn3.addEventListener('click', closeModalStaking)
-// closeBtnBurn4.addEventListener('click', closeModalERC20inf)
-// closeBtnBurn5.addEventListener('click', closeModalERC20def)
-
-
 burnModal.addEventListener('click', openBurnNFT)
 mintModal.addEventListener('click', openMintNFT)
-stfModal.addEventListener('click', openSTfNFT) 
+stfModal.addEventListener('click', openSTfNFT)
 approveModal.addEventListener('click', approveNFT)
-balanceModal.addEventListener('click', balanceNFT) 
-
-// burn721btn.addEventListener('click', openBurnNFT721)
-// mint721btn.addEventListener('click', openMintNFT721)
-// TransferFrom721btn.addEventListener('click', openTfNFT721) 
-// Approve721Btn.addEventListener('click', approveNFT721)
-// balanceOf721btn.addEventListener('click', balanceNFT721) 
-
-// StakeBtn.addEventListener('click', StakeInput)
-// CalculateBtn.addEventListener('click', calculateInput)
-// stakersListBtn.addEventListener('click', stakersInput)
-// claimRewardsBtn.addEventListener('click', claim)
-// UnstakeBtn.addEventListener('click', unstake)
-
-// burnInf.addEventListener('click', burn20)
-// mintInf.addEventListener('click', mint20)
-// PauseInf.addEventListener('click', pause20)
-// approveInf.addEventListener('click', approve20)
-// transferInf.addEventListener('click', transfer20)
-// tfInf.addEventListener('click', tf20)
-// balanceOfInf.addEventListener('click', balance20)
-// UnpauseInf.addEventListener('click', unpause20)
+balanceModal.addEventListener('click', balanceNFT)
 
 burnDef.addEventListener('click', burn20def)
 PauseDef.addEventListener('click', pause20def)
@@ -1015,72 +1211,24 @@ transferDef.addEventListener('click', transfer20def)
 tfDef.addEventListener('click', tf20def)
 balanceOfDef.addEventListener('click', balance20def)
 UnpauseDef.addEventListener('click', unpause20def)
-
-
-//----------------------------------------------------------------------------------------------------------------------------------
-
-// function erc20KindIdCheck(ercId) {
-//     console.log("ddddd")
-//     // for(let i = 0; i < ercId.length; i++) {
-//     //     console.log(`id ${i}`, `value${ercId[i]}`)
-//         if(ercId == 1) {
-//             // openModalERC20inf()
-//             card20()
-//             burnInf.style.display = "none"
-//             PauseInf.style.display = "none"
-//             UnpauseInf.style.display = "none"
-//             console.log('1 inf')
-//         } else if(ercId == 2) {
-//             // openModalERC20inf()
-//             card20()
-//             PauseInf.style.display = "none"
-//             UnpauseInf.style.display = "none"
-//             burnInf.style.display = "flex"
-//             console.log('2 inf')
-
-//         } else if(ercId == 3) {
-//             // openModalERC20inf()
-//             card20()
-//             PauseInf.style.display = "flex"
-//             UnpauseInf.style.display = "flex"
-//             burnInf.style.display = "none"
-//             console.log('3 inf')
-
-//         } else if(ercId == 4) {
-//             // openModalERC20inf()
-//             card20()
-//             burnInf.style.display = "flex"
-//             PauseInf.style.display = "flex"
-//             UnpauseInf.style.display = "flex"
-//             console.log("all inflation")
-//             console.log('4 inf')
-
-//         } else {
-//             console.log('Kind id for inflation is not found')
-//         }
-//     // }
-
-    
-// }
-//-----------------------------------------------------------------------------------------------------------------------------------------------
 function erc20KindIdCheckDef(ercId) {
-    
-    for(let i = 0; i < ercId.length; i++) {
 
-        if(ercId[i] == 5) {
+    for (let i = 0; i < ercId.length; i++) {
+
+        if (ercId[i] == 5) {
             openModalERC20def()
             PauseDef.style.display = "none"
             UnpauseDef.style.display = "none"
             burnDef.style.display = "flex"
 
             console.log('5 deflation')
-        } else if(ercId[i] == 6) {
+        } else if (ercId[i] == 6) {
             openModalERC20def()
             burnDef.style.display = "none"
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
             console.log('6 deflation')
-        } else if(ercId[i] == 7) {
+        } else if (ercId[i] == 7) {
             openModalERC20def()
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
@@ -1101,6 +1249,8 @@ function openModalERC20inf() {
 function burn20def() {
     modalForERC20deflation.style.display = "block"
     contentModalsERC20def.style.display = 'block'
+    const account = document.getElementById('InpaddressDef')
+    account.style.display = 'flex'
     burnTextDef.style.display = "flex";
     InpBurnDef.style.display = "flex"
     InpPauseDef.style.display = "none"
@@ -1112,7 +1262,9 @@ function burn20def() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address)
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    console.log(resent, chainId);
+    btns(abi, address, chainId)
 }
 function pause20def() {
     modalForERC20deflation.style.display = "block"
@@ -1129,7 +1281,8 @@ function pause20def() {
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
     console.log(resent, address, abi)
-    btns(abi, address)  
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function approve20def() {
     modalForERC20deflation.style.display = "block"
@@ -1138,23 +1291,6 @@ function approve20def() {
     InpBurnDef.style.display = "none"
     InpPauseDef.style.display = "none"
     InApproveDef.style.display = "flex"
-    InpTransferDef.style.display = "none"
-    InpTransferFromDef.style.display = "none"
-    InpUnpauseDef.style.display = "none"
-    InpBalanceDef.style.display = "none"
-    InpAccountInf.style.display = "flex"
-    const resent = sessionStorage.getItem('resent');
-    const address = sessionStorage.getItem(`${resent}`);
-    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
-}
-function transfer20def() {
-    modalForERC20deflation.style.display = "block"
-    contentModalsERC20def.style.display = 'block'
-    transferTextDef.style.display = "flex";
-    InpBurnDef.style.display = "none"
-    InpPauseDef.style.display = "none"
-    InApproveDef.style.display = "none"
     InpTransferDef.style.display = "flex"
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
@@ -1162,7 +1298,25 @@ function transfer20def() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
+}
+function transfer20def() {
+    modalForERC20deflation.style.display = "block"
+    contentModalsERC20def.style.display = 'block'
+    transferTextDef.style.display = "flex";
+    InpBurnDef.style.display = "none"
+    InpPauseDef.style.display = "none"
+    InpTransferDef.style.display = "flex"
+    InApproveDef.style.display = 'flex'
+    InpTransferFromDef.style.display = "none"
+    InpUnpauseDef.style.display = "none"
+    InpBalanceDef.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function tf20def() {
     modalForERC20deflation.style.display = "block"
@@ -1170,15 +1324,16 @@ function tf20def() {
     transferFromTextDef.style.display = "flex";
     InpBurnDef.style.display = "none"
     InpPauseDef.style.display = "none"
-    InApproveDef.style.display = "none"
     InpTransferDef.style.display = "none"
     InpTransferFromDef.style.display = "flex"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    InApproveDef.style.display = 'flex';
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function unpause20def() {
     modalForERC20deflation.style.display = "block"
@@ -1194,7 +1349,8 @@ function unpause20def() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function balance20def() {
     modalForERC20deflation.style.display = "block"
@@ -1206,11 +1362,14 @@ function balance20def() {
     InpTransferDef.style.display = "none"
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
+    const account = document.getElementById('InpaddressDef')
+    account.style.display = 'none';
     InpBalanceDef.style.display = "flex"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 
 
@@ -1226,14 +1385,15 @@ function burn20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
-    InpAccountInf.style.display = "none"
+    InpAccountInf.style.display = "flex"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address)
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 
 }
 function mint20() {
@@ -1249,14 +1409,15 @@ function mint20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
-    InpAccountInf.style.display = "none"
+    InpAccountInf.style.display = "flex"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address)
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 
 function pause20() {
@@ -1271,7 +1432,7 @@ function pause20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     InpAccountInf.style.display = 'none'
@@ -1279,7 +1440,8 @@ function pause20() {
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
     console.log(resent, address, abi)
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function approve20() {
     modalForERC20inflation.style.display = "block"
@@ -1294,13 +1456,14 @@ function approve20() {
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
     InpAccountInf.style.display = "flex"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function transfer20() {
     modalForERC20inflation.style.display = "block"
@@ -1314,7 +1477,7 @@ function transfer20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     InpAccountInf.style.display = "none"
@@ -1322,7 +1485,8 @@ function transfer20() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 
 function tf20() {
@@ -1337,14 +1501,15 @@ function tf20() {
     InpTransferFromInf.style.display = "flex"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    modal_container.forEach(function(mc) {
+    InpAccountInf.style.display = 'flex'
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
-    InpAccountInf.style.display = "none"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function unpause20() {
     modalForERC20inflation.style.display = "block"
@@ -1358,14 +1523,15 @@ function unpause20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     InpAccountInf.style.display = "none"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function balance20() {
     modalForERC20inflation.style.display = "block"
@@ -1379,14 +1545,15 @@ function balance20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "flex"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     InpAccountInf.style.display = "none"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 
 
@@ -1404,7 +1571,8 @@ function unstake() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 
 function claim() {
@@ -1421,7 +1589,8 @@ function claim() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 
 
@@ -1439,7 +1608,8 @@ function StakeInput() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function calculateInput() {
     modalForStaking.style.display = "block"
@@ -1455,7 +1625,8 @@ function calculateInput() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
 function stakersInput() {
     StakeText.style.display = "none"
@@ -1471,22 +1642,9 @@ function stakersInput() {
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`);
+    btns(abi, address, chainId)
 }
-
-function closeModal721() {
-    // modalForBurn721.style.display = "none"
-    // burn721.style.display = "none"
-    // tf721.style.display = "none"
-    // mint721.style.display = "none"
-    // addressTo.style.display = "none"
-
-    // approve721.style.display = "none"
-    // balance721.style.display = "none"
-
-    // modal_container1.style.height = "40%"
-}
-
 
 function balanceNFT721() {
     modalForBurn721.style.display = "block"
@@ -1497,14 +1655,15 @@ function balanceNFT721() {
     burnText721.style.display = "none"
     approveText721.style.display = "none"
     sftText721.style.display = "none"
-    addressTo.style.display = "none"
-    modal_container.forEach(function(mc) {
+    tokenId.style.display = "none"
+    modal_container.forEach(function (mc) {
         mc.style.height = "40%"
     })
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 
 function balanceNFT() {
@@ -1516,16 +1675,18 @@ function balanceNFT() {
     burnText.style.display = "none"
     sftText.style.display = "none"
     approveText.style.display = "none"
-    AccountM.style.display = "flex"
-    
-    modal_container.forEach(function(mc) {
+    approveM.style.display = "flex"
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     AccountFrom.style.display = "none"
+    const radioForAprove = document.getElementsByClassName('form-check');
+    [...radioForAprove].forEach((e) => { e.style.display = 'none' });
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 
 function approveNFT721() {
@@ -1537,14 +1698,16 @@ function approveNFT721() {
     burnText721.style.display = "none"
     approve721.style.display = "flex"
     sftText721.style.display = "none"
-    addressTo.style.display = "flex"
-    modal_container.forEach(function(mc) {
+    tokenId.style.display = "flex"
+    tokenUri.style.display = 'none'
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 function approveNFT() {
     modalForBurn.style.display = "block"
@@ -1555,16 +1718,19 @@ function approveNFT() {
     burnText.style.display = "none"
     sftText.style.display = "none"
     balanceText.style.display = "none"
-    AccountM.style.display = "flex"
-    
-    modal_container.forEach(function(mc) {
+    approveM.style.display = "flex"
+    const radioForAprove = document.getElementsByClassName('form-check');
+    [...radioForAprove].forEach((e) => { e.style.display = 'flex' });
+
+    modal_container.forEach(function (mc) {
         mc.style.height = "50%"
     })
     AccountFrom.style.display = "none"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 
 
@@ -1572,7 +1738,7 @@ function openSTfNFT() {
     modalForBurn.style.display = "block"
     modal.style.display = 'block'
     stfM.style.display = "flex"
-    AccountM.style.display = "flex"
+    approveM.style.display = "flex"
     sftText.style.display = "flex"
     burnText.style.display = "none"
     mintText.style.display = "none"
@@ -1580,13 +1746,18 @@ function openSTfNFT() {
     approveText.style.display = "none"
     AccountM.style.display = "none"
     AccountFrom.style.display = "flex"
-    modal_container.forEach(function(mc) {
+    balanceM.style.display = 'flex';
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
+    const radioForAprove = document.getElementsByClassName('form-check');
+    [...radioForAprove].forEach((e) => { e.style.display = 'none' });
+
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 function openTfNFT721() {
     modalForBurn721.style.display = "block"
@@ -1597,40 +1768,39 @@ function openTfNFT721() {
     burnText721.style.display = "none"
     approveText721.style.display = "none"
     tf721.style.display = "flex"
-    addressTo.style.display = "flex"
-    modal_container.forEach(function(mc) {
+    tokenId.style.display = "flex"
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
     })
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
-
-
-
-
-
-
 
 function openMintNFT() {
     modalForBurn.style.display = "block"
     modal.style.display = 'block'
     mintM.style.display = "flex"
     mintText.style.display = "flex"
-    AccountM.style.display = "flex"
+    approveM.style.display = "flex"
     burnText.style.display = "none"
     sftText.style.display = "none"
     balanceText.style.display = "none"
     approveText.style.display = "none"
-    modal_container.forEach(function(mc) {
+    balanceM.style.display = 'flex'
+    modal_container.forEach(function (mc) {
         mc.style.height = "45%"
-    })  
+    })
+    const radioForAprove = document.getElementsByClassName('form-check');
+    [...radioForAprove].forEach((e) => { e.style.display = 'none' });
     AccountFrom.style.display = "none"
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 
 function openMintNFT721() {
@@ -1639,39 +1809,45 @@ function openMintNFT721() {
     balanceText721.style.display = "none"
     mintText721.style.display = "flex"
     mint721.style.display = "flex"
-    addressTo.style.display = "none"
+    tokenUri.style.display = 'flex'
+    tokenId.style.display = "none"
     burnText721.style.display = "none"
     approveText721.style.display = "none"
     sftText721.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "40%"
-    })    
+    })
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
-    
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
+
 }
 
 function openBurnNFT() {
     modalForBurn.style.display = "block"
     modal.style.display = 'block'
     burnM.style.display = "flex"
+    balanceM.style.display = "flex"
     burnText.style.display = "flex"
     mintText.style.display = "none"
     sftText.style.display = "none"
     balanceText.style.display = "none"
     approveText.style.display = "none"
-    AccountM.style.display = "none"
-    AccountFrom.style.display = "none"   
-    modal_container.forEach(function(mc) {
+    approveM.style.display = "none"
+    AccountFrom.style.display = "none"
+    modal_container.forEach(function (mc) {
         mc.style.height = "40%"
-    })  
+    })
+    const radioForAprove = document.getElementsByClassName('form-check');
+    [...radioForAprove].forEach((e) => { e.style.display = 'none' });
 
     const resent = sessionStorage.getItem('resent');
     const address = sessionStorage.getItem(`${resent}`);
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    btns(abi, address, chainId);
 }
 function openBurnNFT721() {
     modalForBurn721.style.display = "block"
@@ -1683,13 +1859,17 @@ function openBurnNFT721() {
     sftText721.style.display = "none"
     burn721.style.display = "flex"
     addressTo.style.display = "none"
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "40%"
     })
     const resent = sessionStorage.getItem('resent');
+    console.log(resent)
     const address = sessionStorage.getItem(`${resent}`);
+    console.log(address)
     const abi = JSON.parse(sessionStorage.getItem(`${address}`));
-    btns(abi, address);
+    const chainId = sessionStorage.getItem(`chainId${resent}`)
+    console.log(abi)
+    btns(abi, address, chainId);
 }
 
 function openBurn() {
@@ -1710,7 +1890,7 @@ function closeModal2() {
     mintM.style.display = "none"
     approveM.style.display = "none"
     balanceM.style.display = "none"
-    
+
     modalForStaking.style.display = "none"
     StakeInp.style.display = "none"
     CalculateInp.style.display = "none"
@@ -1739,47 +1919,15 @@ function closeModal2() {
     burn721.style.display = "none"
     tf721.style.display = "none"
     mint721.style.display = "none"
-    addressTo.style.display = "none"
+    tokenId.style.display = "none"
 
     approve721.style.display = "none"
     balance721.style.display = "none"
 
-    modal_container.forEach(function(mc) {
+    modal_container.forEach(function (mc) {
         mc.style.height = "40%"
     })
 }
-
-
-// function closeModalStaking() {
-//     modalForStaking.style.display = "none"
-//     StakeInp.style.display = "none"
-//     CalculateInp.style.display = "none"
-//     StakeInp.style.display = "none"
-// }
-// function closeModalERC20inf() {
-//     modalForERC20inflation.style.display = "none"
-//     burnTextInf.style.display = "none"
-//     mintTextInf.style.display = "none"
-//     pauseTextInf.style.display = "none"
-//     approveTextInf.style.display = "none"
-//     transferTextInf.style.display = "none"
-//     unpauseTextInf.style.display = "none"
-//     transferFromTextInf.style.display = "none"
-//     balanceTextInf.style.display = "none"
-// }
-
-// function closeModalERC20def() {
-//     modalForERC20deflation.style.display = "none"
-//     burnTextDef.style.display = "none"
-//     pauseTextDef.style.display = "none"
-//     approveTextDef.style.display = "none"
-//     transferTextDef.style.display = "none"
-//     unpauseTextDef.style.display = "none"
-//     transferFromTextDef.style.display = "none"
-//     balanceTextDef.style.display = "none"
-// }
-
-
 function openModal() {
     modal.style.display = 'block'
 }
@@ -1812,47 +1960,21 @@ const confirmBtn = document.getElementById("confirmBtn");
 
 
 function checkInputs() {
-    if(burn.value) {
+    if (burn.value) {
         console.log("burn")
-    } else if(mint.value) {
+    } else if (mint.value) {
         console.log(mint)
-    } else if(burnBatch.value) {
+    } else if (burnBatch.value) {
         console.log("burnBatch")
-    } else if(safeTransferFrom.value) {
+    } else if (safeTransferFrom.value) {
         console.log("safeTransferFrom")
-    } else if(mintBatch.value) {
+    } else if (mintBatch.value) {
         console.log('mintBatch')
-    }  else if(SetApproval.value) {
+    } else if (SetApproval.value) {
         console.log("SetApproval")
-    } else if(balanceOf.value) {
+    } else if (balanceOf.value) {
         console.log('balanceOf')
     } else {
         console.log("You cant choose less or more than 1")
     }
 }
-
-
-
-
-
-// window.addEventListener('click', clickOut);
-// function clickOut(e) {
-//     if(e.target == modal) {
-//         modal.style.display = "block"
-//     }
-    
-// }
-
-
-
-
-
-
-// input1.addEventListener('input', function() {
-//     console.log("Данные были введены в первый инпуттт");
-//     if (input1.value.trim() !== "") {
-//         input2.disabled = true; // Отключаем второй инпут, если в первом есть данные
-//     } else {
-//         input2.disabled = false; // Включаем второй инпут, если в первом нет данных
-//     }
-// });
