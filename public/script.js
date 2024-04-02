@@ -645,7 +645,7 @@ async function callContract() {
           const bascetId = sessionStorage.getItem('bascet')
           const succes = await profile(bascetId, resp);
           console.log(`Contract create whith succes: ${succes}`);
-        }
+        }}
 
 
       } else {
@@ -664,13 +664,13 @@ async function callContract() {
             erc20ContractText.innerText = deployedContractInfBurn
             erc20ContractText.style.display = "flex"
           })
-          const resp = await postContract(2, erc20ContractText.innerText, 2, 2)
-          console.log(resp);
-          const bascetId = sessionStorage.getItem('bascet')
-          const succes = await profile(bascetId, resp);
-          console.log(`Contract create whith succes: ${succes}`);
+          // const resp = await postContract(2, erc20ContractText.innerText, 2, 2)
+          // console.log(resp);
+          // const bascetId = sessionStorage.getItem('bascet')
+          // const succes = await profile(bascetId, resp);
+          // console.log(`Contract create whith succes: ${succes}`);
         } else if (selectedVar == "Pause") {
-          onsole.log("pausable run")
+          console.log("pausable run")
           await erc20infPauseContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
             from: userAddress
           }).on('receipt', function (receipt) {
@@ -768,7 +768,7 @@ async function callContract() {
       console.log("Solana doesnt work well now")
     }
   }
-}
+
 
 
 

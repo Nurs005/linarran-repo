@@ -29,8 +29,7 @@ async function authAddress(address) {
             throw new Error('responce is not ok') 
         } 
         const result = await response.json(); 
-        console.log(result);
-        return  result
+        return result; 
     } catch (error) { 
         console.error(error) 
     }
@@ -114,28 +113,250 @@ async function contractNFTId(contractNFTId) {
     } 
  
 }
-function chek() {
-    
-        let modalBtnBurn20 = document.getElementById('modalBtnBurn20')
-        modalBtnBurn20.addEventListener('click', ()=> {
-            if(burnTextInf.style.display == "flex") {
-                console.log('workkkkk')
-            } else {
-                console.log("id")
-            }
-            
+async function btns(abis, address) {
+    // начало inflation erc20
+    if(mintTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async()=>{
+            const erc20Mint = new web3.eth.Contract(abis, address);
+            await  erc20Mint.methods.mint(InpAccountInf.value, InpMintInf.value).send({from: userAddress});
+            alert("Successfully minted!");
+
         })
-    
+        console.log('Inflation erc-20 mint')
+    } else if(burnTextInf.style.display == "flex"){
+        document.getElementById('modalBtnBurn20').addEventListener('click', async()=>{
+            const erc20burn = new web3.eth.Contract(abis, address);
+            // await  erc20burn.methods.mint(InpAccountInf.value, InpBurnInf.value).send({from: userAddress});
+            await  erc20burn.methods.burn(InpAccountInf.value, InpBurnInf.value).send({from: userAddress});
+            alert("Successfully burned!");
+            console.log('Inflation erc-20 burn')
+        })
+    } else if(pauseTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener( 'click' , async () => {
+        const erc20pause = new web3.eth.Contract(abis, address);
+        if(confirm('Are you sure to pause the token?')){
+        await  erc20pause.methods.pause().send({from: userAddress});
+        alert("Successfully paused!");
+        console.log('Inflation erc-20 pause')
+        }   
+    })
+    } else if(approveTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async ()=>{
+            const  erc20Approve = new web3.eth.Contract(abis, address);
+            await erc20Approve.methods.approve(InpAccountInf.value, InApproveInf.value).send({from: userAddress});
+            console.log('You approved')
+        })
+        console.log('Inflation erc-20 approve')
+    }else if(transferTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async()=>{
+            const  erc20Trensfer = new web3.eth.Contract(abis, address);
+            await erc20Trensfer.methods.transfer(InpAccountInf.value, InpTransferInf.value).send({from: userAddress});
+            console.log('transfered with succses')
+        })
+    }else if(transferFromTextInf.style.display == "flex") {
+        document.getElementById('modalBtnBurn20').addEventListener('click', async()=> {
+        const erc20TrensferFrom = new web3.eth.Contract(abis,address);
+        await erc20TrensferFrom.methods.transfer(InpAccountInf.value, InpTransferFromInf.value).send({from: userAddress});
+        console.log('You transferd from')
+    })
+        console.log('Inflation erc-20 transfer from')
+    }else if(unpauseTextInf.style.display == "flex") {
+        document.getElementById( 'modalBtnBurn20' ).addEventListener('click', async()=>{
+        const erc20Unpause = new web3.eth.Contract(abis, address);
+        await erc20Unpause.methods.unpause().send({from: userAddress})
+        console.log('Inflation erc-20 unpause')
+        })
+    }else if(balanceTextInf.style.display == "flex") {
+        document.getElementById( 'modalBtnBurn20' ).addEventListener('click', async()=>{
+        const erc20GetBalance = new web3.eth.Contract(abis, address);
+        const balance  = await erc20GetBalance.methods.balanceOf(InpBalanceInf.value).call();
+        alert(`User balance: ${balance}`);
+        console.log('Inflation erc-20 balance') // Конец erc 20 innflation И начало erc 20 deflation
+        })
+    }else if(burnTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurn').addEventListener('click', async()=>{
+            const erc20Burndef = new web3.eth.Contract(abis,address);
+            await erc20Burndef.methods.burn(InpBurnDef.value ,InpBurnDef.value).send({
+                from :userAddress
+            });
+            alert("Token burned");
+        })
+    } else if(pauseTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurn').addEventListener('click', async() => {
+            const pauseDef = new web3.eth.Contract(abis, address);
+            await pauseDef.methods.pause().send({from: userAddress});
+        console.log('Deflation erc-20 pause')
+        })
+    } else if(approveTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurn').addEventListener('click', async()=>{
+            const aproveDef = new web3.eth.Contract(abis, address);
+            await aproveDef.methods.pause().send({from: userAddress});
+            console.log('Deflation aproved');
+        })
+        console.log('Deflation erc-20 approve')
+    } else if(transferTextDef.style.display == "flex") {
+        document.getElementById('modalBtnBurn').addEventListener('click', async()=>{
+            const transferDef = new web3.eth.Contract(abis, address);
+            const account = document.getElementById('InpaddressDef').value;
+            await transferDef.methods.transfer(account, InpTransferDef.value);
+            console.log('Deflation erc-20 transfer')
+        })
+    } else if(transferFromTextDef.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async()=>{
+            const transferFromDef = new web3.eth.Contract(abis, address);
+            await  transferFromDef.methods.transferFrom(document.getElementById('InpaddressDef').value, InpTransferFromDef).send({from: userAddress});
+            console.log('transfer from');
+        })
+        console.log('Deflation erc-20 transfer from')
+    } else if(unpauseTextDef.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click' ,async ()=>{
+            const unpauseDef = new web3.eth.Contract(abis, address)
+            await unpauseDef.methods.unpause( ).send ({from: userAddress})
+        console.log('Deflation erc-20 unpause')
+        })
+    } else if(balanceTextDef.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const getBalanse = new web3.eth.Contract(abis, address);
+            const answer = await getBalanse.methods.balanceOf(InpBalanceDef).call();
+            alert(`Address balance: ${answer}`);
+        console.log('Deflation erc-20 balance') 
+        })// конец erc20 deflation и начало nft 1155
+    } else if(burnText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const burn = new web3.eth.Contract(abis, address);
+            await burn.methods.burn(burnM.value).send({from:userAddress});
+            alert(`Succesfully burnt`);
+            console.log('erc1155 burn') 
+        })
+        
+    } else if(mintText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const mint = new web3.eth.Contract(abis, address);
+            await mint.methods.mint(AccountM.value, mintM.value).send({from:userAddress});
+            alert(`Succesfully minted`);
+            console.log('erc1155 mint')
+        })
+        
+    } else if(sftText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const sft = new web3.eth.Contract(abis, address);
+            await sft.methods.safeTransferFrom(AccountFrom.value, stfM.value).send({from:userAddress});
+            alert(`Succesfully transfered`);
+            console.log('erc1155 transfer from')
+        })
+        
+    } else if(approveText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const approve = new web3.eth.Contract(abis, address);
+            await approve.methods.setApproveForAll(AccountM.value, approveM.value).send({from:userAddress});
+            alert(`Succesfully approved for all`);
+            console.log('erc1155 approve for all')
+        })
+        
+    } else if(balanceText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const balance = new web3.eth.Contract(abis, address);
+            const answer = await balance.methods.balanceOf(AccountM.value, balanceM.value).call();
+            alert(`Balance: ${answer}`);
+            console.log('erc1155 balance')
+        })
+         // конец 1155 и начало 721
+    } else if(burnText721.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const burn = new web3.eth.Contract(abis, address);
+            await burn.methods.burn(burn721.value).send({from:userAddress});
+            alert(`Succesfully burnt`);
+            console.log('erc721 burn') 
+        })
+        
+    } else if(mint721.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const mint = new web3.eth.Contract(abis, address);
+            await mint.methods.mint(addressTo.value, mint721.value).send({from:userAddress});
+            alert(`Succesfully minted`);
+            console.log('erc721 mint')
+        })
+        
+    } else if(sftText721.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const sft = new web3.eth.Contract(abis, address);
+            await sft.methods.safeTransferFrom(tf721.value).send({from:userAddress});
+            alert(`Succesfully transfered`);
+            console.log('erc721 transfer from')
+        })
+        
+    } else if(approveText721.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const approve = new web3.eth.Contract(abis, address);
+            await approve.methods.approve(addressTo.value, approve721.value).send({from:userAddress});
+            alert(`Succesfully approved`);
+            console.log('erc721 approve')
+        })
+        
+    } else if(balanceText721.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const balance = new web3.eth.Contract(abis, address);
+            const answer = await balance.methods.balanceOf(balance721.value).call();
+            alert(`Balance: ${answer}`);
+            console.log('erc721 balance')
+        }) // конец 721 и начало стейкинга
+    } else if(ClaimRtext.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const claimR = new web3.eth.Contract(abis, address);
+            await claimR.methods.claimRewards().send({from:userAddress});
+            alert(`Succesfully claimed reward`);
+            console.log('Claim rewards')
+        })
+        
+    } else if(StakeText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const Stake = new web3.eth.Contract(abis, address);
+            await Stake.methods.stake(StakeInp.value).send({from:userAddress});
+            alert(`Succesfully staked`);
+            console.log('Stake')
+        })
+    } else if(UnstakeText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const Unstake = new web3.eth.Contract(abis, address);
+            await Unstake.methods.unstake().send({from:userAddress});
+            alert(`Succesfully unstaked`);
+            console.log('Unstake')
+        })
+    } else if(CalculateRtext.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const CalculateR = new web3.eth.Contract(abis, address);
+            const answer = await CalculateR.methods.calculateRewards(CalculateInp.value).call();
+            alert(`Succesfully calculated: ${answer}`);
+            console.log('Calculate rewards')
+        })
+        
+    } else if(StakersText.style.display == "flex") {
+        document.getElementById('modalbtnBurn').addEventListener('click', async ()=>{
+            const StakersList = new web3.eth.Contract(abis, address);
+            const answer = await StakersList.methods.stakersList(StakersInp.value).call();
+            alert(`Stakers List: ${answer}`);
+            console.log('Stakers list')
+        })
+        
+    } else {
+        console.log("something went wrong")
+    }
+
+
+
 }
-async function card20(a) {
-    let s = localStorage.getItem('currentAddress')
+
+
+async function card20(a, text, interfaces) {
+    // let s = localStorage.getItem('currentAddress')
 
     // let info = await authAddress(s)
     // info.kindId.length
     // info.typeId.length
     // info.contractId.length
     // info.contractNFTId.length;
-
+    // const abis = []
+    // abis.push(interfaces);
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -155,6 +376,12 @@ async function card20(a) {
     title5.classList.add('card-title')
     title5.innerText = "ERC20"
 
+    let desc = document.createElement('p')
+    desc.id = `erc${a}`
+    desc.innerHTML = text
+    sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
+    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces[0]));
+
     let btn = document.createElement('button')
     btn.classList.add('btn')
     btn.id = a
@@ -166,6 +393,7 @@ async function card20(a) {
     child1.appendChild(img)
     child1.appendChild(child2)
     child2.appendChild(title5)
+    child2.appendChild(desc)
     child2.appendChild(btn)
 
     let section = document.getElementById('cardsRow')
@@ -198,6 +426,7 @@ console.log('after')
         let c = document.getElementById(1)
         c.addEventListener('click', ()=> {
             openModalERC20inf;
+            sessionStorage.setItem('resent', `${c.id}`);
             burnInf.style.display = "none"
             PauseInf.style.display = "none"
             UnpauseInf.style.display = "none"
@@ -209,21 +438,22 @@ console.log('after')
         // card20(i)
         let a = document.getElementById(2)
         a.addEventListener('click', ()=> {
+            sessionStorage.setItem('resent', `${a.id}`);
             openModalERC20inf
             PauseInf.style.display = "none"
             UnpauseInf.style.display = "none"
             burnInf.style.display = "flex"
             console.log('2 inf')
         })
-        
     } else if(a == 3) {
-        btn.addEventListener('click',openModalERC20inf)
+        btn.addEventListener('click',openModalERC20inf);
         // openModalERC20inf()
         // card20(i)
         
         let b = document.getElementById(3)
         b.addEventListener('click', () => {
             openModalERC20inf
+            sessionStorage.setItem('resent', `${b.id}`);
             PauseInf.style.display = "flex"
             UnpauseInf.style.display = "flex"
             burnInf.style.display = "none"
@@ -233,10 +463,10 @@ console.log('after')
         btn.addEventListener('click',openModalERC20inf)
         // openModalERC20inf()
         // card20(i)
-        
         let d = document.getElementById(4)
         d.addEventListener('click', () => {
             openModalERC20inf
+            sessionStorage.setItem('resent', `${d.id}`);
             burnInf.style.display = "flex"
             PauseInf.style.display = "flex"
             UnpauseInf.style.display = "flex"
@@ -248,6 +478,7 @@ console.log('after')
         let e = document.getElementById(5)
         e.addEventListener('click', () => {
             openModalERC20def()
+            sessionStorage.setItem('resent', `${e.id}`);
             PauseDef.style.display = "none"
             UnpauseDef.style.display = "none"
             burnDef.style.display = "flex"
@@ -258,6 +489,7 @@ console.log('after')
         let h = document.getElementById(6)
         h.addEventListener('click', () => {
             openModalERC20def()
+            sessionStorage.setItem('resent', `${h.id}`);
             burnDef.style.display = "none"
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
@@ -268,6 +500,7 @@ console.log('after')
         
         let h = document.getElementById(7)
         h.addEventListener('click', () => {
+            sessionStorage.setItem('resent', `${h.id}`);
             openModalERC20def()
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
@@ -283,8 +516,8 @@ console.log('after')
 
 }
 
-async function cardNft(a) {
-    let s = localStorage.getItem('currentAddress')
+async function cardNft(a, text, interfaces, metadata) {
+    // let s = localStorage.getItem('currentAddress')
 
     // let info = await authAddress(s)
     // info.kindId.length
@@ -300,7 +533,7 @@ async function cardNft(a) {
     child1.setAttribute('style', 'width: 18rem;')
 
     let img = document.createElement('img')
-    img.setAttribute('src', '')
+    img.setAttribute('src', `${metadata}`)
     img.classList.add('card-img-top')
     img.setAttribute('alt', 'Sorry, picture not found')
 
@@ -316,7 +549,11 @@ async function cardNft(a) {
     btn.id = a
     btn.innerText = "click here"
     
-    
+    let desc = document.createElement('p')
+    desc.id = `nft${a}`
+    desc.innerHTML = text
+    sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
+    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces[0]));
 
     parentDiv.appendChild(child1);
     child1.appendChild(img)
@@ -345,8 +582,9 @@ async function cardNft(a) {
                 btn.addEventListener('click',openModal)
                 let ab = document.getElementById(8)
                 ab.addEventListener('click', ()=> {
-                    openModal1155();
+                    openModal();
                     console.log('1155')
+                    sessionStorage.setItem(`resent`,`${ab.id}`)
                 })
     } else if(a == 9) {
         btn.addEventListener('click',openModal721)
@@ -354,13 +592,15 @@ async function cardNft(a) {
         ab.addEventListener('click', ()=> {
             openModal721;
             console.log('721')
+            sessionStorage.setItem(`resent`,`${ab.id}`)
         })
     } else {
         console.log("not an nft")
     }
 }
-async function cardStaking(a) {
-    let s = localStorage.getItem('currentAddress')
+async function cardStaking(a, text, interfaces) {
+
+    // let s = localStorage.getItem('currentAddress')
 
     // let info = await authAddress(s)
     // info.kindId.length
@@ -389,10 +629,15 @@ async function cardStaking(a) {
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = a
+    btn.id = `staking${a}`
     btn.innerText = "click here"
     btn.addEventListener('click', openModalStaking)
     
+    let desc = document.createElement('p')
+    desc.id = `staking${a}`
+    desc.innerHTML = text
+    sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
+    sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces[0]));
 
     parentDiv.appendChild(child1);
     child1.appendChild(img)
@@ -423,7 +668,7 @@ async function cardStaking(a) {
         bc.addEventListener('click', () => {
             openModalStaking()
             console.log('staking')
-
+            sessionStorage.setItem(`resent`, `${bc.id}`)
         })
     } else {
         console.log('not staking')
@@ -441,100 +686,107 @@ async function cardStaking(a) {
     closeBtnBurns.forEach(function(closeBtnBurn) {
         closeBtnBurn.addEventListener('click', closeModal2)        
     })
+    let web3 = new Web3(window.ethereum);
 
+    let userAddress;
 
-let ercIddd = [];
+    async function connectWallet() {
+        console.log("test");    
+        if(window.ethereum){
+            const accounts = await window.ethereum.request({method: "eth_requestAccounts"});
+            userAddress = accounts[0];
+            console.log(accounts[0]);
+            web3 = new Web3(Web3.givenProvider);
+            currentAddressText.style.display = "flex";
+            var fullAddress = userAddress.toString();
+
+            var trimmedAddress = trimAddress(fullAddress, 6, 4); // Измените значения для первых и последних символов по вашему усмотрению
+            currentAddressText.innerText = trimmedAddress;
+            const data = await authAddress(fullAddress);
+            connectButton.innerText = ""
+            return data
+        }else{
+            console.log("Please install Metamask");
+        }
+    }
+    function trimAddress(address, startChars, endChars) {
+        if (address.length <= startChars + endChars + 3) return address;
+        console.log(address)
+
+        var start = address.substring(0, startChars);
+        var end = address.substring(address.length - endChars);
+        return start + '...' + end;
+    }
 let temp;
 let temp2;
+
 
 document.addEventListener('DOMContentLoaded', async ()=>{
 const connectButton = document.getElementById("connectButton");
 const currentAddressText = document.getElementById("currentAddressText");
 
-    let s = localStorage.getItem('currentAddress')
-    console.log(s)
-    var trimmedAddress = trimAddress(s, 6, 4);
-    currentAddressText.innerText = trimmedAddress;
-    connectButton.innerText = ""
-    // ercId = cc( [8, 3, 2, 4, 1, 3, 1, 7, 5, 6, 7]);
+    // let s = localStorage.getItem('currentAddress')
+    const data = await connectWallet()
     
-    //  const data = await authAddress('0x90f6e05dc2fc6f8717c0cc355a21850c47426d62')
-    //  const userTypeData = data.resObj.userTypeId;
-    //  const userKindData = data.resObj.userKindId;
-    //  const temp2 = userTypeData.map(id => id);
-    //  const temp = userKindData.map(id => id);
-    // console.log(temp2)
-    temp2 = {typeIdCheck: [
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        2,
-        1,
-        1,
-        3
+    // temp2 = {typeIdCheck: [
+    //     2,
+    //     2,
+    //     2,
+    //     2,
+    //     2,
+    //     2,
+    //     2,
+    //     1,
+    //     1,
+    //     3
         
-    ]}
-    temp = {userKindId: [ 
-        1, 
-        3, 
-        2,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
-    ]}
-
-    console.log(temp)
+    // ]}
+    // temp = {userKindId: [ 
+    //     1, 
+    //     3, 
+    //     2,
+    //     4,
+    //     5,
+    //     6,
+    //     7,
+    //     8,
+    //     9,
+    //     10
+    // ]}
+    // console.log(temp2.typeIdCheck)
+    // console.log(temp2.typeIdCheck[0])
 
     // card20()
     // erc20KindIdCheck(temp.userKindId)
 
-    if(temp2.typeIdCheck.length == temp.userKindId.length) {
-        for(let i = 0; i < temp2.typeIdCheck.length; i++) {
-            if(temp2.typeIdCheck[i] == 1) {
-                cardNft(temp.userKindId[i])
-                console.log((temp.userKindId[i]))
-            } else if(temp2.typeIdCheck[i] == 2) {
-                card20(temp.userKindId[i])
-            } else if(temp2.typeIdCheck[i] == 3) {
-                cardStaking(temp.userKindId[i])
+    const userDataType = await data.resObj.userTypeId;
+    const userDataKind = await data.resObj.userKindId;
+    const userDataAbi = await data.resObj.userAbi;
+    const userAddresses = await data.resObj.userContractAddress;
+    const userMetadata = await data.resObj.userMetadata;
+
+    const temp2 = userDataType.map(id => id);
+    const temp = userDataKind.map(id => id);
+    const abiTemp = userDataAbi.map(c => JSON.parse(c));
+    const contractAddresses = userAddresses.map(c=> c);
+    const metadata = userMetadata.map(m => m);
+    console.log(temp2, temp, abiTemp, metadata, contractAddresses);
+
+    if(temp2.length == temp.length) {
+        for(let i = 0; i < temp2.length; i++) {
+            if(temp2[i] == 1) {
+                cardNft(temp[i], `${contractAddresses[i]}`, abiTemp[i], metadata[i]);
+                console.log((temp[i]))
+            } else if(temp2[i] == 2) {
+                card20(temp[i], `${contractAddresses[i]}`, abiTemp[i])
+            } else if(temp2[i] == 3) {
+                cardStaking(temp[i], `${contractAddresses[i]}`, abiTemp[i]);
             }
         }
     }
-    // card20()
-    // cardNft()
-    // cardStaking()
-    // for(let i = 0; i < temp.userKindId.length; i++) {
-    //     console.log('check')
-    //     card20()
-    // }
-    // let inf = authAddress(s)
-    // console.log(inf)
-
-
 
 })
 
-
-
-function cc(ercId) {
-    
-    ercId.push(ercId);
-    return ercId;
-}
-
-function trimAddress(address, startChars, endChars) {
-    if (address.length <= startChars + endChars + 3) return address;
-    var start = address.substring(0, startChars);
-    var end = address.substring(address.length - endChars);
-    return start + '...' + end;
-}
 let modal = document.getElementById('contentModals')
 let contentModals721 = document.getElementById('contentModals721')
 let contentModalsStaking = document.getElementById('contentModalsStaking')
@@ -636,6 +888,7 @@ let burn721 = document.getElementById('burn721')
 let mint721 = document.getElementById('mint721')
 let addressTo = document.getElementById('addressTo')
 let tf721 = document.getElementById('tf721')
+let id721 = document.getElementById('id721')
 let approve721 = document.getElementById('approve721')
 let balance721 = document.getElementById("balance721")
 
@@ -856,18 +1109,27 @@ function burn20def() {
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address)
 }
 function pause20def() {
     modalForERC20deflation.style.display = "block"
     contentModalsERC20def.style.display = 'block'
     pauseTextDef.style.display = "flex";
     InpBurnDef.style.display = "none"
-    InpPauseDef.style.display = "flex"
+    InpPauseDef.style.display = "none"
     InApproveDef.style.display = "none"
     InpTransferDef.style.display = "none"
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    console.log(resent, address, abi)
+    btns(abi, address)  
 }
 function approve20def() {
     modalForERC20deflation.style.display = "block"
@@ -880,6 +1142,11 @@ function approve20def() {
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    InpAccountInf.style.display = "flex"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function transfer20def() {
     modalForERC20deflation.style.display = "block"
@@ -892,6 +1159,10 @@ function transfer20def() {
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function tf20def() {
     modalForERC20deflation.style.display = "block"
@@ -904,6 +1175,10 @@ function tf20def() {
     InpTransferFromDef.style.display = "flex"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function unpause20def() {
     modalForERC20deflation.style.display = "block"
@@ -914,8 +1189,12 @@ function unpause20def() {
     InApproveDef.style.display = "none"
     InpTransferDef.style.display = "none"
     InpTransferFromDef.style.display = "none"
-    InpUnpauseDef.style.display = "flex"
+    InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function balance20def() {
     modalForERC20deflation.style.display = "block"
@@ -928,6 +1207,10 @@ function balance20def() {
     InpTransferFromDef.style.display = "none"
     InpUnpauseDef.style.display = "none"
     InpBalanceDef.style.display = "flex"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 
@@ -943,11 +1226,15 @@ function burn20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
-    
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
-    chek()
+    InpAccountInf.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address)
+
 }
 function mint20() {
     modalForERC20inflation.style.display = "block"
@@ -965,6 +1252,11 @@ function mint20() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    InpAccountInf.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address)
 }
 
 function pause20() {
@@ -973,7 +1265,7 @@ function pause20() {
     pauseTextInf.style.display = "flex";
     InpBurnInf.style.display = "none"
     InpMintInf.style.display = "none"
-    InpPauseInf.style.display = "flex"
+    InpPauseInf.style.display = "none"
     InApproveInf.style.display = "none"
     InpTransferInf.style.display = "none"
     InpTransferFromInf.style.display = "none"
@@ -982,6 +1274,12 @@ function pause20() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    InpAccountInf.style.display = 'none'
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    console.log(resent, address, abi)
+    btns(abi, address);
 }
 function approve20() {
     modalForERC20inflation.style.display = "block"
@@ -995,9 +1293,14 @@ function approve20() {
     InpTransferFromInf.style.display = "none"
     InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
+    InpAccountInf.style.display = "flex"
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function transfer20() {
     modalForERC20inflation.style.display = "block"
@@ -1014,6 +1317,12 @@ function transfer20() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    InpAccountInf.style.display = "none"
+    InpAccountInf.style.display = "flex"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function tf20() {
@@ -1031,6 +1340,11 @@ function tf20() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    InpAccountInf.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function unpause20() {
     modalForERC20inflation.style.display = "block"
@@ -1042,11 +1356,16 @@ function unpause20() {
     InApproveInf.style.display = "none"
     InpTransferInf.style.display = "none"
     InpTransferFromInf.style.display = "none"
-    InpUnpauseInf.style.display = "flex"
+    InpUnpauseInf.style.display = "none"
     InpBalanceInf.style.display = "none"
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    InpAccountInf.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function balance20() {
     modalForERC20inflation.style.display = "block"
@@ -1063,6 +1382,11 @@ function balance20() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    InpAccountInf.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 
@@ -1077,6 +1401,10 @@ function unstake() {
     CalculateRtext.style.display = "none"
     UnstakeText.style.display = "flex"
     StakersText.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function claim() {
@@ -1090,6 +1418,10 @@ function claim() {
     CalculateRtext.style.display = "none"
     UnstakeText.style.display = "none"
     StakersText.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 
@@ -1104,6 +1436,10 @@ function StakeInput() {
     CalculateRtext.style.display = "none"
     UnstakeText.style.display = "none"
     StakersText.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function calculateInput() {
     modalForStaking.style.display = "block"
@@ -1116,6 +1452,10 @@ function calculateInput() {
     ClaimRtext.style.display = "none"
     UnstakeText.style.display = "none"
     StakersText.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function stakersInput() {
     StakeText.style.display = "none"
@@ -1128,6 +1468,10 @@ function stakersInput() {
     ClaimRtext.style.display = "none"
     UnstakeText.style.display = "none"
     StakersText.style.display = "flex"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function closeModal721() {
@@ -1157,6 +1501,10 @@ function balanceNFT721() {
     modal_container.forEach(function(mc) {
         mc.style.height = "40%"
     })
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function balanceNFT() {
@@ -1173,8 +1521,11 @@ function balanceNFT() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
-        AccountFrom.style.display = "none"
-
+    AccountFrom.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function approveNFT721() {
@@ -1190,6 +1541,10 @@ function approveNFT721() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function approveNFT() {
     modalForBurn.style.display = "block"
@@ -1205,7 +1560,11 @@ function approveNFT() {
     modal_container.forEach(function(mc) {
         mc.style.height = "50%"
     })
-        AccountFrom.style.display = "none"
+    AccountFrom.style.display = "none"
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 
@@ -1224,7 +1583,10 @@ function openSTfNFT() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
-
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function openTfNFT721() {
     modalForBurn721.style.display = "block"
@@ -1239,6 +1601,10 @@ function openTfNFT721() {
     modal_container.forEach(function(mc) {
         mc.style.height = "45%"
     })
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 
@@ -1257,9 +1623,14 @@ function openMintNFT() {
     sftText.style.display = "none"
     balanceText.style.display = "none"
     approveText.style.display = "none"
-    modal_container.style.height = "45%"
+    modal_container.forEach(function(mc) {
+        mc.style.height = "45%"
+    })  
     AccountFrom.style.display = "none"
-
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function openMintNFT721() {
@@ -1275,6 +1646,10 @@ function openMintNFT721() {
     modal_container.forEach(function(mc) {
         mc.style.height = "40%"
     })    
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
     
 }
 
@@ -1289,10 +1664,14 @@ function openBurnNFT() {
     approveText.style.display = "none"
     AccountM.style.display = "none"
     AccountFrom.style.display = "none"   
-     
-    modal_container.style.height = "40%"
+    modal_container.forEach(function(mc) {
+        mc.style.height = "40%"
+    })  
 
-
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 function openBurnNFT721() {
     modalForBurn721.style.display = "block"
@@ -1307,6 +1686,10 @@ function openBurnNFT721() {
     modal_container.forEach(function(mc) {
         mc.style.height = "40%"
     })
+    const resent = sessionStorage.getItem('resent');
+    const address = sessionStorage.getItem(`${resent}`);
+    const abi = JSON.parse(sessionStorage.getItem(`${address}`));
+    btns(abi, address);
 }
 
 function openBurn() {
