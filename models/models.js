@@ -38,7 +38,12 @@ const Kind = sequelize.define('kind', {
 
 const Chains = sequelize.define('chains', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    chainId: { type: DataTypes.STRING }
+    chainId: { type: DataTypes.STRING },
+    apiKey: { type: DataTypes.STRING }
+})
+const SourceCode = sequelize.define('codes', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    sourceCode: { type: DataTypes.TEXT, allowNull: false }
 })
 
 
@@ -53,6 +58,9 @@ ContractBascet.belongsTo(Contract);
 
 Chains.hasMany(Contract);
 Contract.belongsTo(Chains);
+
+SourceCode.hasMany(Contract);
+Contract.belongsTo(SourceCode);
 
 Abi.hasMany(Contract);
 Contract.belongsTo(Abi);
@@ -76,5 +84,6 @@ module.exports = {
     Type,
     Kind,
     Abi,
-    Chains
+    Chains,
+    SourceCode
 }

@@ -1,5 +1,91 @@
-
 const meta = 'https://ipfs.io/ipfs/QmT21PxS5a4qzSk87V8kfZ7vYJ55KXV4DDrzT9xWmB3ET8';
+
+async function getApi(id) {
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow"
+  }
+  const data = await fetch(`http://localhost:5000/api/chain?id=${id}`, requestOptions).catch((error) => console.error(error));
+  const result = await data.json()
+  const apiKey = result;
+  return apiKey;
+}
+
+async function getSourseCode(id) {
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow"
+  }
+
+  const data = await fetch(`http://localhost:5000/api/code?id=${id}`, requestOptions)
+    .catch((error) => console.error(error))
+  const result = data.json();
+  const code = result;
+  return code
+}
+
+async function checkStatus(chainURI, apiKey, guid) {
+  try {
+    const resp = await fetch(`//api${chainURI}/api?apikey=` + encodeURIComponent(apiKey) + '&guid=' + guid + '&module=contract&action=checkverifystatus');
+
+    if (!resp.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const result = await resp.json();
+    return result.result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function verify(chainURI, chainAPI, sourceCode, contractAddress, contractName, constructorHex) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("apikey", `${chainAPI}`);
+  urlencoded.append("module", "contract");
+  urlencoded.append("action", "verifysourcecode");
+  urlencoded.append("sourceCode", `${sourceCode}`);
+  urlencoded.append("contractaddress", `${contractAddress}`);
+  urlencoded.append("codeformat", "solidity-single-file");
+  urlencoded.append("contractname", `${contractName}`);
+  urlencoded.append("compilerversion", "v0.8.20+commit.a1b79de6");
+  urlencoded.append("optimizationUsed", "0");
+  urlencoded.append("runs", "200");
+  urlencoded.append("constructorArguements", `${constructorHex}`);
+  urlencoded.append("evmversion", "paris");
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: urlencoded,
+    redirect: "follow"
+  };
+  const res = await fetch(`http://api${chainURI}/api`, requestOptions)
+    .catch((error) => console.error(error));
+  const result = await res.json();
+  return result.result;
+}
+
+async function encodeData(types, params) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const raw = JSON.stringify({
+    "types": types,
+    "params": params
+  });
+
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+  };
+  const data = await fetch('http://localhost:5000/api/encode', requestOptions).catch((errors) => console.log(errors));
+  return await data.json();
+}
 
 async function postContract(abiId, addresss, typeId, kindId, chainId) {
   const formdata = new FormData();
@@ -422,6 +508,19 @@ async function callContract() {
       var selectedVar = document.getElementById('forInflation').value;
       if (selectedVar == "Burn") {
         console.log("burnable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20infBurnContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', async function (receipt) {
@@ -435,8 +534,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(9);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "BurnableInflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Mint") {
         console.log("mintable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20InfContract.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', function (receipt) {
@@ -450,8 +587,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(6);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "Inflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Pause") {
         console.log("pausable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20infPauseContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', function (receipt) {
@@ -465,8 +640,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(8);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableInflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20infPauseBurnContractBSC.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', function (receipt) {
@@ -480,12 +693,52 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(7);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableMintBurn",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
+
+
       }
 
     } else if (selectedToken.value == "def") {
       var selectedVar = document.getElementById('forDeflation').value;
       if (selectedVar == "BurnDef") {
         console.log("burn pause deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefBurnContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', function (receipt) {
@@ -499,8 +752,48 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(5);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "BurnableDiflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
+
       } else if (selectedVar == "PauseDef") {
         console.log("pause deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefPauseContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', function (receipt) {
@@ -514,8 +807,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(10);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PauseableDiflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Pause-BurnDef") {
         console.log("pause-burn deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x61') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefPauseBurnContract.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress, gasPrice: '5044200000'
         }).on('receipt', function (receipt) {
@@ -529,9 +860,34 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(4);
+        const apiKey = await getApi(1);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-testnet.bscscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableDiflationBurn",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
+
+
       }
-
-
     } else {
       alert("выберите вид токенa");
     }
@@ -542,6 +898,19 @@ async function callContract() {
 
       if (selectedVar == "Burn") {
         console.log("burnable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20BurnInfContract.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -555,8 +924,48 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(9);
+        const apiKey = await getApi(2);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `.polygonscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "BurnableInflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
+
       } else if (selectedVar == "Pause") {
         console.log("pausable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20InfPauseContract.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -570,8 +979,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(8);
+        const apiKey = await getApi(2);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `.polygonscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableInflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20InfPauseBurnContract.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -585,8 +1032,48 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(7);
+        const apiKey = await getApi(2);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `.polygonscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableMintBurn",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
+
       } else if (selectedVar == "Mint") {
         console.log("mint run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20InfContractMumbai.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -600,12 +1087,50 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(6);
+        const apiKey = await getApi(2);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `.polygonscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "Inflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       }
     } else if (selectedToken.value == "def") {
       var selectedVar = document.getElementById('forDeflation').value;
 
       if (selectedVar == "BurnDef") {
         console.log("burn def run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20defBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -619,8 +1144,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(5);
+        const apiKey = await getApi(2);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `.polygonscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "BurnableDiflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "PauseDef") {
         console.log("pause deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefPauseContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -634,8 +1197,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(10);
+        const apiKey = await getApi(2);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `.polygonscan.com`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PauseableDiflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Pause-BurnDef") {
         console.log("pause-burn deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0x13881') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x13881' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefPauseBurnContractMumbai.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -650,11 +1251,49 @@ async function callContract() {
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
       }
+
+      const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+      const sourceCode = await getSourseCode(4);
+      const apiKey = await getApi(2);
+      let canExecute = true
+      if (canExecute) {
+        canExecute = false;
+        setTimeout(async function () {
+          canExecute = true;
+          const res = await verify(
+            `.polygonscan.com`,
+            `${apiKey}`,
+            sourceCode,
+            erc20ContractText.innerText,
+            "PausableDiflationBurn",
+            constrArgs
+          );
+          console.log(res);
+          const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+          alert(result);
+        }, 20000);
+      } else {
+        console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+      }
+
     }
   } else {
     console.log("выберите вид токенa");
   } if (selectedNetwork == "eth") {
     if (selectedToken.value == "inf") {
+
+      const currentChainId = await window.ethereum.request({ method: 'net_version' });
+      if (currentChainId !== '0xaa36a7') {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0xaa36a7' }],
+          })
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       var selectedVar = document.getElementById('forInflation').value;
       if (selectedVar == "Burn") {
         console.log("burnable run")
@@ -671,8 +1310,48 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(9);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "BurnableInflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
+
+
       } else if (selectedVar == "Pause") {
         onsole.log("pausable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0xaa36a7') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xaa36a7' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20infPauseContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -686,8 +1365,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(8);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableInflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Pause-Burn") {
         console.log("pausable & burnable run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0xaa36a7') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xaa36a7' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20infPauseBurnContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -701,8 +1418,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(7);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableMintBurn",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "Mint") {
         console.log("mint run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0xaa36a7') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xaa36a7' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20infContractETH.methods.deploy(namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -716,11 +1471,49 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["string", "string", "address"], [`${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(6);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "Inflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       }
     } else if (selectedToken.value == "def") {
       var selectedVar = document.getElementById('forDeflation').value;
       if (selectedVar == "BurnDef") {
         console.log("burn def run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0xaa36a7') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xaa36a7' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -734,8 +1527,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(5);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "BurnableDiflation",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
+
       } else if (selectedVar == "PauseDef") {
         console.log("pause deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0xaa36a7') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xaa36a7' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -749,8 +1580,46 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+
+        // const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        // const sourceCode = await getSourseCode(5);
+        // const apiKey = await getApi(3);
+        // let canExecute = true
+        // if (canExecute) {
+        //   canExecute = false;
+        //   setTimeout(async function () {
+        //     canExecute = true;
+        //     const res = await verify(
+        //       `-sepolia.etherscan.io`,
+        //       `${apiKey}`,
+        //       sourceCode,
+        //       contractAddressStaking.innerText,
+        //       "PausableDiflationBurn",
+        //       constrArgs
+        //     );
+        //     console.log(res);
+        //     const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        //     alert(result);
+        //   }, 20000);
+        // } else {
+        //   console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        // }
+
       } else if (selectedVar == "Pause-BurnDef") {
         console.log("pause-burn deflation run")
+
+        const currentChainId = await window.ethereum.request({ method: 'net_version' });
+        if (currentChainId !== '0xaa36a7') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xaa36a7' }],
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
         await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
@@ -764,6 +1633,29 @@ async function callContract() {
         const bascetId = sessionStorage.getItem('bascet')
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(4);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              erc20ContractText.innerText,
+              "PausableDiflationBurn",
+              constrArgs
+            );
+            console.log(res);
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 20000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
       }
     }
   } else {
@@ -1095,6 +1987,19 @@ async function autoMeta1155Premint() {
 
 
 async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri, meta) {
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0x61') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x61' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await Contract721permit.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
     from: userAddress, gasPrice: '5044200000'
   }).on('receipt', function (receipt) {
@@ -1109,8 +2014,44 @@ async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri, meta) {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData([, "address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  const sourceCode = await getSourseCode(3);
+  const apiKey = await getApi(1);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `-testnet.bscscan.com`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "Premint721",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 40000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
 }
 async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri, meta) {
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0xaa36a7') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0xaa36a7' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await eth721Contract.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -1124,9 +2065,45 @@ async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri, meta
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData([, "address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  const sourceCode = await getSourseCode(3);
+  const apiKey = await getApi(3);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `-sepolia.etherscan.io`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "Premint721",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 20000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
 }
 
 async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri, meta) {
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0x13881') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x13881' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await mumbai721Contract.methods.deployPremintERC721(initOwner, _name, _symbol, accountToM, uri).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -1141,10 +2118,47 @@ async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri, meta)
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData([, "address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  const sourceCode = await getSourseCode(3);
+  const apiKey = await getApi(2);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `.polygonscan.com`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "Premint721",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 40000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
+
 }
 
 const deployedContractAddress1155mint = "";
 async function deploy1155Mint(meta, uri, accountToM, amountToM, ownerAddress) {
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0x61') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x61' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await Contract1155permit.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
     from: userAddress, gasPrice: '5044200000'
   }).on('receipt', function (receipt) {
@@ -1159,8 +2173,45 @@ async function deploy1155Mint(meta, uri, accountToM, amountToM, ownerAddress) {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${accountToM}`, `0x0`, `${ownerAddress}`]);
+  const sourceCode = await getSourseCode(2);
+  const apiKey = await getApi(1);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `-testnet.bscscan.com`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "PremintMult",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 40000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
+
 }
 async function deploy1155eth(meta, uri, accountToM, amountToM, ownerAddress) {
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0xaa36a7') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0xaa36a7' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await eth1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -1175,9 +2226,45 @@ async function deploy1155eth(meta, uri, accountToM, amountToM, ownerAddress) {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${accountToM}`, `0x0`, `${ownerAddress}`]);
+  const sourceCode = await getSourseCode(2);
+  const apiKey = await getApi(3);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `-sepolia.etherscan.io`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "PremintMult",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 20000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
 }
 
 async function deploy1155Mumbai(meta, uri, accountToM, amountToM, ownerAddress) {
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0x13881') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x13881' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await mumbai1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -1192,6 +2279,29 @@ async function deploy1155Mumbai(meta, uri, accountToM, amountToM, ownerAddress) 
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${accountToM}`, `0x0`, `${ownerAddress}`]);
+  const sourceCode = await getSourseCode(2);
+  const apiKey = await getApi(2);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `.polygonscan.com`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "PremintMult",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 30000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
 }
 
 
@@ -1205,6 +2315,19 @@ async function stakingDeploy() {
   let alertPercent = 100 * 720 * rate / 10000000
   alert(`Процентная ставка в месяц составит: ${alertPercent} % в месяц`)
   console.log("staking deployed at bsc network", "rate:", rate)
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0x61') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x61' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await stakingContract.methods.deployStaking(tAddress, rate).send({
     from: userAddress, gasPrice: '5044200000'
   }).on('receipt', function (receipt) {
@@ -1218,7 +2341,29 @@ async function stakingDeploy() {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-
+  const constrArgs = await encodeData(["address", "uint"], [`${tAddress}`, `${rate}`]);
+  const sourceCode = await getSourseCode(1);
+  const apiKey = await getApi(1);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `-testnet.bscscan.com`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "Staking",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 40000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
 }
 
 async function stakingDeployMumbai() {
@@ -1230,6 +2375,19 @@ async function stakingDeployMumbai() {
   let alertPercent = 100 * 720 * rate / 10000000
   alert(`Процентная ставка в месяц составит: ${alertPercent} % в месяц`)
   console.log("staking deployed at mumbai network", "rate:", rate)
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0x13881') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x13881' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await stakingContractMumbai.methods.deployStaking(tAddress, rate).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -1243,6 +2401,29 @@ async function stakingDeployMumbai() {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData(["address", "uint"], [`${tAddress}`, `${rate}`]);
+  const sourceCode = await getSourseCode(1);
+  const apiKey = await getApi(2);
+  let canExecute = true
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `.polygonscan.com`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "Staking",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 30000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
 }
 
 async function stakingDeployEth() {
@@ -1254,6 +2435,19 @@ async function stakingDeployEth() {
   let alertPercent = 100 * 720 * rate / 10000000
   alert(`Процентная ставка в месяц составит: ${alertPercent} % в месяц`)
   console.log("staking deployed at sepoliaETH network", "rate:", rate)
+
+  const currentChainId = await window.ethereum.request({ method: 'net_version' });
+  if (currentChainId !== '0xaa36a7') {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0xaa36a7' }],
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   await stakingContractETH.methods.deployStaking(tAddress, rate).send({
     from: userAddress
   }).on('receipt', function (receipt) {
@@ -1264,7 +2458,31 @@ async function stakingDeployEth() {
   })
   const resp = await postContractStaking(10, contractAddressStaking.innerText, 3, 10, 3)
   console.log(resp);
+  let canExecute = true
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
+  const constrArgs = await encodeData(["address", "uint"], [`${tAddress}`, `${rate}`]);
+  const sourceCode = await getSourseCode(1);
+  const apiKey = await getApi(3);
+  if (canExecute) {
+    canExecute = false;
+    setTimeout(async function () {
+      canExecute = true;
+      const res = await verify(
+        `-sepolia.etherscan.io`,
+        `${apiKey}`,
+        sourceCode,
+        contractAddressStaking.innerText,
+        "Staking",
+        constrArgs
+      );
+      console.log(res);
+      const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+      alert(result);
+    }, 20000);
+  } else {
+    console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+  }
+
 }
