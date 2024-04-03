@@ -41,7 +41,7 @@ async function postContractStaking(abiId, addresss, typeId, kindId, chainId) {
   return data;
 }
 
-async function postContractNFT(abiId, addresss, metadata, typeId, kindId) {
+async function postContractNFT(abiId, addresss, metadata, typeId, kindId, chainId) {
   const formdata = new FormData();
   formdata.append("abiId", `${abiId}`);
   formdata.append("address", `${addresss}`);

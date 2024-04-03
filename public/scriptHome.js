@@ -16,7 +16,7 @@ async function getAllContracts() {
     }
 
 }
-
+let isModalOpen = false;
 async function authAddress(address) {
     const requestOptions = {
         method: "GET",
@@ -617,6 +617,13 @@ async function btns(abis, address, chainId) {
             alert(`Succesfully staked`);
             console.log('Stake')
             location.reload();
+            // try {
+            //     const message = `hello ${address}`
+            //     await web3.eth.personal.sign(message, userAddress, '')
+            // } catch (error) {
+            //     console.error(error)
+            // }
+            
         })
     } else if (UnstakeText.style.display == "flex") {
         document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
@@ -686,7 +693,7 @@ async function btns(abis, address, chainId) {
 }
 
 
-async function card20(a, text, interfaces, chainId) {
+async function card20(a, id, text, interfaces, chainId) {
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -707,14 +714,14 @@ async function card20(a, text, interfaces, chainId) {
     title5.innerText = "Token"
 
     let desc = document.createElement('p')
-    desc.id = `erc${a}`
+    desc.id = `erc20${a}`
     desc.innerHTML = text
     sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
     sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces));
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = a
+    btn.id = id
     btn.innerText = "click here"
 
 
@@ -753,11 +760,9 @@ async function card20(a, text, interfaces, chainId) {
 
         // openModalERC20inf()
         btn.addEventListener('click', openModalERC20inf)
-        let c = document.getElementById(1)
+        let c = document.getElementById(`erc${id}`)
         c.addEventListener('click', () => {
-            openModalERC20inf;
-            sessionStorage.setItem('resent', `${c.id}`);
-            sessionStorage.setItem(`chainId${c.id}`, `${chainId}`);
+            openModalERC20inf(text, id, chainId);
             burnInf.style.display = "none"
             PauseInf.style.display = "none"
             UnpauseInf.style.display = "none"
@@ -765,11 +770,9 @@ async function card20(a, text, interfaces, chainId) {
         })
     } else if (a == 2) {
         btn.addEventListener('click', openModalERC20inf)
-        let a = document.getElementById(2)
+        let a = document.getElementById(`erc${id}`)
         a.addEventListener('click', () => {
-            sessionStorage.setItem('resent', `${a.id}`);
-            sessionStorage.setItem(`chainId${a.id}`, `${chainId}`);
-            openModalERC20inf
+            openModalERC20inf(text, id, chainId)
             PauseInf.style.display = "none"
             UnpauseInf.style.display = "none"
             burnInf.style.display = "flex"
@@ -777,11 +780,9 @@ async function card20(a, text, interfaces, chainId) {
         })
     } else if (a == 3) {
         btn.addEventListener('click', openModalERC20inf);
-        let b = document.getElementById(3)
+        let b = document.getElementById(`erc${id}`)
         b.addEventListener('click', () => {
-            openModalERC20inf
-            sessionStorage.setItem('resent', `${b.id}`);
-            sessionStorage.setItem(`chainId${b.id}`, `${chainId}`);
+            openModalERC20inf(text, id, chainId)
             PauseInf.style.display = "flex"
             UnpauseInf.style.display = "flex"
             burnInf.style.display = "none"
@@ -789,11 +790,9 @@ async function card20(a, text, interfaces, chainId) {
         })
     } else if (a == 4) {
         btn.addEventListener('click', openModalERC20inf)
-        let d = document.getElementById(4)
+        let d = document.getElementById(`erc${id}`)
         d.addEventListener('click', () => {
-            openModalERC20inf
-            sessionStorage.setItem('resent', `${d.id}`)
-            sessionStorage.setItem(`chainId${d.id}`, `${chainId}`);;
+            openModalERC20inf(text, id, chainId)
             burnInf.style.display = "flex"
             PauseInf.style.display = "flex"
             UnpauseInf.style.display = "flex"
@@ -802,11 +801,9 @@ async function card20(a, text, interfaces, chainId) {
         })
     } else if (a == 5) {
         btn.addEventListener('click', openModalERC20inf)
-        let e = document.getElementById(5)
+        let e = document.getElementById(`erc${id}`)
         e.addEventListener('click', () => {
-            openModalERC20def()
-            sessionStorage.setItem('resent', `${e.id}`);
-            sessionStorage.setItem(`chainId${e.id}`, `${chainId}`);
+            openModalERC20def(text, id, chainId)
             PauseDef.style.display = "none"
             UnpauseDef.style.display = "none"
             burnDef.style.display = "flex"
@@ -814,11 +811,9 @@ async function card20(a, text, interfaces, chainId) {
         })
     } else if (a == 6) {
         btn.addEventListener('click', openModalERC20inf)
-        let h = document.getElementById(6)
+        let h = document.getElementById(`erc${id}`)
         h.addEventListener('click', () => {
-            openModalERC20def()
-            sessionStorage.setItem('resent', `${h.id}`);
-            sessionStorage.setItem(`chainId${h.id}`, `${chainId}`);
+            openModalERC20def(text, id, chainId)
             burnDef.style.display = "none"
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
@@ -827,11 +822,9 @@ async function card20(a, text, interfaces, chainId) {
     } else if (a == 7) {
         btn.addEventListener('click', openModalERC20inf)
 
-        let h = document.getElementById(7)
+        let h = document.getElementById(`erc${id}`)
         h.addEventListener('click', () => {
-            sessionStorage.setItem('resent', `${h.id}`);
-            sessionStorage.setItem(`chainId${h.id}`, `${chainId}`);
-            openModalERC20def()
+            openModalERC20def(text, id, chainId)
             PauseDef.style.display = "flex"
             UnpauseDef.style.display = "flex"
             burnDef.style.display = "flex"
@@ -846,7 +839,7 @@ async function card20(a, text, interfaces, chainId) {
 
 }
 
-async function cardNft(a, text, interfaces, metadata, chainId) {
+async function cardNft(a, id, text, interfaces, metadata, chainId) {
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -868,7 +861,7 @@ async function cardNft(a, text, interfaces, metadata, chainId) {
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = a
+    btn.id = id
     btn.innerText = "click here"
 
     let desc = document.createElement('p')
@@ -903,27 +896,23 @@ async function cardNft(a, text, interfaces, metadata, chainId) {
 
     if (a == 8) {
         btn.addEventListener('click', openModal)
-        let ab = document.getElementById(8)
+        let ab = document.getElementById(`nft1155${id}`)
         ab.addEventListener('click', () => {
-            openModal();
+            openModal(text, id, chainId);
             console.log('1155')
-            sessionStorage.setItem(`resent`, `${ab.id}`)
-            sessionStorage.setItem(`chainId${ab.id}`, `${chainId}`);
         })
     } else if (a == 9) {
         btn.addEventListener('click', openModal721)
-        let ab = document.getElementById(9)
+        let ab = document.getElementById(`nft721${id}`)
         ab.addEventListener('click', () => {
-            openModal721();
+            openModal721(text, id, chainId);
             console.log('721')
-            sessionStorage.setItem(`resent`, `${ab.id}`)
-            sessionStorage.setItem(`chainId${ab.id}`, `${chainId}`);
         })
     } else {
         console.log("not an nft")
     }
 }
-async function cardStaking(a, text, interfaces, chainId) {
+async function cardStaking(a, id, text, interfaces, chainId) {
     let parentDiv = document.createElement('div')
     parentDiv.classList.add('cards')
 
@@ -945,7 +934,7 @@ async function cardStaking(a, text, interfaces, chainId) {
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = `stake${a}`
+    btn.id = `stake${id}`
     btn.innerText = "click here"
     btn.addEventListener('click', openModalStaking)
 
@@ -981,12 +970,9 @@ async function cardStaking(a, text, interfaces, chainId) {
     if (a == 10) {
         btn.addEventListener('click', openModalStaking)
 
-        let bc = document.getElementById('stake10')
+        let bc = document.getElementById(`stake${id}`)
         bc.addEventListener('click', () => {
-            openModalStaking()
-            console.log('staking')
-            sessionStorage.setItem(`resent`, `${a}`)
-            sessionStorage.setItem(`chainId${a}`, `${chainId}`);
+            openModalStaking(text, id, chainId);
         })
     } else {
         console.log('not staking')
@@ -1047,6 +1033,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userAddresses = await data.resObj.userContractAddress;
     const userMetadata = await data.resObj.userMetadata;
     const userChainId = await data.resObj.userChains;
+    const userMainId = await data.resObj.userMainId;
 
     const temp2 = userDataType.map(id => id);
     const temp = userDataKind.map(id => id);
@@ -1054,17 +1041,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const contractAddresses = userAddresses.map(c => c);
     const metadata = userMetadata.map(m => m);
     const chainId = userChainId.map(c => c);
-    console.log(temp2, temp, abiTemp, metadata, contractAddresses, chainId);
+    const mainId = userMainId.map(m => m);
+    console.log(temp2, temp, mainId, abiTemp, metadata, contractAddresses, chainId);
 
     if (temp2.length == temp.length) {
         for (let i = 0; i < temp2.length; i++) {
             if (temp2[i] == 1) {
-                cardNft(temp[i], contractAddresses[i], abiTemp[i].map(e => e), metadata[i], chainId[i]);
+                cardNft(temp[i], mainId[i], contractAddresses[i], abiTemp[i].map(e => e), metadata[i], chainId[i]);
                 console.log((temp[i]))
             } else if (temp2[i] == 2) {
-                card20(temp[i], `${contractAddresses[i]}`, abiTemp[i].map(e => e), chainId[i]);
+                card20(temp[i], mainId[i], `${contractAddresses[i]}`, abiTemp[i].map(e => e), chainId[i]);
             } else if (temp2[i] == 3) {
-                cardStaking(temp[i], `${contractAddresses[i]}`, abiTemp[i].map(e => e), chainId[i]);
+                cardStaking(temp[i], mainId[i], `${contractAddresses[i]}`, abiTemp[i].map(e => e), chainId[i]);
             }
         }
     }
@@ -1241,9 +1229,12 @@ function erc20KindIdCheckDef(ercId) {
 }
 
 
-function openModalERC20inf() {
+function openModalERC20inf(id, address, chainId) {
     contentModalsERC20inf.style.display = 'block'
-    console.log('wokrk')
+    console.log('wokrk')   
+    sessionStorage.setItem('resent', `${id}`);
+    sessionStorage.setItem(`${id}`, `${address}`)
+    sessionStorage.setItem(`chainId${id}`, `${chainId}`);
 }
 
 function burn20def() {
@@ -1881,6 +1872,7 @@ function closeModal() {
     contentModalsStaking.style.display = "none"
     contentModalsERC20inf.style.display = "none"
     contentModalsERC20def.style.display = "none"
+    isModalOpen = false;
 }
 
 function closeModal2() {
@@ -1927,20 +1919,33 @@ function closeModal2() {
     modal_container.forEach(function (mc) {
         mc.style.height = "40%"
     })
+    isModalOpen = false;
 }
-function openModal() {
-    modal.style.display = 'block'
+function openModal(address, id, chainId) {
+    modal.style.display = 'block';
+    sessionStorage.setItem(`resent`, `${id}`)
+    sessionStorage.setItem(`${id}`, `${address}`)
+    sessionStorage.setItem(`chainId${id}`, `${chainId}`)
 }
-function openModal721() {
+function openModal721(address, id, chainId) {
     contentModals721.style.display = 'block'
+    sessionStorage.setItem(`resent`, `${id}`)
+    sessionStorage.setItem(`${id}`, `${address}`)
+    sessionStorage.setItem(`chainId${id}`, `${chainId}`);
 }
-function openModalStaking() {
+function openModalStaking(address, id, chainId) {
     contentModalsStaking.style.display = 'block'
+    sessionStorage.setItem(`resent`, `${id}`)
+    sessionStorage.setItem(`${id}`, `${address}`)
+    sessionStorage.setItem(`chainId${id}`, `${chainId}`);
 }
 
 
-function openModalERC20def() {
+function openModalERC20def(address, id, chainId) {
     contentModalsERC20def.style.display = 'block'
+    sessionStorage.setItem('resent', `${id}`);
+    sessionStorage.setItem(`${id}`, `${address}`)
+    sessionStorage.setItem(`chainId${id}`, `${chainId}`);
 }
 
 
