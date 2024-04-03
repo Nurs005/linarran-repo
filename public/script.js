@@ -127,7 +127,7 @@ async function postContractStaking(abiId, addresss, typeId, kindId, chainId) {
   return data;
 }
 
-async function postContractNFT(abiId, addresss, metadata, typeId, kindId) {
+async function postContractNFT(abiId, addresss, metadata, typeId, kindId, chainId) {
   const formdata = new FormData();
   formdata.append("abiId", `${abiId}`);
   formdata.append("address", `${addresss}`);
@@ -552,9 +552,11 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
-          }, 20000);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
+          }, 30000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
         }
@@ -605,8 +607,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -658,8 +662,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -711,8 +717,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -771,8 +779,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -997,8 +1007,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1051,8 +1063,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1105,8 +1119,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1162,8 +1178,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1215,8 +1233,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1269,8 +1289,10 @@ async function callContract() {
             constrArgs
           );
           console.log(res);
-          const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-          alert(result);
+          setTimeout(async function () {
+            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+            alert(result);
+          }, 10000);
         }, 20000);
       } else {
         console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1328,8 +1350,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1383,9 +1407,11 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-            alert(result);
-          }, 20000);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
+          }, 30000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
         }
@@ -1436,9 +1462,11 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-            alert(result);
-          }, 20000);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
+          }, 30000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
         }
@@ -1489,8 +1517,10 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-            alert(result);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
           }, 20000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -1545,9 +1575,11 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-            alert(result);
-          }, 20000);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
+          }, 30000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
         }
@@ -1567,7 +1599,7 @@ async function callContract() {
           }
         }
 
-        await erc20DefPauseBurnContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
+        await erc20DefPauseContractETH.methods.deploy(amount.value, namee.value, symboll.value, userAddress).send({
           from: userAddress
         }).on('receipt', function (receipt) {
           const deployedContractPauseDef = receipt.events.DeployPauseableDiflation.returnValues[0];
@@ -1581,29 +1613,31 @@ async function callContract() {
         const succes = await profile(bascetId, resp);
         console.log(`Contract create whith succes: ${succes}`);
 
-        // const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
-        // const sourceCode = await getSourseCode(5);
-        // const apiKey = await getApi(3);
-        // let canExecute = true
-        // if (canExecute) {
-        //   canExecute = false;
-        //   setTimeout(async function () {
-        //     canExecute = true;
-        //     const res = await verify(
-        //       `-sepolia.etherscan.io`,
-        //       `${apiKey}`,
-        //       sourceCode,
-        //       contractAddressStaking.innerText,
-        //       "PausableDiflationBurn",
-        //       constrArgs
-        //     );
-        //     console.log(res);
-        //     const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-        //     alert(result);
-        //   }, 20000);
-        // } else {
-        //   console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
-        // }
+        const constrArgs = await encodeData(["uint", "string", "string", "address"], [`${amount.value}`, `${namee.value}`, `${symboll.value}`, `${userAddress}`]);
+        const sourceCode = await getSourseCode(10);
+        const apiKey = await getApi(3);
+        let canExecute = true
+        if (canExecute) {
+          canExecute = false;
+          setTimeout(async function () {
+            canExecute = true;
+            const res = await verify(
+              `-sepolia.etherscan.io`,
+              `${apiKey}`,
+              sourceCode,
+              contractAddressStaking.innerText,
+              "PausableDiflationBurn",
+              constrArgs
+            );
+            console.log(res);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
+          }, 30000);
+        } else {
+          console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+        }
 
       } else if (selectedVar == "Pause-BurnDef") {
         console.log("pause-burn deflation run")
@@ -1650,9 +1684,11 @@ async function callContract() {
               constrArgs
             );
             console.log(res);
-            const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-            alert(result);
-          }, 20000);
+            setTimeout(async function () {
+              const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+              alert(result);
+            }, 10000);
+          }, 30000);
         } else {
           console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
         }
@@ -2014,7 +2050,7 @@ async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri, meta) {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-  const constrArgs = await encodeData([, "address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  const constrArgs = await encodeData(["address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
   const sourceCode = await getSourseCode(3);
   const apiKey = await getApi(1);
   let canExecute = true
@@ -2026,13 +2062,15 @@ async function deploy721Mint(initOwner, _name, _symbol, accountToM, uri, meta) {
         `-testnet.bscscan.com`,
         `${apiKey}`,
         sourceCode,
-        contractAddressStaking.innerText,
+        contractAddress721.innerText,
         "Premint721",
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-      alert(result);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
     }, 40000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -2065,7 +2103,8 @@ async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri, meta
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-  const constrArgs = await encodeData([, "address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  const constrArgs = await encodeData(["address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  console.log(constrArgs)
   const sourceCode = await getSourseCode(3);
   const apiKey = await getApi(3);
   let canExecute = true
@@ -2077,14 +2116,16 @@ async function deploy721MintETH(initOwner, _name, _symbol, accountToM, uri, meta
         `-sepolia.etherscan.io`,
         `${apiKey}`,
         sourceCode,
-        contractAddressStaking.innerText,
+        contractAddress721.innerText,
         "Premint721",
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-      alert(result);
-    }, 20000);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
+    }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
   }
@@ -2112,13 +2153,12 @@ async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri, meta)
     contractAddress721.innerText = deployedContractAddress721mint
     contractAddress721.style.display = "flex"
   })
-  const data = await response.json();
   const resp = await postContractNFT(9, contractAddress721.innerText, meta, 1, 9, 2)
   console.log(resp);
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-  const constrArgs = await encodeData([, "address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
+  const constrArgs = await encodeData(["address", "string", "string", "address", "string"], [`${initOwner}`, `${_name}`, `${_symbol}`, `${accountToM}`, `${uri}`]);
   const sourceCode = await getSourseCode(3);
   const apiKey = await getApi(2);
   let canExecute = true
@@ -2130,14 +2170,16 @@ async function deploy721Mumbai(initOwner, _name, _symbol, accountToM, uri, meta)
         `.polygonscan.com`,
         `${apiKey}`,
         sourceCode,
-        contractAddressStaking.innerText,
+        contractAddress721.innerText,
         "Premint721",
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-      alert(result);
-    }, 40000);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
+    }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
   }
@@ -2173,7 +2215,7 @@ async function deploy1155Mint(meta, uri, accountToM, amountToM, ownerAddress) {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${accountToM}`, `0x0`, `${ownerAddress}`]);
+  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${amountToM}`, `0x`, `${ownerAddress}`]);
   const sourceCode = await getSourseCode(2);
   const apiKey = await getApi(1);
   let canExecute = true
@@ -2185,14 +2227,16 @@ async function deploy1155Mint(meta, uri, accountToM, amountToM, ownerAddress) {
         `-testnet.bscscan.com`,
         `${apiKey}`,
         sourceCode,
-        contractAddressStaking.innerText,
+        contractAddress1155.innerText,
         "PremintMult",
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-      alert(result);
-    }, 40000);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
+    }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
   }
@@ -2212,7 +2256,7 @@ async function deploy1155eth(meta, uri, accountToM, amountToM, ownerAddress) {
     }
   }
 
-  await eth1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
+  await eth1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x", ownerAddress).send({
     from: userAddress
   }).on('receipt', function (receipt) {
     const deployedContractAddress1155mint = receipt.events.Deployed_Premint1155.returnValues[0];
@@ -2226,26 +2270,37 @@ async function deploy1155eth(meta, uri, accountToM, amountToM, ownerAddress) {
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${accountToM}`, `0x0`, `${ownerAddress}`]);
+  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${amountToM}`, `0x`, `${ownerAddress}`]);
+  console.log(constrArgs);
   const sourceCode = await getSourseCode(2);
   const apiKey = await getApi(3);
   let canExecute = true
+  let res
   if (canExecute) {
     canExecute = false;
     setTimeout(async function () {
       canExecute = true;
-      const res = await verify(
+      res = await verify(
         `-sepolia.etherscan.io`,
         `${apiKey}`,
         sourceCode,
-        contractAddressStaking.innerText,
+        contractAddress1155.innerText,
         "PremintMult",
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-      alert(result);
-    }, 20000);
+
+      if (canExecute) {
+        canExecute = false;
+        setTimeout(async function () {
+          canExecute = true
+          const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+          alert(result);
+        }, 10000);
+      } else {
+        console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
+      }
+    }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
   }
@@ -2265,7 +2320,7 @@ async function deploy1155Mumbai(meta, uri, accountToM, amountToM, ownerAddress) 
     }
   }
 
-  await mumbai1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x0", ownerAddress).send({
+  await mumbai1155Contract.methods.deployPremintERC1155(uri, accountToM, "0", amountToM, "0x", ownerAddress).send({
     from: userAddress
   }).on('receipt', function (receipt) {
     const deployedContractAddress1155mint = receipt.events.Deployed_Premint1155.returnValues[0];
@@ -2279,7 +2334,7 @@ async function deploy1155Mumbai(meta, uri, accountToM, amountToM, ownerAddress) 
   const bascetId = sessionStorage.getItem('bascet')
   const succes = await profile(bascetId, resp);
   console.log(`Contract create whith succes: ${succes}`);
-  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${accountToM}`, `0x0`, `${ownerAddress}`]);
+  const constrArgs = await encodeData(["string", "address", "uint", "uint", "bytes", "address"], [`${uri}`, `${accountToM}`, `0`, `${amountToM}`, `0x`, `${ownerAddress}`]);
   const sourceCode = await getSourseCode(2);
   const apiKey = await getApi(2);
   let canExecute = true
@@ -2291,13 +2346,15 @@ async function deploy1155Mumbai(meta, uri, accountToM, amountToM, ownerAddress) 
         `.polygonscan.com`,
         `${apiKey}`,
         sourceCode,
-        contractAddressStaking.innerText,
+        contractAddress1155.innerText,
         "PremintMult",
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-      alert(result);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
     }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -2358,9 +2415,11 @@ async function stakingDeploy() {
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`-testnet.bscscan.com`, `${apiKey}`, `${res}`);
-      alert(result);
-    }, 40000);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
+    }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
   }
@@ -2418,8 +2477,10 @@ async function stakingDeployMumbai() {
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`.polygonscan.com`, `${apiKey}`, `${res}`);
-      alert(result);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
     }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
@@ -2478,9 +2539,12 @@ async function stakingDeployEth() {
         constrArgs
       );
       console.log(res);
-      const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
-      alert(result);
-    }, 20000);
+      setTimeout(async function () {
+        const result = await checkStatus(`-sepolia.etherscan.io`, `${apiKey}`, `${res}`);
+        alert(result);
+      }, 10000);
+
+    }, 30000);
   } else {
     console.log("Функция verifyETH будет выполнена через 30 секунд после завершения предыдущей");
   }
