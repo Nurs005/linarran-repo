@@ -6,6 +6,7 @@ router.post('/', contractRouter.create)
 router.post('/nft', contractRouter.createNFT)
 router.get('/', contractRouter.getAll)
 router.get('/:id', contractRouter.getOne)
+router.post('/nft', contractRouter.createNFT)
 
 module.exports = router
 
