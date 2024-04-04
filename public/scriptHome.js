@@ -1,3 +1,21 @@
+async function getABI(address) {
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+    try {
+        const responce = await fetch(`https://api-sepolia.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=YourApiKeyToken`, requestOptions)
+        if (!responce.ok) {
+            throw new Error('responce is not ok')
+        }
+        const result = await responce.json()
+        // console.log(JSON.stringify(result.result))
+        return result
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 async function getAllContracts() {
     const formData = new FormData();
     const requestOptions = {
@@ -127,10 +145,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20Mint = new web3.eth.Contract(abis, address);
-            await erc20Mint.methods.mint(InpAccountInf.value, InpMintInf.value).send({ from: userAddress });
-            alert("Successfully minted!");
-            location.reload();
+
+            try {
+                const erc20Mint = new web3.eth.Contract(abis, address);
+                await erc20Mint.methods.mint(InpAccountInf.value, InpMintInf.value).send({ from: userAddress });
+                alert("Successfully minted!");
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
         console.log('Inflation erc-20 mint')
     } else if (burnTextInf.style.display == "flex") {
@@ -147,11 +170,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            // await  erc20burn.methods.mint(InpAccountInf.value, InpBurnInf.value).send({from: userAddress});
-            await erc20burn.methods.burn(InpAccountInf.value, InpBurnInf.value).send({ from: userAddress });
-            alert("Successfully burned!");
-            console.log('Inflation erc-20 burn')
-            location.reload();
+            try {
+                // await  erc20burn.methods.mint(InpAccountInf.value, InpBurnInf.value).send({from: userAddress});
+                await erc20burn.methods.burn(InpAccountInf.value, InpBurnInf.value).send({ from: userAddress });
+                alert("Successfully burned!");
+                console.log('Inflation erc-20 burn')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
     } else if (pauseTextInf.style.display == "flex") {
         document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
@@ -166,12 +193,16 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20pause = new web3.eth.Contract(abis, address);
-            if (confirm('Are you sure to pause the token?')) {
-                await erc20pause.methods.pause().send({ from: userAddress });
-                alert("Successfully paused!");
-                console.log('Inflation erc-20 pause')
-                location.reload();
+            try {
+                const erc20pause = new web3.eth.Contract(abis, address);
+                if (confirm('Are you sure to pause the token?')) {
+                    await erc20pause.methods.pause().send({ from: userAddress });
+                    alert("Successfully paused!");
+                    console.log('Inflation erc-20 pause')
+                    location.reload();
+                }
+            } catch (error) {
+                location.reload()
             }
         })
     } else if (approveTextInf.style.display == "flex") {
@@ -187,14 +218,20 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20Approve = new web3.eth.Contract(abis, address);
-            await erc20Approve.methods.approve(InpAccountInf.value, InApproveInf.value).send({ from: userAddress });
-            console.log('You approved')
-            location.reload();
+            try {
+                const erc20Approve = new web3.eth.Contract(abis, address);
+                await erc20Approve.methods.approve(InpAccountInf.value, InApproveInf.value).send({ from: userAddress });
+                console.log('You approved')
+                alert("Successfully approved!");
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
         console.log('Inflation erc-20 approve')
     } else if (transferTextInf.style.display == "flex") {
         document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
+            console.log(chainId);
             const currentChainId = await window.ethereum.request({ method: 'net_version' });
             if (currentChainId !== chainId) {
                 try {
@@ -206,10 +243,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20Trensfer = new web3.eth.Contract(abis, address);
-            await erc20Trensfer.methods.transfer(InpAccountInf.value, InpTransferInf.value).send({ from: userAddress });
-            console.log('transfered with succses')
-            location.reload();
+            try {
+                const erc20Trensfer = new web3.eth.Contract(abis, address);
+                await erc20Trensfer.methods.transfer(InpAccountInf.value, InpTransferInf.value).send({ from: userAddress });
+                console.log('transfered with succses')
+                alert("Successfully transfered!");
+                location.reload();
+            } catch (error) {
+                location.reload();
+            }
         })
     } else if (transferFromTextInf.style.display == "flex") {
         document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
@@ -224,10 +266,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20TrensferFrom = new web3.eth.Contract(abis, address);
-            await erc20TrensferFrom.methods.transferFrom(InpAccountInf.value, userAddress, InpTransferFromInf.value).send({ from: userAddress });
-            console.log('You transferd from')
-            location.reload();
+            try {
+                const erc20TrensferFrom = new web3.eth.Contract(abis, address);
+                await erc20TrensferFrom.methods.transferFrom(InpAccountInf.value, userAddress, InpTransferFromInf.value).send({ from: userAddress });
+                console.log('You transfered from')
+                alert("Successfully transfered!");
+                location.reload();
+            } catch (error) {
+                location.error();
+            }
         })
         console.log('Inflation erc-20 transfer from')
     } else if (unpauseTextInf.style.display == "flex") {
@@ -243,10 +290,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20Unpause = new web3.eth.Contract(abis, address);
-            await erc20Unpause.methods.unpause().send({ from: userAddress })
-            console.log('Inflation erc-20 unpause')
-            location.reload();
+            try {
+                const erc20Unpause = new web3.eth.Contract(abis, address);
+                await erc20Unpause.methods.unpause().send({ from: userAddress })
+                console.log('Inflation erc-20 unpause')
+                alert("Successfully unpaused!");
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
     } else if (balanceTextInf.style.display == "flex") {
         document.getElementById('modalBtnBurn20').addEventListener('click', async () => {
@@ -261,11 +313,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const erc20GetBalance = new web3.eth.Contract(abis, address);
-            const balance = await erc20GetBalance.methods.balanceOf(InpBalanceInf.value).call();
-            alert(`User balance: ${balance}`);
-            console.log('Inflation erc-20 balance') // Конец erc 20 innflation И начало erc 20 deflation
-            location.reload();
+            try {
+                const erc20GetBalance = new web3.eth.Contract(abis, address);
+                const balance = await erc20GetBalance.methods.balanceOf(InpBalanceInf.value).call();
+                alert(`User balance: ${balance}`);
+                console.log('Inflation erc-20 balance') // Конец erc 20 innflation И начало erc 20 deflation
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
     } else if (burnTextDef.style.display == "flex") {
         console.log(chainId);
@@ -281,13 +337,17 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const account = document.getElementById('InpaddressDef').value;
-            const erc20Burndef = new web3.eth.Contract(abis, address);
-            await erc20Burndef.methods.burn(account, InpBurnDef.value).send({
-                from: userAddress
-            });
-            alert("Token burned");
-            location.reload();
+            try {
+                const account = document.getElementById('InpaddressDef').value;
+                const erc20Burndef = new web3.eth.Contract(abis, address);
+                await erc20Burndef.methods.burn(account, InpBurnDef.value).send({
+                    from: userAddress
+                });
+                alert("Token burned");
+                location.reload();
+            } catch (error) {
+                location.reload();
+            }
         })
     } else if (pauseTextDef.style.display == "flex") {
         document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
@@ -302,11 +362,16 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const pauseDef = new web3.eth.Contract(abis, address);
-            if (confirm('Are you sure pause tokens?')) {
-                await pauseDef.methods.pause().send({ from: userAddress });
-                console.log('Deflation erc-20 pause')
-                location.reload();
+            try {
+                const pauseDef = new web3.eth.Contract(abis, address);
+                if (confirm('Are you sure pause tokens?')) {
+                    await pauseDef.methods.pause().send({ from: userAddress });
+                    console.log('Deflation erc-20 pause')
+                    alert("Done")
+                    location.reload();
+                }
+            } catch (error) {
+                location.reload()
             }
         })
     } else if (approveTextDef.style.display == "flex") {
@@ -322,10 +387,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const aproveDef = new web3.eth.Contract(abis, address);
-            await aproveDef.methods.approve(InApproveDef.value, InpTransferDef.value).send({ from: userAddress });
-            console.log('Deflation aproved');
-            location.reload();
+            try {
+                const aproveDef = new web3.eth.Contract(abis, address);
+                await aproveDef.methods.approve(InApproveDef.value, InpTransferDef.value).send({ from: userAddress });
+                console.log('Deflation approved');
+                alert('Approved!')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
         console.log('Deflation erc-20 approve')
     } else if (transferTextDef.style.display == "flex") {
@@ -341,10 +411,14 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const transferDef = new web3.eth.Contract(abis, address);
-            await transferDef.methods.transfer(InApproveDef.value, InpTransferDef.value).send({ from: userAddress });
-            console.log('Deflation erc-20 transfer')
-            location.reload();
+            try {
+                const transferDef = new web3.eth.Contract(abis, address);
+                await transferDef.methods.transfer(InApproveDef.value, InpTransferDef.value).send({ from: userAddress });
+                alert('Deflation erc-20 transfered')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
     } else if (transferFromTextDef.style.display == "flex") {
         document.getElementById('modalBtnBurnDef').addEventListener('click', async () => {
@@ -359,10 +433,14 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const transferFromDef = new web3.eth.Contract(abis, address);
-            await transferFromDef.methods.transferFrom(InApproveDef.value, userAddress, InpTransferFromDef.value).send({ from: userAddress });
-            console.log('transfer from');
-            location.reload();
+            try {
+                const transferFromDef = new web3.eth.Contract(abis, address);
+                await transferFromDef.methods.transferFrom(InApproveDef.value, userAddress, InpTransferFromDef.value).send({ from: userAddress });
+                aler('transfered');
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
         console.log('Deflation erc-20 transfer from')
     } else if (unpauseTextDef.style.display == "flex") {
@@ -378,10 +456,14 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const unpauseDef = new web3.eth.Contract(abis, address)
-            await unpauseDef.methods.unpause().send({ from: userAddress })
-            console.log('Deflation erc-20 unpause')
-            location.reload();
+            try {
+                const unpauseDef = new web3.eth.Contract(abis, address)
+                await unpauseDef.methods.unpause().send({ from: userAddress })
+                alert('unpaused')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
     } else if (balanceTextDef.style.display == "flex") {
         console.log(address);
@@ -397,11 +479,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const getBalanse = new web3.eth.Contract(abis, address);
-            const answer = await getBalanse.methods.balanceOf(InpBalanceDef.value).call();
-            alert(`Address balance: ${answer}`);
-            console.log('Deflation erc-20 balance')
-            location.reload();
+            try {
+                const getBalanse = new web3.eth.Contract(abis, address);
+                const answer = await getBalanse.methods.balanceOf(InpBalanceDef.value).call();
+                alert(`Address balance: ${answer}`);
+                console.log('Deflation erc-20 balance')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })// конец erc20 deflation и начало nft 1155
     } else if (burnText.style.display == "flex") {
         document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
@@ -416,11 +502,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const burn = new web3.eth.Contract(abis, address);
-            await burn.methods.burn(balanceM.value, burnM.value).send({ from: userAddress });
-            alert(`Succesfully burned`);
-            console.log('erc1155 burn')
-            location.reload();
+            try {
+                const burn = new web3.eth.Contract(abis, address);
+                await burn.methods.burn(balanceM.value, burnM.value).send({ from: userAddress });
+                alert(`Succesfully burned`);
+                console.log('erc1155 burn')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (mintText.style.display == "flex") {
@@ -436,11 +526,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const mint = new web3.eth.Contract(abis, address);
-            await mint.methods.mint(approveM.value, balanceM.value, mintM.value, '0x0').send({ from: userAddress });
-            alert(`Succesfully minted`);
-            console.log('erc1155 mint')
-            location.reload();
+            try {
+                const mint = new web3.eth.Contract(abis, address);
+                await mint.methods.mint(approveM.value, balanceM.value, mintM.value, '0x0').send({ from: userAddress });
+                alert(`Succesfully minted`);
+                console.log('erc1155 mint')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (sftText.style.display == "flex") {
@@ -456,13 +550,17 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const sft = new web3.eth.Contract(abis, address);
-            await sft.methods.safeTransferFrom(AccountFrom.value, userAddress, balanceM.value, stfM.value, '0x0').send({ from: userAddress });
-            alert(`Succesfully transfered`);
-            console.log('erc1155 transfer from')
-            location.reload();
+            try {
+                const sft = new web3.eth.Contract(abis, address);
+                await sft.methods.safeTransferFrom(AccountFrom.value, userAddress, balanceM.value, stfM.value, '0x0').send({ from: userAddress });
+                alert(`Succesfully transfered`);
+                console.log('erc1155 transfer from')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
-
+        //---------------------------------------------------------------------------------------------
     } else if (approveText.style.display == "flex") {
         document.getElementById('modalBtnBurn1155').addEventListener('click', async () => {
             const currentChainId = await window.ethereum.request({ method: 'net_version' });
@@ -476,15 +574,32 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
+
+
             const approve = new web3.eth.Contract(abis, address);
             const eArray = Array.from(radioS);
-            for (const e of eArray) {
-                if (e.checked) {
-                    await approve.methods.setApprovalForAll(approveM.value, e.value).send({ from: userAddress });
-                    alert(`Succesfully approved for all`);
-                    console.log('erc1155 approve for all')
-                    location.reload();
+            try {
+                if (eArray[0].value == "true") {
+                    for (const e of eArray) {
+                        if (e.checked) {
+                            await approve.methods.setApprovalForAll(approveM.value, e.value).send({ from: userAddress });
+                            alert(`Succesfully approved for all`);
+                            console.log('erc1155 approve for all')
+                            location.reload();
+                        }
+                    }
+                } else if (eArray[1].value == "false") {
+                    for (const e of eArray) {
+                        if (e.checked) {
+                            await approve.methods.setApprovalForAll(approveM.value, e.value).send({ from: userAddress });
+                            alert(`Approve canceled`);
+                            console.log('erc1155 approve for all')
+                            location.reload();
+                        }
+                    }
                 }
+            } catch (error) {
+                location.reload();
             }
         })
 
@@ -502,11 +617,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const balance = new web3.eth.Contract(abis, address);
-            const answer = await balance.methods.balanceOf(approveM.value, balanceM.value).call();
-            alert(`Balance: ${answer}`);
-            console.log('erc1155 balance')
-            location.reload();
+            try {
+                const balance = new web3.eth.Contract(abis, address);
+                const answer = await balance.methods.balanceOf(approveM.value, balanceM.value).call();
+                alert(`Balance: ${answer}`);
+                console.log('erc1155 balance')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
         // конец 1155 и начало 721
     } else if (mintText721.style.display == "flex") {
@@ -522,11 +641,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const mint = new web3.eth.Contract(abis, address);
-            await mint.methods.mint(mint721.value, tokenUri.value).send({ from: userAddress });
-            alert(`Succesfully minted`);
-            console.log('erc721 mint');
-            location.reload();
+            try {
+                const mint = new web3.eth.Contract(abis, address);
+                await mint.methods.mint(mint721.value, tokenUri.value).send({ from: userAddress });
+                alert(`Succesfully minted`);
+                console.log('erc721 mint');
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (sftText721.style.display == "flex") {
@@ -542,11 +665,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const sft = new web3.eth.Contract(abis, address);
-            await sft.methods.safeTransferFrom(tf721.value, userAddress, tokenId.value).send({ from: userAddress });
-            alert(`Succesfully transfered`);
-            console.log('erc721 transfer from')
-            location.reload();
+            try {
+                const sft = new web3.eth.Contract(abis, address);
+                await sft.methods.safeTransferFrom(tf721.value, userAddress, tokenId.value).send({ from: userAddress });
+                alert(`Succesfully transfered`);
+                console.log('erc721 transfer from')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (approveText721.style.display == "flex") {
@@ -562,22 +689,44 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const approve = new web3.eth.Contract(abis, address);
-            await approve.methods.approve(approve721.value, tokenId.value).send({ from: userAddress });
-            alert(`Succesfully approved`);
-            console.log('erc721 approve')
-            location.reload();
+            try {
+                const approve = new web3.eth.Contract(abis, address);
+                await approve.methods.approve(approve721.value, tokenId.value).send({ from: userAddress });
+                alert(`Succesfully approved`);
+                console.log('erc721 approve')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (balanceText721.style.display == "flex") {
-        console.log(abis);
+
         document.getElementById('modalBtnBurn721').addEventListener('click', async () => {
-            const balance = new web3.eth.Contract(abis, address);
-            const answer = await balance.methods.balanceOf(balance721.value).call();
-            alert(`Balance: ${answer}`);
-            console.log('erc721 balance')
-            location.reload();
-        }) // конец 721 и начало стейкинга
+            const currentChainId = await window.ethereum.request({ method: 'net_version' });
+            if (currentChainId !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: chainId }],
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            } try {
+                console.log(abis);
+                document.getElementById('modalBtnBurn721').addEventListener('click', async () => {
+                    const balance = new web3.eth.Contract(abis, address);
+                    const answer = await balance.methods.balanceOf(balance721.value).call();
+                    alert(`Balance: ${answer}`);
+                    console.log('erc721 balance')
+                    location.reload();
+                })
+            } catch (error) {
+                location.reload()
+            }
+        })
+        // конец 721 и начало стейкинга
     } else if (ClaimRtext.style.display == "flex") {
         document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
             const currentChainId = await window.ethereum.request({ method: 'net_version' });
@@ -591,11 +740,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const claimR = new web3.eth.Contract(abis, address);
-            await claimR.methods.claimRewards().send({ from: userAddress });
-            alert(`Succesfully claimed reward`);
-            console.log('Claim rewards')
-            location.reload();
+            try {
+                const claimR = new web3.eth.Contract(abis, address);
+                await claimR.methods.claimRewards().send({ from: userAddress });
+                alert(`Succesfully claimed reward`);
+                console.log('Claim rewards')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (StakeText.style.display == "flex") {
@@ -612,18 +765,22 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const Stake = new web3.eth.Contract(abis, address);
-            await Stake.methods.stake(StakeInp.value).send({ from: userAddress });
-            alert(`Succesfully staked`);
-            console.log('Stake')
-            location.reload();
+            try {
+                const Stake = new web3.eth.Contract(abis, address);
+                await Stake.methods.stake(StakeInp.value).send({ from: userAddress });
+                alert(`Succesfully staked`);
+                console.log('Stake')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
             // try {
             //     const message = `hello ${address}`
             //     await web3.eth.personal.sign(message, userAddress, '')
             // } catch (error) {
             //     console.error(error)
             // }
-            
+
         })
     } else if (UnstakeText.style.display == "flex") {
         document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
@@ -638,11 +795,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const Unstake = new web3.eth.Contract(abis, address);
-            await Unstake.methods.unstake().send({ from: userAddress });
-            alert(`Succesfully unstaked`);
-            console.log('Unstake')
-            location.reload();
+            try {
+                const Unstake = new web3.eth.Contract(abis, address);
+                await Unstake.methods.unstake().send({ from: userAddress });
+                alert(`Succesfully unstaked`);
+                console.log('Unstake')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
     } else if (CalculateRtext.style.display == "flex") {
         document.getElementById('modalBtnBurnStaking').addEventListener('click', async () => {
@@ -657,11 +818,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const CalculateR = new web3.eth.Contract(abis, address);
-            const answer = await CalculateR.methods.calculateRewards(CalculateInp.value).call();
-            alert(`Succesfully calculated: ${answer}`);
-            console.log('Calculate rewards')
-            location.reload();
+            try {
+                const CalculateR = new web3.eth.Contract(abis, address);
+                const answer = await CalculateR.methods.calculateRewards(CalculateInp.value).call();
+                alert(`Succesfully calculated: ${answer}`);
+                console.log('Calculate rewards')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else if (StakersText.style.display == "flex") {
@@ -677,11 +842,15 @@ async function btns(abis, address, chainId) {
                     console.error(error);
                 }
             }
-            const StakersList = new web3.eth.Contract(abis, address);
-            const answer = await StakersList.methods.stakersList(StakersInp.value).call();
-            alert(`Stakers List: ${await answer}`);
-            console.log('Stakers list')
-            location.reload();
+            try {
+                const StakersList = new web3.eth.Contract(abis, address);
+                const answer = await StakersList.methods.stakersList(StakersInp.value).call();
+                alert(`Stakers List: ${await answer}`);
+                console.log('Stakers list')
+                location.reload();
+            } catch (error) {
+                location.reload()
+            }
         })
 
     } else {
@@ -721,7 +890,7 @@ async function card20(a, id, text, interfaces, chainId) {
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = id
+    btn.id = `erc${id}`
     btn.innerText = "click here"
 
 
@@ -861,7 +1030,7 @@ async function cardNft(a, id, text, interfaces, metadata, chainId) {
 
     let btn = document.createElement('button')
     btn.classList.add('btn')
-    btn.id = id
+    btn.id = `nft${id}`
     btn.innerText = "click here"
 
     let desc = document.createElement('p')
@@ -896,14 +1065,14 @@ async function cardNft(a, id, text, interfaces, metadata, chainId) {
 
     if (a == 8) {
         btn.addEventListener('click', openModal)
-        let ab = document.getElementById(`nft1155${id}`)
+        let ab = document.getElementById(`nft${id}`)
         ab.addEventListener('click', () => {
             openModal(text, id, chainId);
             console.log('1155')
         })
     } else if (a == 9) {
         btn.addEventListener('click', openModal721)
-        let ab = document.getElementById(`nft721${id}`)
+        let ab = document.getElementById(`nft${id}`)
         ab.addEventListener('click', () => {
             openModal721(text, id, chainId);
             console.log('721')
@@ -939,9 +1108,9 @@ async function cardStaking(a, id, text, interfaces, chainId) {
     btn.addEventListener('click', openModalStaking)
 
     let desc = document.createElement('p')
-    desc.id = `staking${a}`
+    desc.id = `staking${id}`
     desc.innerHTML = text
-    sessionStorage.setItem(`${a}`, `${desc.innerHTML}`);
+    sessionStorage.setItem(`${id}`, `${desc.innerHTML}`);
     sessionStorage.setItem(`${desc.innerHTML}`, JSON.stringify(interfaces));
 
     parentDiv.appendChild(child1);
@@ -1033,7 +1202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userAddresses = await data.resObj.userContractAddress;
     const userMetadata = await data.resObj.userMetadata;
     const userChainId = await data.resObj.userChains;
-    const userMainId = await data.resObj.userMainId;
+    const userMainId = await data.resObj.contractIds;
 
     const temp2 = userDataType.map(id => id);
     const temp = userDataKind.map(id => id);
@@ -1231,7 +1400,7 @@ function erc20KindIdCheckDef(ercId) {
 
 function openModalERC20inf(id, address, chainId) {
     contentModalsERC20inf.style.display = 'block'
-    console.log('wokrk')   
+    console.log('wokrk')
     sessionStorage.setItem('resent', `${id}`);
     sessionStorage.setItem(`${id}`, `${address}`)
     sessionStorage.setItem(`chainId${id}`, `${chainId}`);
@@ -1873,6 +2042,7 @@ function closeModal() {
     contentModalsERC20inf.style.display = "none"
     contentModalsERC20def.style.display = "none"
     isModalOpen = false;
+    location.reload();
 }
 
 function closeModal2() {

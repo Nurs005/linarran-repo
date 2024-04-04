@@ -62,7 +62,7 @@ class UserControler {
                 chainsArray.push(chain);
             }
             const userChains = chainsArray.map(c => c.chainId);
-            const resObj = { userContractAddress, userMetadata, userAbi, userTypeId, userKindId, userChains };
+            const resObj = { userContractAddress, userMetadata, userAbi, userTypeId, userKindId, userChains, contractIds };
             return res.json({ resObj });
         } catch (error) {
             next(ApiError.badRequest(error.message));
